@@ -30,7 +30,8 @@
 		var stage = new PIXI.Container();
 		
 		
-		var enemy, enemies = [], towers = [], enemySteps, gameTime = [], gameTimeCounter, fieldsize, gameover, credits, activeTower, buildedTowers = [];
+		var enemies = [], towers = [], enemySteps, gameTime = [], msgGameTime, fieldsize, gameover, credits, msgCredits, activeTower, buildedTowers = [], wavelevel;
+		var newGame, newGame2, menuTowerWeak, menuTowerStrong, menuTowerLong, ground;
 		
 		setup();
 
@@ -47,19 +48,21 @@
 			gameOverScene.visible = false;
 			stage.addChild(gameOverScene);
 			
-			var newGame = new Text(
+			newGame = new Text(
 				"New Game",
 				{fontFamily: "Arial", fontSize: 32, fill: "blue"}
 			);
 			newGame.position.set(100, 100);
+			newGame.interactive = true;
 			startScene.addChild(newGame);
 			
-			var newGame = new Text(
+			newGame2 = new Text(
 				"New Game",
 				{fontFamily: "Arial", fontSize: 32, fill: "blue"}
 			);
-			newGame.position.set(100, 100);
-			gameOverScene.addChild(newGame);
+			newGame2.position.set(100, 100);
+			newGame2.interactive = true;
+			gameOverScene.addChild(newGame2);
 			
 			var msgGameOver = new Text(
 				"Game Over!",
@@ -70,18 +73,207 @@
 			
 			
 			fieldsize = 40;
-			credits = 100;
-			activeTower = -1;
-			gameover = false;
+			restart();
 		// print ground
-			var ground = new Graphics();
+			ground = new Graphics();
 			ground.beginFill(0x88BB22);
 			ground.drawRect(0, 0, 600, 600);
 			ground.endFill();
 			ground.x = 0;
 			ground.y = 0;
+			ground.interactive = true;
 			gameScene.addChild(ground);
-		// print enemy-path
+			
+			drawEnemyPath();
+			drawGrid();
+			
+			var menu = new Graphics();
+			menu.beginFill(0xBBBBBB);
+			menu.drawRect(0, 0, 200, 600);
+			menu.endFill();
+			menu.x = 600;
+			menu.y = 0;
+			gameScene.addChild(menu);
+			
+			msgGameTime = new Text(
+				"Next wave: "+(4-(gameTime[1]%5)),
+				{fontFamily: "Arial", fontSize: 16, fill: "black"}
+			);
+			msgGameTime.position.set(610, 10);
+			gameScene.addChild(msgGameTime);
+			
+			msgCredits = new Text(
+				"Credits: "+credits,
+				{fontFamily: "Arial", fontSize: 16, fill: "black"}
+			);
+			msgCredits.position.set(610, 60);
+			gameScene.addChild(msgCredits);
+			
+			menuTowerWeak = new Graphics();
+			menuTowerWeak.color = 0x008800;
+			menuTowerWeak.beginFill(menuTowerWeak.color);
+			menuTowerWeak.drawRect(0, 0, fieldsize-1, fieldsize-1);
+			menuTowerWeak.endFill();
+			menuTowerWeak.x = 610;
+			menuTowerWeak.y = 100;
+			menuTowerWeak.cost = 30;
+			menuTowerWeak.range = 4;
+			menuTowerWeak.damage = 10;
+			menuTowerWeak.cooldown = 60;
+			menuTowerWeak.interactive = true;
+			towers.push(menuTowerWeak);
+			
+			var menuTower = new Text(
+				"Weak Tower\n"+menuTowerWeak.cost+" Credits",
+				{fontFamily: "Arial", fontSize: 16, fill: "black"}
+			);
+			menuTower.position.set(660, 105);
+			gameScene.addChild(menuTower);
+			
+			menuTowerStrong = new Graphics();
+			menuTowerStrong.color = 0xDDDD00;
+			menuTowerStrong.beginFill(menuTowerStrong.color);
+			menuTowerStrong.drawRect(0, 0, fieldsize-1, fieldsize-1);
+			menuTowerStrong.endFill();
+			menuTowerStrong.x = 610;
+			menuTowerStrong.y = 100+fieldsize*2;
+			menuTowerStrong.cost = 70;
+			menuTowerStrong.range = 4;
+			menuTowerStrong.damage = 30;
+			menuTowerStrong.cooldown = 60;
+			menuTowerStrong.interactive = true;
+			towers.push(menuTowerStrong);
+			
+			var menuTower = new Text(
+				"Stronk Tower\n"+menuTowerStrong.cost+" Credits",
+				{fontFamily: "Arial", fontSize: 16, fill: "black"}
+			);
+			menuTower.position.set(660, 105+fieldsize*2);
+			gameScene.addChild(menuTower);
+			
+			menuTowerLong = new Graphics();
+			menuTowerLong.color = 0x006688;
+			menuTowerLong.beginFill(menuTowerLong.color);
+			menuTowerLong.drawRect(0, 0, fieldsize-1, fieldsize-1);
+			menuTowerLong.endFill();
+			menuTowerLong.x = 610;
+			menuTowerLong.y = 100+fieldsize*4;
+			menuTowerLong.cost = 60;
+			menuTowerLong.range = 8;
+			menuTowerLong.damage = 10;
+			menuTowerLong.cooldown = 60;
+			menuTowerLong.interactive = true;
+			towers.push(menuTowerLong);
+			towers.forEach(function(tower) {
+				gameScene.addChild(tower);
+			});
+			
+			var menuTower = new Text(
+				"Long Range Tower\n"+menuTowerLong.cost+" Credits",
+				{fontFamily: "Arial", fontSize: 16, fill: "black"}
+			);
+			menuTower.position.set(660, 105+fieldsize*4);
+			gameScene.addChild(menuTower);
+		
+
+			state = start;
+			gameLoop();
+		}
+
+		function gameLoop() {
+		// saves cpu where it is not needed
+			if(!gameover || false) {
+				gameTime[0]++;
+				if(gameTime[0] % 60 == 0) {
+					gameTime[1]++;
+					msgGameTime.setText("Next wave: "+(4-(gameTime[1]%5)));
+					if(gameTime[1]%5 == 0) {
+						createWave();
+					}
+				}
+				requestAnimationFrame(gameLoop);
+				state();
+				renderer.render(stage);
+			}
+		}
+		
+		function start() {
+			startScene.visible = true;
+			newGame.on('pointerdown', function() {
+				restart();
+				startScene.visible = false;
+				gameScene.visible = true;
+				state = play;
+			});
+		}
+
+		function play() {
+			shootAtEnemies();
+			moveEnemies();
+			
+			menuTowerWeak.on('pointerdown', function() {
+				activateTower(0);
+			});
+			menuTowerStrong.on('pointerdown', function() {
+				activateTower(1);
+			});
+			menuTowerLong.on('pointerdown', function() {
+				activateTower(2);
+			});
+			ground.click = function() {
+				buildTower();
+			};
+		}
+
+		function end() {
+			gameScene.visible = false;
+			gameOverScene.visible = true;
+			newGame2.on('pointerdown', function() {
+				restart();
+				gameOverScene.visible = false;
+				gameScene.visible = true;
+				state = play;
+			});
+		}
+		
+		function restart() {
+			gameover = false;
+			credits = 100;
+			activeTower = -1;
+			wavelevel = 0;
+			gameTime = [0, 0];
+			buildedTowers = [];
+			enemies = [];
+		}
+		
+		function shootAtEnemies() {
+			buildedTowers.forEach(function(tower) {
+				if(gameTime[0] % tower.cooldown == 0) {
+					enemies.forEach(function(enemy, index) {
+						if(isInRange(tower, enemy)) {
+							enemy.hp -= tower.damage;
+							console.log(enemy.hp);
+							if(enemy.hp <= 0) {
+								enemyKilled(enemy);
+								enemies.splice(index, 1);
+							}
+							return;
+						}
+					});
+				}
+			});
+		}
+		
+		function enemyKilled(enemy) {
+			credits += enemy.worth;
+			msgCredits.setText("Credits: " + credits);
+			
+			drawEnemyPath();
+			drawGrid();
+		}
+		
+		function drawEnemyPath() {
+			// print enemy-path
 			var enemyPath = new Graphics();
 			enemyPath.beginFill(0x999999);
 			enemyPath.drawRect(0, 0, fieldsize, fieldsize*8);
@@ -103,8 +295,10 @@
 			enemyPath.x = fieldsize*9;
 			enemyPath.y = fieldsize*7;
 			gameScene.addChild(enemyPath);
-			
-		// horizontal lines
+		}
+		
+		function drawGrid() {
+			// horizontal lines
 			for( var i = 1; i < 15; i++) {
 				var line = new Graphics();
 				line.lineStyle(1, 0x000000, 1);
@@ -112,7 +306,7 @@
 				line.lineTo(600, fieldsize*i);
 				gameScene.addChild(line);
 			}
-		// vertical lines
+			// vertical lines
 			for( var i = 1; i < 15; i++) {
 				var line = new Graphics();
 				line.lineStyle(1, 0x000000, 1);
@@ -120,71 +314,63 @@
 				line.lineTo(fieldsize*i, 800);
 				gameScene.addChild(line);
 			}
-			
-			var menu = new Graphics();
-			menu.beginFill(0xBBBBBB);
-			menu.drawRect(0, 0, 200, 600);
-			menu.endFill();
-			menu.x = 600;
-			menu.y = 0;
-			gameScene.addChild(menu);
-			
-			var credits = new Text(
-				"Credits: "+credits,
-				{fontFamily: "Arial", fontSize: 16, fill: "black"}
-			);
-			credits.position.set(610, 60);
-			gameScene.addChild(credits);
-			
-			var menuTower = new Graphics();
-			menuTower.beginFill(0x008800);
-			menuTower.drawRect(0, 0, fieldsize-1, fieldsize-1);
-			menuTower.endFill();
-			menuTower.x = 610;
-			menuTower.y = 100;
-			towers.push(menuTower);
-			
-			var menuTower = new Text(
-				"Weak Tower\n30 Credits",
-				{fontFamily: "Arial", fontSize: 16, fill: "black"}
-			);
-			menuTower.position.set(660, 105);
-			gameScene.addChild(menuTower);
-			
-			var menuTower = new Graphics();
-			menuTower.beginFill(0xDDDD00);
-			menuTower.drawRect(0, 0, fieldsize-1, fieldsize-1);
-			menuTower.endFill();
-			menuTower.x = 610;
-			menuTower.y = 100+fieldsize*2;
-			towers.push(menuTower);
-			
-			var menuTower = new Text(
-				"Stronk Tower\n70 Credits",
-				{fontFamily: "Arial", fontSize: 16, fill: "black"}
-			);
-			menuTower.position.set(660, 105+fieldsize*2);
-			gameScene.addChild(menuTower);
-			
-			var menuTower = new Graphics();
-			menuTower.beginFill(0x006688);
-			menuTower.drawRect(0, 0, fieldsize-1, fieldsize-1);
-			menuTower.endFill();
-			menuTower.x = 610;
-			menuTower.y = 100+fieldsize*4;
-			towers.push(menuTower);
-			towers.forEach(function(tower) {
-				gameScene.addChild(tower);
+		}
+		
+		function isInRange(tower, enemy) {
+			return true;
+		}
+		
+		function moveEnemies() {
+			enemies.forEach(function(enemy){
+				enemySteps = enemy.speed;
+				enemy.vx = 0;
+				enemy.vy = 0;
+				if(enemy.checkpointsReached == 0) {
+					if(enemy.y + enemySteps > fieldsize*7) {
+						enemySteps -= fieldsize*7 - enemy.y + 1;
+						enemy.vy = fieldsize*7 - enemy.y + 1;
+						enemy.checkpointsReached = 1;
+					}
+					else {
+						enemy.vy = enemySteps;
+						enemySteps = 0;
+					}
+				}
+				if(enemy.checkpointsReached == 1) {
+					if(enemy.x + enemySteps > fieldsize*9) {
+						enemySteps -= fieldsize*9 - enemy.x;
+						enemy.vx = fieldsize*9 - enemy.x;
+						enemy.checkpointsReached = 2;
+					}
+					else {
+						enemy.vx = enemySteps;
+						enemySteps = 0;
+					}
+				}
+				if(enemy.checkpointsReached == 2) {
+					if(enemy.y + enemySteps > fieldsize*14) {
+						enemySteps -= fieldsize*14 - enemy.y + 1;
+						enemy.vy = fieldsize*14 - enemy.y + 1;
+						enemy.checkpointsReached = 3;
+					}
+					else {
+						enemy.vy = enemySteps;
+						enemySteps = 0;
+					}
+				}
+				if(enemy.checkpointsReached == 3) {
+					gameover = true;
+					gameScene.visible = false;
+					gameOverScene.visible = true;
+					state = end;
+				}
+				enemy.x += enemy.vx;
+				enemy.y += enemy.vy;
 			});
-			
-			var menuTower = new Text(
-				"Long Range Tower\n60 Credits",
-				{fontFamily: "Arial", fontSize: 16, fill: "black"}
-			);
-			menuTower.position.set(660, 105+fieldsize*4);
-			gameScene.addChild(menuTower);
-			
-			enemy = new Graphics();
+		}
+		
+		function createWave() {
+			var enemy = new Graphics();
 			enemy.beginFill(0xFF0000);
 			enemy.drawRect(0, 0, fieldsize-1, fieldsize-1);
 			enemy.endFill();
@@ -192,136 +378,93 @@
 			enemy.y = 0;
 			enemy.checkpointsReached = 0;
 			enemy.speed = 1;
+			enemy.hp = 50;
+			enemy.worth = 40;
 			enemies.push(enemy);
 			enemies.forEach(function(enemy) {
 				gameScene.addChild(enemy);
 			});
-				
-			gameTime = [0, 0];
-			gameTimeCounter = 0;
-		
-
-			state = start;
-			gameLoop();
-		}
-
-		function gameLoop() {
-		// saves cpu where it is not needed
-			if(!gameover || true) {
-				gameTime[0]++;
-				if(gameTime[0] % 60 == 0) {
-					gameTime[1]++;
-				}
-				requestAnimationFrame(gameLoop);
-				state();
-				renderer.render(stage);
-			}
-		}
-		
-		function start() {
-			startScene.visible = true;
-			if(gameTime[1] == 1) {
-				startScene.visible = false;
-				gameScene.visible = true;
-				state = play;
-			}
-		}
-
-		function play() {
-		enemies.forEach(function(enemy){
-			enemySteps = enemy.speed;
-			enemy.vx = 0;
-			enemy.vy = 0;
-			if(enemy.checkpointsReached == 0) {
-				if(enemy.y + enemySteps > fieldsize*7) {
-					enemySteps -= fieldsize*7 - enemy.y + 1;
-					enemy.vy = fieldsize*7 - enemy.y + 1;
-					enemy.checkpointsReached = 1;
-				}
-				else {
-					enemy.vy = enemySteps;
-					enemySteps = 0;
-				}
-			}
-			if(enemy.checkpointsReached == 1) {
-				if(enemy.x + enemySteps > fieldsize*9) {
-					enemySteps -= fieldsize*9 - enemy.x;
-					enemy.vx = fieldsize*9 - enemy.x;
-					enemy.checkpointsReached = 2;
-				}
-				else {
-					enemy.vx = enemySteps;
-					enemySteps = 0;
-				}
-			}
-			if(enemy.checkpointsReached == 2) {
-				if(enemy.y + enemySteps > fieldsize*14) {
-					enemySteps -= fieldsize*14 - enemy.y + 1;
-					enemy.vy = fieldsize*14 - enemy.y + 1;
-					enemy.checkpointsReached = 3;
-				}
-				else {
-					enemy.vy = enemySteps;
-					enemySteps = 0;
-				}
-			}
-			if(enemy.checkpointsReached == 3) {
-				gameover = true;
-				gameScene.visible = false;
-				gameOverScene.visible = true;
-			}
-			enemy.x += enemy.vx;
-			enemy.y += enemy.vy;
-		});
-		
-		if(gameTime[0] == 120) {
-				activateTower(1);
-			}
-		}
-
-		function end() {
-			gameScene.visible = false;
-			gameOverScene.visible = true;
 		}
 		
 		function activateTower(number) {
 			if(activeTower > -1) {
-				towers[activeTower].lineStyle(0, 0x000000, 1);
+				towers[activeTower].lineStyle(3, 0xBBBBBB, 1);
 				towers[activeTower].drawRect(0, 0, fieldsize-1, fieldsize-1);
 			}
 			towers[number].lineStyle(3, 0x000000, 1);
 			towers[number].drawRect(0, 0, fieldsize-1, fieldsize-1);
 			activeTower = number;
-			buildTower(35, 45);
 		}
 		
-		function buildTower(x, y) {
-			x /= fieldsize;
-			y /= fieldsize;
-			console.log(x+"-"+y);
+		function buildTower() {
+			if(activeTower > -1) {
+				if(credits >= towers[activeTower].cost) {
+					var mouse = renderer.plugins.interaction.mouse.global;
+					x = mouse.x;
+					y = mouse.y;
+					x /= fieldsize;
+					y /= fieldsize;
+					x = Math.floor(x);
+					y = Math.floor(y);
+					if(isValidTowerPosition(x, y)) {
+						var tower = new Graphics();
+						tower.beginFill(towers[activeTower].color);
+						tower.drawRect(0, 0, fieldsize-1, fieldsize-1);
+						tower.endFill();
+						tower.x = x*fieldsize;
+						tower.y = y*fieldsize + 1;
+						tower.xPos = x;
+						tower.yPos = y;
+						tower.range = towers[activeTower].range;
+						tower.damage = towers[activeTower].damage;
+						tower.cooldown = towers[activeTower].cooldown;
+						buildedTowers.push(tower);
+						gameScene.addChild(buildedTowers[buildedTowers.length-1]);
+						credits -= towers[activeTower].cost;
+						msgCredits.setText("Credits: "+credits);
+					}
+				}
+			}
 		}
 		
 		function isValidTowerPosition(x, y) {
+			var towerAlreadyExist = false;
+			
 			buildedTowers.forEach(function(tower) {
-				if(tower.x == x && tower.y == y) {
+				if(tower.xPos == x && tower.yPos == y) {
+					towerAlreadyExist = true;
 					return false;
 				}
 			});
 			
+			if(towerAlreadyExist) {
+				return false;
+			}
+			
 			if(x > 14) {
 				return false;
 			}
-			if(x <= 6 && y != 3) {
+			if(y <= 6 && x != 3) {
 				return true;
 			}
-			else if(x == 7 && (y <= 2 || y >= 10)) {
+			else if(y == 7 && (x <= 2 || x >= 10)) {
 				return true
 			}
-			else if(x >= 8 && y != 9) {
+			else if(y >= 8 && x != 9) {
 				return true
 			}
 			return false;
 		}
+		
+		/*
+		* Returns a random number between min and max both included.
+		* @param min: minimum possible value
+		*        max: maximum possible value
+		* @return An integer
+		*/
+		function random(min, max) {
+			return Math.floor(Math.random() * (max - min + 1) ) + min;
+		} 
   </script>
 </body>
 </html>
