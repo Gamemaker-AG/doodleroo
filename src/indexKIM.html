@@ -30,8 +30,8 @@
 		var stage = new PIXI.Container();
 		
 		
-		var enemies = [], towers = [], enemySteps, gameTime = [], msgGameTime, fieldsize, gameover, credits, msgCredits, activeTower, buildedTowers = [], wavelevel;
-		var newGame, newGame2, menuTowerWeak, menuTowerStrong, menuTowerLong, ground;
+		var enemies = [], towers = [], enemySteps, gameTime = [], msgGameTime, fieldsize, credits, msgCredits, activeTower, buildedTowers = [], wavelevel, msgScoreEnd;
+		var newGame, newGame2, menuTowerWeak, menuTowerStrong, menuTowerLong, ground, showTowerRange, towerRangeIndicators = [], msgShowTowerRange, score, msgScore;
 		
 		setup();
 
@@ -64,29 +64,137 @@
 			newGame2.interactive = true;
 			gameOverScene.addChild(newGame2);
 			
+			msgScoreEnd = new Text(
+				"Your Score: NaN",
+				{fontFamily: "Arial", fontSize: 32, fill: "black"}
+			);
+			msgScoreEnd.position.set(100, 500);
+			gameOverScene.addChild(msgScoreEnd);
+			
 			var msgGameOver = new Text(
 				"Game Over!",
 				{fontFamily: "Arial", fontSize: 32, fill: "black"}
 			);
-			msgGameOver.position.set(400-msgGameOver/2, 600);
+			msgGameOver.position.set(100, 400);
 			gameOverScene.addChild(msgGameOver);
 			
 			
 			fieldsize = 40;
+			
+			drawMenu();
+
 			restart();
-		// print ground
-			ground = new Graphics();
-			ground.beginFill(0x88BB22);
-			ground.drawRect(0, 0, 600, 600);
-			ground.endFill();
-			ground.x = 0;
-			ground.y = 0;
-			ground.interactive = true;
-			gameScene.addChild(ground);
+			state = start;
+			gameLoop();
+		}
+
+		function gameLoop() {
+			requestAnimationFrame(gameLoop);
+			state();
+			renderer.render(stage);
+		}
+		
+		function start() {
+			startScene.visible = true;
+			newGame.click = function() {
+				restart();
+				startScene.visible = false;
+				gameScene.visible = true;
+				state = play;
+			};
+		}
+
+		function play() {
+			gameTime[0]++;
+			if(gameTime[0] % 60 == 0) {
+				gameTime[1]++;
+				msgGameTime.setText("Next wave: "+(4-(gameTime[1]%5)));
+				if(gameTime[1]%5 == 0) {
+					wavelevel++;
+					createWave();
+				}
+			}
+			shootAtEnemies();
+			moveEnemies();
 			
-			drawEnemyPath();
-			drawGrid();
+			menuTowerWeak.click = function() {
+				activateTower(0);
+			};
+			menuTowerStrong.click = function() {
+				activateTower(1);
+			};
+			menuTowerLong.click = function() {
+				activateTower(2);
+			};
+			ground.click = function() {
+				buildTower();
+			};
+			msgShowTowerRange.click = function() {
+				toggleTowerRange();
+			};
+		}
+
+		function end() {
+			gameScene.visible = false;
+			gameOverScene.visible = true;
+			newGame2.click = function() {
+				restart();
+				gameOverScene.visible = false;
+				gameScene.visible = true;
+				state = play;
+			};
+		}
+		
+		function restart() {
+			if(activeTower > -1) {
+				towers[activeTower].lineStyle(3, 0xBBBBBB, 1);
+				towers[activeTower].drawRect(0, 0, fieldsize-1, fieldsize-1);
+			}
+			showTowerRange = false;
+			credits = 100;
+			score = 0;
+			activeTower = -1;
+			wavelevel = 0;
+			gameTime = [0, 0];
+			buildedTowers = [];
+			enemies = [];
+			drawBoard();
+			msgGameTime.setText("Next wave: "+(4-(gameTime[1]%5)));
+			msgScore.setText("Score: "+score);
+			while(towerRangeIndicators.length > 0) {
+				gameScene.removeChild(towerRangeIndicators[0]);
+				towerRangeIndicators.splice(0, 1);
+			}
+			msgCredits.setText("Credits: " + credits);
+		}
+		
+		function shootAtEnemies() {
+			buildedTowers.forEach(function(tower) {
+				if(gameTime[0] % tower.cooldown == 0) {
+					enemies.forEach(function(enemy, index) {
+						if(isInRange(tower, enemy)) {
+							enemy.hp -= tower.damage;
+							if(enemy.hp <= 0) {
+								enemyKilled(enemy);
+								enemies.splice(index, 1);
+							}
+							return;
+						}
+					});
+				}
+			});
+		}
+		
+		function enemyKilled(enemy) {
+			gameScene.removeChild(enemy);
 			
+			credits += enemy.worth;
+			score++;
+			msgScore.setText("Score: " + score);
+			msgCredits.setText("Credits: " + credits);
+		}
+		
+		function drawMenu() {
 			var menu = new Graphics();
 			menu.beginFill(0xBBBBBB);
 			menu.drawRect(0, 0, 200, 600);
@@ -101,6 +209,13 @@
 			);
 			msgGameTime.position.set(610, 10);
 			gameScene.addChild(msgGameTime);
+			
+			msgScore = new Text(
+				"Score: "+score,
+				{fontFamily: "Arial", fontSize: 16, fill: "black"}
+			);
+			msgScore.position.set(610, 40);
+			gameScene.addChild(msgScore);
 			
 			msgCredits = new Text(
 				"Credits: "+credits,
@@ -174,126 +289,56 @@
 			);
 			menuTower.position.set(660, 105+fieldsize*4);
 			gameScene.addChild(menuTower);
-		
-
-			state = start;
-			gameLoop();
-		}
-
-		function gameLoop() {
-		// saves cpu where it is not needed
-			if(!gameover || false) {
-				gameTime[0]++;
-				if(gameTime[0] % 60 == 0) {
-					gameTime[1]++;
-					msgGameTime.setText("Next wave: "+(4-(gameTime[1]%5)));
-					if(gameTime[1]%5 == 0) {
-						createWave();
-					}
-				}
-				requestAnimationFrame(gameLoop);
-				state();
-				renderer.render(stage);
-			}
-		}
-		
-		function start() {
-			startScene.visible = true;
-			newGame.on('pointerdown', function() {
-				restart();
-				startScene.visible = false;
-				gameScene.visible = true;
-				state = play;
-			});
-		}
-
-		function play() {
-			shootAtEnemies();
-			moveEnemies();
 			
-			menuTowerWeak.on('pointerdown', function() {
-				activateTower(0);
-			});
-			menuTowerStrong.on('pointerdown', function() {
-				activateTower(1);
-			});
-			menuTowerLong.on('pointerdown', function() {
-				activateTower(2);
-			});
-			ground.click = function() {
-				buildTower();
-			};
-		}
-
-		function end() {
-			gameScene.visible = false;
-			gameOverScene.visible = true;
-			newGame2.on('pointerdown', function() {
-				restart();
-				gameOverScene.visible = false;
-				gameScene.visible = true;
-				state = play;
-			});
+			msgShowTowerRange = new Text(
+				"Show Tower Range",
+				{fontFamily: "Arial", fontSize: 16, fill: "black"}
+			);
+			msgShowTowerRange.position.set(610, 570);
+			msgShowTowerRange.interactive = true;
+			gameScene.addChild(msgShowTowerRange);
 		}
 		
-		function restart() {
-			gameover = false;
-			credits = 100;
-			activeTower = -1;
-			wavelevel = 0;
-			gameTime = [0, 0];
-			buildedTowers = [];
-			enemies = [];
-		}
-		
-		function shootAtEnemies() {
-			buildedTowers.forEach(function(tower) {
-				if(gameTime[0] % tower.cooldown == 0) {
-					enemies.forEach(function(enemy, index) {
-						if(isInRange(tower, enemy)) {
-							enemy.hp -= tower.damage;
-							console.log(enemy.hp);
-							if(enemy.hp <= 0) {
-								enemyKilled(enemy);
-								enemies.splice(index, 1);
-							}
-							return;
-						}
-					});
-				}
-			});
-		}
-		
-		function enemyKilled(enemy) {
-			credits += enemy.worth;
-			msgCredits.setText("Credits: " + credits);
-			
-			drawEnemyPath();
+		function drawBoard() {
+			drawGround();
 			drawGrid();
+			drawEnemyPath();
+		}
+		
+		function drawGround() {
+			// print ground
+			ground = new Graphics();
+			ground.beginFill(0x88BB22);
+			ground.drawRect(0, 0, 600, 600);
+			ground.endFill();
+			ground.x = 0;
+			ground.y = 0;
+			ground.interactive = true;
+			gameScene.addChild(ground);
 		}
 		
 		function drawEnemyPath() {
 			// print enemy-path
 			var enemyPath = new Graphics();
 			enemyPath.beginFill(0x999999);
-			enemyPath.drawRect(0, 0, fieldsize, fieldsize*8);
+			enemyPath.drawRect(0, 0, fieldsize-1, fieldsize*8);
 			enemyPath.endFill();
 			enemyPath.x = fieldsize*3;
 			enemyPath.y = 0;
 			gameScene.addChild(enemyPath);
 			var enemyPath = new Graphics();
 			enemyPath.beginFill(0x999999);
-			enemyPath.drawRect(0, 0, fieldsize*5, fieldsize);
+			enemyPath.drawRect(0, 0, fieldsize*5+1, fieldsize-1);
 			enemyPath.endFill();
-			enemyPath.x = fieldsize*4;
-			enemyPath.y = fieldsize*7;
+			enemyPath.x = fieldsize*4-1;
+			enemyPath.y = fieldsize*7+1;
 			gameScene.addChild(enemyPath);
 			var enemyPath = new Graphics();
 			enemyPath.beginFill(0x999999);
-			enemyPath.drawRect(0, 0, fieldsize, fieldsize*8);
+			enemyPath.drawRect(0, 0, fieldsize-1, fieldsize*8);
 			enemyPath.endFill();
 			enemyPath.x = fieldsize*9;
-			enemyPath.y = fieldsize*7;
+			enemyPath.y = fieldsize*7+1;
 			gameScene.addChild(enemyPath);
 		}
 		
@@ -317,7 +362,9 @@
 		}
 		
 		function isInRange(tower, enemy) {
-			return true;
+			enemyX = Math.floor(enemy.x/fieldsize);
+			enemyY = Math.floor(enemy.y/fieldsize);
+			return Math.sqrt(Math.pow(enemyX-tower.xPos, 2)+Math.pow(enemyY-tower.yPos, 2)) <= tower.range;
 		}
 		
 		function moveEnemies() {
@@ -359,14 +406,16 @@
 					}
 				}
 				if(enemy.checkpointsReached == 3) {
-					gameover = true;
-					gameScene.visible = false;
-					gameOverScene.visible = true;
-					state = end;
+					gameLost();
 				}
 				enemy.x += enemy.vx;
 				enemy.y += enemy.vy;
 			});
+		}
+		
+		function gameLost() {
+			msgScoreEnd.setText("Your Score: "+score);
+			state = end;
 		}
 		
 		function createWave() {
@@ -377,9 +426,9 @@
 			enemy.x = fieldsize*3;
 			enemy.y = 0;
 			enemy.checkpointsReached = 0;
-			enemy.speed = 1;
-			enemy.hp = 50;
-			enemy.worth = 40;
+			enemy.speed = wavelevel;
+			enemy.hp = wavelevel*40;
+			enemy.worth = wavelevel*40;
 			enemies.push(enemy);
 			enemies.forEach(function(enemy) {
 				gameScene.addChild(enemy);
@@ -424,6 +473,31 @@
 						msgCredits.setText("Credits: "+credits);
 					}
 				}
+			}
+		}
+		
+		function toggleTowerRange() {
+			if(showTowerRange) {
+				showTowerRange = false;
+				msgShowTowerRange.setText("Show Tower Range");
+				while(towerRangeIndicators.length > 0) {
+					gameScene.removeChild(towerRangeIndicators[0]);
+					towerRangeIndicators.splice(0, 1);
+				}
+			}
+			else {
+				showTowerRange = true;
+				msgShowTowerRange.setText("Hide Tower Range");
+				buildedTowers.forEach(function(tower) {
+					var circle = new Graphics();
+					circle.lineStyle(3, 0xFFFFFF, 1);
+					circle.drawCircle(tower.x+fieldsize/2, tower.y+fieldsize/2, tower.range*fieldsize);
+					circle.endFill();
+					towerRangeIndicators.push(circle);
+				});
+				towerRangeIndicators.forEach(function(indicator) {
+					gameScene.addChild(indicator);
+				});
 			}
 		}
 		
