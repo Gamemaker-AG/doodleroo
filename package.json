@@ -24,6 +24,7 @@
     "webpack-dev-server": "^2.4.4"
   },
   "dependencies": {
-    "pixi.js": "^4.5.1"
+    "pixi.js": "^4.5.1",
+    "yagl-ecs": "^1.1.0"
   }
 }
