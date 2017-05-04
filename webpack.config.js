@@ -8,5 +8,8 @@ module.exports = {
   },
   devServer: {
     contentBase: path.join(__dirname, 'assets')
+  },
+  resolve: {
+  	modules: [path.resolve(__dirname, 'src'), 'node_modules']
   }
 };
