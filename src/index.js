@@ -25,12 +25,31 @@ function gameLoop() {
 
 function startGame () {
     menu.addSystem(new Render());
+    //game.addSystem(new Render());
 
     let entity = new ECS.Entity(null, [Sprite]);
 		let redSquare = entity.components.sprite;
     redSquare.pixiSprite = new PIXI.Sprite.fromImage('red_square');
 		redSquare.pixiSprite.position.set(100, 0);
     menu.addEntity(entity);
+		// ######### TOWER #########
+		let entity3 = new ECS.Entity(null, [Sprite]);
+		let towerWeak = entity3.components.sprite;
+    towerWeak.pixiSprite = new PIXI.Sprite.fromImage('tower_weak');
+		towerWeak.pixiSprite.position.set(100, 0);
+    game.addEntity(entity3);
+		let entity4 = new ECS.Entity(null, [Sprite]);
+		let towerStrong = entity4.components.sprite;
+    towerStrong.pixiSprite = new PIXI.Sprite.fromImage('tower_strong');
+		towerStrong.pixiSprite.position.set(100, 0);
+    game.addEntity(entity4);
+		let entity5 = new ECS.Entity(null, [Sprite]);
+		let towerLong = entity5.components.sprite;
+    towerLong.pixiSprite = new PIXI.Sprite.fromImage('tower_long');
+		towerLong.pixiSprite.position.set(100, 0);
+    game.addEntity(entity5);
+		
+		// ######### MENU #########
     let entity2 = new ECS.Entity(null, [Sprite]);
 		let newGame = entity2.components.sprite;
 		newGame.pixiSprite = new Text("New Game",
@@ -45,4 +64,7 @@ function startGame () {
 
 loader
     .add('red_square', '/img/red_square.png')
+    .add('tower_weak', '/img/tower_weak.png')
+    .add('tower_strong', '/img/tower_strong.png')
+    .add('tower_long', '/img/tower_long.png')
     .load(startGame);
