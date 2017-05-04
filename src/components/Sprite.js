@@ -1,8 +1,8 @@
 export default {
-    name: 'sprite'
+  name: 'sprite'
 };
 
-export function hasSprite(entity) {
-    return entity.components.sprite &&
-        entity.components.sprite.pixiSprite;
-}
+export function hasSprite (entity) {
+  return entity.components.sprite &&
+    entity.components.sprite.pixiSprite;
+};
