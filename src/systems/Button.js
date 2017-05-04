@@ -9,13 +9,12 @@ export default class Button extends ECS.System {
     }
 
     test(entity) {
-        return hasSprite(entity);
+        return hasSprite(entity) && entity.components.button;
     }
 
     enter(entity) {
         entity.components.sprite.pixiSprite.interactive = true;
         entity.components.sprite.pixiSprite.click = actions.actions[entity.components.button.action];
-        console.log(entity.components.sprite);
     }
 
     exit(entity) {

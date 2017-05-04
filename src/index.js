@@ -3,6 +3,8 @@ import ECS from 'yagl-ecs';
 
 import Render from './systems/Render.js';
 import Sprite from './components/Sprite.js';
+import ButtonSystem from 'systems/Button';
+import Button from 'components/Button';
 
 const game = new ECS();
 const menu = new ECS();
@@ -25,10 +27,12 @@ function gameLoop() {
 
 function startGame () {
     menu.addSystem(new Render());
+    menu.addSystem(new ButtonSystem());
 
-    let entity = new ECS.Entity(null, [Sprite]);
+    let entity = new ECS.Entity(null, [Sprite, Button]);
 		let redSquare = entity.components.sprite;
     redSquare.pixiSprite = new PIXI.Sprite.fromImage('red_square');
+
 		redSquare.pixiSprite.position.set(100, 0);
     menu.addEntity(entity);
     let entity2 = new ECS.Entity(null, [Sprite]);
