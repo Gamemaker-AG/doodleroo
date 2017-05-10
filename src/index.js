@@ -7,12 +7,11 @@ import Sprite from './components/Sprite.js';
 import ButtonSystem from 'systems/Button';
 import Button from 'components/Button';
 import createGameEntities from 'createGameEntities';
+import globals from 'globals';
 
 const game = new ECS();
 const menu = new ECS();
 let current_state = game;
-const WIDTH = 1920;
-const HEIGHT = 1080;
 let ticker;
 
 function gameLoop () {
@@ -23,7 +22,7 @@ function gameLoop () {
 const loader = new PIXI.loaders.Loader();
 
 function startGame () {
-  let renderer = PIXI.autoDetectRenderer(WIDTH, HEIGHT, {
+  let renderer = PIXI.autoDetectRenderer(globals.width, globals.height, {
     resolution: window.devicePixelRatio || 1
   });
   renderer.backgroundColor = 0xFFFFFF;
@@ -31,10 +30,10 @@ function startGame () {
   document.body.appendChild(renderer.view);
   document.body.style.margin = '0';
 
-  menu.addSystem(new Render(renderer, WIDTH, HEIGHT));
+  menu.addSystem(new Render(renderer, globals.width, globals.height));
   menu.addSystem(new ButtonSystem());
 
-  game.addSystem(new Render(renderer, WIDTH, HEIGHT));
+  game.addSystem(new Render(renderer, globals.width, globals.height));
   game.addSystem(new Movement());
 
   // Create menu entities
@@ -64,4 +63,5 @@ loader
   .add('tower_weak', '/img/tower_weak.png')
   .add('tower_strong', '/img/tower_strong.png')
   .add('tower_long', '/img/tower_long.png')
+  .add('slot', '/img/slot.png')
   .load(startGame);

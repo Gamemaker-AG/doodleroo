@@ -1,27 +1,38 @@
 import ECS from 'yagl-ecs';
-import Sprite from './components/Sprite.js';
+import Sprite from 'components/Sprite.js';
+import globals from 'globals';
+
+const gridSize = 16;
+const slotSize = globals.height / gridSize;
+console.log(globals);
 
 export default function createGameEntities () {
-  let entities = [];
+  let towers = [
+    [100, 0, 'tower_weak'],
+    [100, 50, 'tower_strong'],
+    [100, 100, 'tower_long']
+  ];
 
-  // Towers
-  let entity3 = new ECS.Entity(null, [Sprite]);
-  let towerWeak = entity3.components.sprite;
-  towerWeak.pixiSprite = new PIXI.Sprite.fromImage('tower_weak');
-  towerWeak.pixiSprite.position.set(100, 0);
-  entities.push(entity3);
+  let entities = towers.map(specs => spriteEntity(...specs));
 
-  let entity4 = new ECS.Entity(null, [Sprite]);
-  let towerStrong = entity4.components.sprite;
-  towerStrong.pixiSprite = new PIXI.Sprite.fromImage('tower_strong');
-  towerStrong.pixiSprite.position.set(100, 0);
-  entities.push(entity4);
-
-  let entity5 = new ECS.Entity(null, [Sprite]);
-  let towerLong = entity5.components.sprite;
-  towerLong.pixiSprite = new PIXI.Sprite.fromImage('tower_long');
-  towerLong.pixiSprite.position.set(100, 0);
-  entities.push(entity5);
+  for (let x = 0; x < gridSize; x++) {
+    for (let y = 0; y < gridSize; y++) {
+      entities.push(slotEntity(x, y));
+    }
+  }
 
   return entities;
+}
+
+function slotEntity (x, y) {
+  console.log(x * slotSize);
+  return spriteEntity(x * slotSize, y * slotSize, 'slot');
+}
+
+function spriteEntity (x, y, img_name) {
+  let entity = new ECS.Entity(null, [Sprite]);
+  let sprite = entity.components.sprite;
+  sprite.pixiSprite = new PIXI.Sprite.fromImage(img_name);
+  sprite.pixiSprite.position.set(x, y);
+  return entity;
 }
