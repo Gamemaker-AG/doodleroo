@@ -1,22 +1,13 @@
 import * as PIXI from 'pixi.js';
 import ECS from 'yagl-ecs';
 
-const WIDTH = 1280;
-const HEIGHT = 720;
-
 export default class Render extends ECS.System {
-  constructor () {
+  constructor (renderer, width, height) {
     super();
 
-    document.body.style.margin = '0';
-
-    this.renderer = PIXI.autoDetectRenderer(WIDTH, HEIGHT, {
-      resolution: window.devicePixelRatio || 1
-    });
-    this.renderer.backgroundColor = 0xFFFFFF;
-    // this.renderer.view.style.border = '1px solid black'
-    document.body.appendChild(this.renderer.view);
-
+    this.renderer = renderer;
+    this.width = width;
+    this.height = height;
     this.stage = new PIXI.Container();
 
     window.addEventListener('resize', this.resizeHandler.bind(this), false);
@@ -45,12 +36,12 @@ export default class Render extends ECS.System {
     console.log('innerHeight', window.innerHeight);
 
     const scaleFactor = Math.min(
-      window.innerWidth / WIDTH,
-      window.innerHeight / HEIGHT
+      window.innerWidth / this.width,
+      window.innerHeight / this.height
     );
 
-    const newWidth = Math.ceil(WIDTH * scaleFactor);
-    const newHeight = Math.ceil(HEIGHT * scaleFactor);
+    const newWidth = Math.ceil(this.width * scaleFactor);
+    const newHeight = Math.ceil(this.height * scaleFactor);
 
     this.renderer.view.style.width = `${newWidth}px`;
     this.renderer.view.style.height = `${newHeight}px`;
@@ -59,4 +50,4 @@ export default class Render extends ECS.System {
     this.stage.scale.set(scaleFactor);
   }
 
-};
+}

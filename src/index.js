@@ -6,10 +6,13 @@ import Movement from './systems/Movement.js';
 import Sprite from './components/Sprite.js';
 import ButtonSystem from 'systems/Button';
 import Button from 'components/Button';
+import createGameEntities from 'createGameEntities';
 
 const game = new ECS();
 const menu = new ECS();
-let current_state = menu;
+let current_state = game;
+const WIDTH = 1920;
+const HEIGHT = 1080;
 let ticker;
 
 function gameLoop () {
@@ -17,50 +20,39 @@ function gameLoop () {
   current_state.update();
 }
 
-const loader = new PIXI.loaders.Loader(),
-  resources = PIXI.loader.resources,
-  TextureCache = PIXI.utils.TextureCache,
-  Texture = PIXI.Texture,
-  Graphics = PIXI.Graphics,
-  Text = PIXI.Text;
-  // Sprite = PIXI.Sprite
+const loader = new PIXI.loaders.Loader();
 
 function startGame () {
-  menu.addSystem(new Render());
-  menu.addSystem(new ButtonSystem());
-  menu.addSystem(new Movement());
+  let renderer = PIXI.autoDetectRenderer(WIDTH, HEIGHT, {
+    resolution: window.devicePixelRatio || 1
+  });
+  renderer.backgroundColor = 0xFFFFFF;
+  // renderer.view.style.border = '1px solid black'
+  document.body.appendChild(renderer.view);
+  document.body.style.margin = '0';
 
+  menu.addSystem(new Render(renderer, WIDTH, HEIGHT));
+  menu.addSystem(new ButtonSystem());
+
+  game.addSystem(new Render(renderer, WIDTH, HEIGHT));
+  game.addSystem(new Movement());
+
+  // Create menu entities
   let entity = new ECS.Entity(null, [Sprite, Button]);
   let redSquare = entity.components.sprite;
   redSquare.pixiSprite = new PIXI.Sprite.fromImage('red_square');
-
   redSquare.pixiSprite.position.set(100, 0);
   menu.addEntity(entity);
-  // ######### TOWER #########
-  let entity3 = new ECS.Entity(null, [Sprite]);
-  let towerWeak = entity3.components.sprite;
-  towerWeak.pixiSprite = new PIXI.Sprite.fromImage('tower_weak');
-  towerWeak.pixiSprite.position.set(100, 0);
-  game.addEntity(entity3);
-  let entity4 = new ECS.Entity(null, [Sprite]);
-  let towerStrong = entity4.components.sprite;
-  towerStrong.pixiSprite = new PIXI.Sprite.fromImage('tower_strong');
-  towerStrong.pixiSprite.position.set(100, 0);
-  game.addEntity(entity4);
-  let entity5 = new ECS.Entity(null, [Sprite]);
-  let towerLong = entity5.components.sprite;
-  towerLong.pixiSprite = new PIXI.Sprite.fromImage('tower_long');
-  towerLong.pixiSprite.position.set(100, 0);
-  game.addEntity(entity5);
 
-  // ######### MENU #########
   let entity2 = new ECS.Entity(null, [Sprite]);
   let newGame = entity2.components.sprite;
-  newGame.pixiSprite = new Text('New Game',
+  newGame.pixiSprite = new PIXI.Text('New Game',
     {fontFamily: 'Arial', fontSize: 32, fill: 'blue'});
   newGame.pixiSprite.position.set(100, 100);
   newGame.interactive = true;
   menu.addEntity(entity2);
+
+  createGameEntities().forEach(e => game.addEntity(e));
 
   ticker = new PIXI.ticker.Ticker();
   ticker.add(gameLoop);
