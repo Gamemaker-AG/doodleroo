@@ -4,7 +4,6 @@ import globals from 'globals';
 
 const gridSize = 16;
 const slotSize = globals.height / gridSize;
-console.log(globals);
 
 export default function createGameEntities () {
   let towers = [
@@ -25,7 +24,6 @@ export default function createGameEntities () {
 }
 
 function slotEntity (x, y) {
-  console.log(x * slotSize);
   return spriteEntity(x * slotSize, y * slotSize, 'slot');
 }
 
