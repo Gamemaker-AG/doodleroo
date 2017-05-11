@@ -19,8 +19,6 @@ function gameLoop () {
   current_state.update();
 }
 
-const loader = new PIXI.loaders.Loader();
-
 function startGame () {
   let renderer = PIXI.autoDetectRenderer(globals.width, globals.height, {
     resolution: window.devicePixelRatio || 1
@@ -58,7 +56,7 @@ function startGame () {
   ticker.start();
 }
 
-loader
+PIXI.loader
   .add('red_square', '/img/red_square.png')
   .add('tower_weak', '/img/tower_weak.png')
   .add('tower_strong', '/img/tower_strong.png')

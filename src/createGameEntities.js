@@ -30,7 +30,7 @@ function slotEntity (x, y) {
 function spriteEntity (x, y, img_name) {
   let entity = new ECS.Entity(null, [Sprite]);
   let sprite = entity.components.sprite;
-  sprite.pixiSprite = new PIXI.Sprite.fromImage(img_name);
+  sprite.pixiSprite = new PIXI.Sprite(PIXI.loader.resources[img_name].texture);
   sprite.pixiSprite.position.set(x, y);
   return entity;
 }
