@@ -2,13 +2,13 @@ import * as PIXI from 'pixi.js';
 import ECS from 'yagl-ecs';
 
 export default class Render extends ECS.System {
-  constructor (renderer, width, height) {
+  constructor (renderer, stage, width, height) {
     super();
 
     this.renderer = renderer;
     this.width = width;
     this.height = height;
-    this.stage = new PIXI.Container();
+    this.stage = stage;
 
     window.addEventListener('resize', this.resizeHandler.bind(this), false);
     this.resizeHandler();
@@ -28,7 +28,6 @@ export default class Render extends ECS.System {
   }
 
   update (entity) {
-    this.renderer.render(this.stage);
   }
 
   resizeHandler () {

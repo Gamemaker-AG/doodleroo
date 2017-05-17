@@ -9,18 +9,26 @@ import Button from 'components/Button';
 import createGameEntities from 'createGameEntities';
 import globals from 'globals';
 
-const game = new ECS();
-const menu = new ECS();
+const game = newGameState();
+const menu = newGameState();
 let current_state = game;
-let ticker;
+let ticker, renderer;
+
+function newGameState () {
+  return {
+    stage: new PIXI.Container(),
+    ecs: new ECS()
+  };
+}
 
 function gameLoop () {
   window.dt = ticker.deltaTime;
-  current_state.update();
+  current_state.ecs.update();
+  renderer.render(current_state.stage);
 }
 
 function startGame () {
-  let renderer = PIXI.autoDetectRenderer(globals.width, globals.height, {
+  renderer = PIXI.autoDetectRenderer(globals.width, globals.height, {
     resolution: window.devicePixelRatio || 1
   });
   renderer.backgroundColor = 0xFFFFFF;
@@ -28,18 +36,18 @@ function startGame () {
   document.body.appendChild(renderer.view);
   document.body.style.margin = '0';
 
-  menu.addSystem(new Render(renderer, globals.width, globals.height));
-  menu.addSystem(new ButtonSystem());
+  menu.ecs.addSystem(new Render(renderer, menu.stage, globals.width, globals.height));
+  menu.ecs.addSystem(new ButtonSystem());
 
-  game.addSystem(new Render(renderer, globals.width, globals.height));
-  game.addSystem(new Movement());
+  game.ecs.addSystem(new Render(renderer, game.stage, globals.width, globals.height));
+  game.ecs.addSystem(new Movement());
 
   // Create menu entities
   let entity = new ECS.Entity(null, [Sprite, Button]);
   let redSquare = entity.components.sprite;
   redSquare.pixiSprite = new PIXI.Sprite.fromImage('red_square');
   redSquare.pixiSprite.position.set(100, 0);
-  menu.addEntity(entity);
+  menu.ecs.addEntity(entity);
 
   let entity2 = new ECS.Entity(null, [Sprite]);
   let newGame = entity2.components.sprite;
@@ -47,9 +55,9 @@ function startGame () {
     {fontFamily: 'Arial', fontSize: 32, fill: 'blue'});
   newGame.pixiSprite.position.set(100, 100);
   newGame.interactive = true;
-  menu.addEntity(entity2);
+  menu.ecs.addEntity(entity2);
 
-  createGameEntities().forEach(e => game.addEntity(e));
+  createGameEntities().forEach(e => game.ecs.addEntity(e));
 
   ticker = new PIXI.ticker.Ticker();
   ticker.add(gameLoop);
