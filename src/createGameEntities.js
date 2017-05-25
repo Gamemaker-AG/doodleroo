@@ -3,6 +3,7 @@ import Sprite from 'components/Sprite.js';
 import globals from 'globals';
 import Button from 'components/Button';
 import * as actions from 'button-actions';
+import Vector from 'vigur';
 
 const gridSize = 16;
 const slotSize = globals.height / gridSize;
@@ -16,7 +17,10 @@ export default function createGameEntities () {
 
   let entities = towers.map(specs => spriteEntity(...specs));
   entities.map((e) => {
-    e.addComponent('movement', {});
+    e.addComponent('movement', {
+      velocity: new Vector(5, 5),
+      angularVelocity: 0.3,
+    });
   });
 
   for (let x = 0; x < gridSize; x++) {
