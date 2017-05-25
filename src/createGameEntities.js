@@ -15,7 +15,9 @@ export default function createGameEntities () {
   ];
 
   let entities = towers.map(specs => spriteEntity(...specs));
-  entities.map((e) => { e.addComponent('movement', {}) });
+  entities.map((e) => {
+    e.addComponent('movement', {});
+  });
 
   for (let x = 0; x < gridSize; x++) {
     for (let y = 0; y < gridSize; y++) {
