@@ -15,20 +15,22 @@ export default function createGameEntities () {
   ];
 
   let entities = towers.map(specs => spriteEntity(...specs));
-  entities.map((e) => { e.addComponent('movement', {}) });
+  entities.map((e) => {
+    e.addComponent('movement', {});
+    e.addComponent('range', {range: 50, visibility: 1, color: 0xFF0000});});
 
   for (let x = 0; x < gridSize; x++) {
     for (let y = 0; y < gridSize; y++) {
       let e = slotEntity(x, y);
       e.addComponent('button', { action: () => {
-        console.log('This should open some purchase menu.');
-      } });
+          console.log('This should open some purchase menu.');
+      }});
       entities.push(e);
     }
   }
 
   return entities;
-}
+};
 
 function slotEntity (x, y) {
   return spriteEntity(x * slotSize, y * slotSize, 'slot');

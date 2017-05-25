@@ -21,6 +21,17 @@ export default class Render extends ECS.System {
 
   enter (entity) {
     this.stage.addChild(entity.components.sprite.pixiSprite);
+
+    if (entity.components.range) {
+      entity.rangeIndicator = new PIXI.Graphics();
+      let {pixiSprite} = entity.components.sprite;
+
+      entity.rangeIndicator.lineStyle(3, entity.components.range.color, entity.components.range.visibility);
+      entity.rangeIndicator.drawCircle(pixiSprite.position.x, pixiSprite.position.y, entity.components.range.range);
+      entity.rangeIndicator.endFill();
+
+      this.stage.addChild(entity.rangeIndicator);
+    }
   }
 
   exit (entity) {
@@ -28,6 +39,12 @@ export default class Render extends ECS.System {
   }
 
   update (entity) {
+    if (entity.components.range) {
+      let {pixiSprite} = entity.components.sprite;
+
+      entity.rangeIndicator.alpha = 0.5;
+      entity.rangeIndicator.moveTo(pixiSprite.position.x, pixiSprite.position.y);
+    }
   }
 
   resizeHandler () {
@@ -49,4 +66,4 @@ export default class Render extends ECS.System {
     this.stage.scale.set(scaleFactor);
   }
 
-}
+};

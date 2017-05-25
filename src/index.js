@@ -6,6 +6,7 @@ import Movement from './systems/Movement.js';
 import Sprite from './components/Sprite.js';
 import ButtonSystem from 'systems/Button';
 import Button from 'components/Button';
+import Range from 'systems/Range';
 import createGameEntities from 'createGameEntities';
 import globals from 'globals';
 
@@ -41,20 +42,21 @@ function startGame () {
   game.ecs.addSystem(new Render(renderer, game.stage, globals.width, globals.height));
   game.ecs.addSystem(new ButtonSystem());
   game.ecs.addSystem(new Movement());
+  game.ecs.addSystem(new Range());
 
-  // let entity = new ECS.Entity(null, [Sprite, Button]);
-  // let redSquare = entity.components.sprite;
-  // redSquare.pixiSprite = new PIXI.Sprite.fromImage('red_square');
-  // redSquare.pixiSprite.position.set(100, 0);
-  // menu.ecs.addEntity(entity);
+  // let entity = new ECS.Entity(null, [Sprite, Button])
+  // let redSquare = entity.components.sprite
+  // redSquare.pixiSprite = new PIXI.Sprite.fromImage('red_square')
+  // redSquare.pixiSprite.position.set(100, 0)
+  // menu.ecs.addEntity(entity)
 
-  // let entity2 = new ECS.Entity(null, [Sprite]);
-  // let newGame = entity2.components.sprite;
+  // let entity2 = new ECS.Entity(null, [Sprite])
+  // let newGame = entity2.components.sprite
   // newGame.pixiSprite = new PIXI.Text('New Game',
-  //   {fontFamily: 'Arial', fontSize: 32, fill: 'blue'});
-  // newGame.pixiSprite.position.set(100, 100);
-  // newGame.interactive = true;
-  // menu.ecs.addEntity(entity2);
+  //   {fontFamily: 'Arial', fontSize: 32, fill: 'blue'})
+  // newGame.pixiSprite.position.set(100, 100)
+  // newGame.interactive = true
+  // menu.ecs.addEntity(entity2)
 
   createGameEntities().forEach(e => game.ecs.addEntity(e));
 
