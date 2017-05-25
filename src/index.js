@@ -1,5 +1,6 @@
 import * as PIXI from 'pixi.js';
 import ECS from 'yagl-ecs';
+import Vector from 'vigur';
 
 import Render from './systems/Render.js';
 import Movement from './systems/Movement.js';

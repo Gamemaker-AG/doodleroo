@@ -8,9 +8,14 @@ export default class Movement extends ECS.System {
 
   update (entity) {
     let {pixiSprite} = entity.components.sprite;
-  
-  	pixiSprite.anchor.set(0.5, 0.5)
-  	pixiSprite.position.set(100, 100)
-  	pixiSprite.rotation += 0.1 * dt
+    let {velocity, angularVelocity} = entity.components.movement;
+    if (velocity !== undefined) {
+      pixiSprite.position.set(
+        pixiSprite.position.x + velocity.x * dt, pixiSprite.position.y + velocity.y * dt
+      );
+    }
+    if (angularVelocity !== undefined) {
+      pixiSprite.rotation += angularVelocity * dt;
+    }
   }
-};
+}
