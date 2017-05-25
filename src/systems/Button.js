@@ -13,8 +13,13 @@ export default class Button extends ECS.System {
   }
 
   enter (entity) {
+    console.log("in system");
     entity.components.sprite.pixiSprite.interactive = true;
-    entity.components.sprite.pixiSprite.click = actions.actions[entity.components.button.action];
+    if (entity.components.button.action instanceof Function) {
+      entity.components.sprite.pixiSprite.click = entity.components.button.action;
+    } else {
+      entity.components.sprite.pixiSprite.click = actions.actions[entity.components.button.action];
+    }
   }
 
   exit (entity) {

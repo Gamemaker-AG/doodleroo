@@ -1,6 +1,8 @@
 import ECS from 'yagl-ecs';
 import Sprite from 'components/Sprite.js';
 import globals from 'globals';
+import Button from 'components/Button';
+import * as actions from 'button-actions';
 
 const gridSize = 16;
 const slotSize = globals.height / gridSize;
@@ -16,7 +18,11 @@ export default function createGameEntities () {
 
   for (let x = 0; x < gridSize; x++) {
     for (let y = 0; y < gridSize; y++) {
-      entities.push(slotEntity(x, y));
+      let e = slotEntity(x, y);
+      e.addComponent('button', { action: () => {
+        console.log('This should open some purchase menu.');
+      } });
+      entities.push(e);
     }
   }
 
