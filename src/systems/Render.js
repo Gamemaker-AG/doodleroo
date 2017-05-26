@@ -27,8 +27,9 @@ export default class Render extends ECS.System {
       let {pixiSprite} = entity.components.sprite;
 
       entity.rangeIndicator.lineStyle(3, entity.components.range.color, entity.components.range.visibility);
-      entity.rangeIndicator.drawCircle(pixiSprite.position.x, pixiSprite.position.y, entity.components.range.range);
+      entity.rangeIndicator.drawCircle(0, 0, entity.components.range.range);
       entity.rangeIndicator.endFill();
+      entity.rangeIndicator.position.set(pixiSprite.position.x, pixiSprite.position.y);
 
       this.stage.addChild(entity.rangeIndicator);
     }
@@ -45,7 +46,7 @@ export default class Render extends ECS.System {
       entity.rangeIndicator.alpha = 1;
 
       let offsetRange = entity.components.range.range / 2;
-      entity.rangeIndicator.position.set(pixiSprite.position.x - offsetRange, pixiSprite.position.y - offsetRange);
+      entity.rangeIndicator.position.set(pixiSprite.position.x, pixiSprite.position.y);
     }
   }
 

@@ -18,10 +18,10 @@ export default function createGameEntities () {
   let entities = towers.map(specs => spriteEntity(...specs));
   entities.map((e) => {
     e.components.sprite.pixiSprite.anchor.set(0.5, 0.5);
-    e.addComponent('range', {range: 50, visibility: 1, color: 0xFF0000});
+    e.addComponent('range', {range: 210, visibility: 1, color: 0xFF0000});
     e.addComponent('movement', {
-      velocity: new Vector(0, 0),
-      angularVelocity: 0 // 0.3
+      velocity: new Vector(0, 1),
+      angularVelocity: 0.1 // 0.3
     });
   });
 
