@@ -10,17 +10,18 @@ const slotSize = globals.height / gridSize;
 
 export default function createGameEntities () {
   let towers = [
-    [100, 0, 'tower_weak'],
-    [100, 50, 'tower_strong'],
-    [100, 100, 'tower_long']
+    [100, 100, 'tower_weak'],
+    [100, 300, 'tower_strong'],
+    [100, 500, 'tower_long']
   ];
 
   let entities = towers.map(specs => spriteEntity(...specs));
   entities.map((e) => {
+    e.components.sprite.pixiSprite.anchor.set(0.5, 0.5);
     e.addComponent('range', {range: 50, visibility: 1, color: 0xFF0000});
     e.addComponent('movement', {
-      velocity: new Vector(5, 5),
-      angularVelocity: 0.3
+      velocity: new Vector(0, 0),
+      angularVelocity: 0 // 0.3
     });
   });
 

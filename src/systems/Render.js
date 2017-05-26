@@ -42,8 +42,10 @@ export default class Render extends ECS.System {
     if (entity.components.range) {
       let {pixiSprite} = entity.components.sprite;
 
-      entity.rangeIndicator.alpha = 0.5;
-      entity.rangeIndicator.moveTo(pixiSprite.position.x, pixiSprite.position.y);
+      entity.rangeIndicator.alpha = 1;
+
+      let offsetRange = entity.components.range.range / 2;
+      entity.rangeIndicator.position.set(pixiSprite.position.x - offsetRange, pixiSprite.position.y - offsetRange);
     }
   }
 
