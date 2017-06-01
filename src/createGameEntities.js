@@ -5,7 +5,6 @@ import Button from 'components/Button';
 import * as actions from 'button-actions';
 import Vector from 'vigur';
 
-const gridSize = 16;
 const slotSize = globals.height / gridSize;
 
 export default function createGameEntities () {
