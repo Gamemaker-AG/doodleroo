@@ -3,10 +3,6 @@ import ECS from 'yagl-ecs';
 import { hasSprite } from 'components/Sprite';
 
 export default class Range extends ECS.System {
-  constructor () {
-    super();
-  }
-
   test (entity) {
     return hasSprite(entity) && entity.components.range;
   }
@@ -19,4 +15,4 @@ export default class Range extends ECS.System {
     graphics.drawCircle(pixiSprite.position.x, pixiSprite.position.y, entity.components.range.range);
     graphics.endFill();
   }
-};
+}
