@@ -14,31 +14,35 @@ export default function createGameEntities () {
     [100, 500, 'tower_long']
   ];
 
-  let entities = towers.map(specs => spriteEntity(...specs));
-  entities.map((e) => {
-    e.components.sprite.pixiSprite.anchor.set(0.5, 0.5);
-    e.addComponent('range', {range: 210, visibility: true, color: 0xFF0000});
-    e.addComponent('movement', {
-      velocity: new Vector(0, 1),
-      angularVelocity: 0.1 // 0.3
-    });
-  });
+  let entities = towers.map(specs => towerEntity(specs));
 
   for (let x = 0; x < gridSize; x++) {
     for (let y = 0; y < gridSize; y++) {
-      let e = slotEntity(x, y);
-      e.addComponent('button', { action: () => {
-        console.log('This should open some purchase menu.');
-      }});
-      entities.push(e);
+      entities.push(slotEntity(x, y));
     }
   }
 
   return entities;
 }
 
+function towerEntity (specs) {
+  let entity = spriteEntity(...specs);
+  entity.components.sprite.pixiSprite.anchor.set(0.5, 0.5);
+  entity.addComponent('range', {range: 210, visibility: true, color: 0xFF0000});
+  entity.addComponent('movement', {
+    velocity: new Vector(0, 1),
+    angularVelocity: 0.1
+  });
+  return entity;
+}
+
 function slotEntity (x, y) {
-  return spriteEntity(x * slotSize, y * slotSize, 'slot');
+  let entity = spriteEntity(slotSize / 2 + x * slotSize, slotSize / 2 + y * slotSize, 'slot');
+  entity.components.sprite.pixiSprite.anchor.set(0.5, 0.5);
+  entity.addComponent('button', { action: () => {
+    console.log('This should open some purchase menu.');
+  }});
+  return entity;
 }
 
 function spriteEntity (x, y, img_name) {
