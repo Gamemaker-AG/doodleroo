@@ -7,21 +7,24 @@ import Vector from 'vigur';
 
 const gridSize = 16;
 const slotSize = globals.height / gridSize;
+const towers = [
+  [100, 100, 'tower_weak'],
+  [100, 300, 'tower_strong'],
+  [100, 500, 'tower_long']
+];
 
 export default function createGameEntities () {
-  let towers = [
-    [100, 100, 'tower_weak'],
-    [100, 300, 'tower_strong'],
-    [100, 500, 'tower_long']
-  ];
-
-  let entities = towers.map(specs => towerEntity(specs));
+  let entities = [];
 
   for (let x = 0; x < gridSize; x++) {
     for (let y = 0; y < gridSize; y++) {
       entities.push(slotEntity(x, y));
     }
   }
+
+  entities = entities.concat(towers.map(specs => towerEntity(specs)));
+
+  entities.push(constructionMenu());
 
   return entities;
 }
@@ -33,6 +36,18 @@ function towerEntity (specs) {
   entity.addComponent('movement', {
     velocity: new Vector(0, 1),
     angularVelocity: 0.1
+  });
+  return entity;
+}
+
+function constructionMenu () {
+  let entity = new ECS.Entity(null, [Sprite]);
+  entity.components.sprite.pixiSprite = new PIXI.Container();
+  let children = towers.forEach((specs, index) => {
+    let sprite = new PIXI.Sprite(PIXI.loader.resources[specs[2]].texture);
+    sprite.anchor.set(0.5, 0.5);
+    sprite.position.set(0, slotSize + slotSize * index);
+    entity.components.sprite.pixiSprite.addChild(sprite);
   });
   return entity;
 }
