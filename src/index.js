@@ -45,20 +45,6 @@ function startGame () {
   game.ecs.addSystem(new Movement());
   game.ecs.addSystem(new Range());
 
-  // let entity = new ECS.Entity(null, [Sprite, Button])
-  // let redSquare = entity.components.sprite
-  // redSquare.pixiSprite = new PIXI.Sprite.fromImage('red_square')
-  // redSquare.pixiSprite.position.set(100, 0)
-  // menu.ecs.addEntity(entity)
-
-  // let entity2 = new ECS.Entity(null, [Sprite])
-  // let newGame = entity2.components.sprite
-  // newGame.pixiSprite = new PIXI.Text('New Game',
-  //   {fontFamily: 'Arial', fontSize: 32, fill: 'blue'})
-  // newGame.pixiSprite.position.set(100, 100)
-  // newGame.interactive = true
-  // menu.ecs.addEntity(entity2)
-
   createGameEntities().forEach(e => game.ecs.addEntity(e));
 
   ticker = new PIXI.ticker.Ticker();
