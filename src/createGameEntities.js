@@ -18,7 +18,7 @@ export default function createGameEntities () {
   let entities = towers.map(specs => spriteEntity(...specs));
   entities.map((e) => {
     e.components.sprite.pixiSprite.anchor.set(0.5, 0.5);
-    e.addComponent('range', {range: 210, visibility: 1, color: 0xFF0000});
+    e.addComponent('range', {range: 210, visibility: true, color: 0xFF0000});
     e.addComponent('movement', {
       velocity: new Vector(0, 1),
       angularVelocity: 0.1 // 0.3
@@ -29,14 +29,14 @@ export default function createGameEntities () {
     for (let y = 0; y < gridSize; y++) {
       let e = slotEntity(x, y);
       e.addComponent('button', { action: () => {
-          console.log('This should open some purchase menu.');
+        console.log('This should open some purchase menu.');
       }});
       entities.push(e);
     }
   }
 
   return entities;
-};
+}
 
 function slotEntity (x, y) {
   return spriteEntity(x * slotSize, y * slotSize, 'slot');
