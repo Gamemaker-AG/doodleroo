@@ -5,6 +5,7 @@ import Button from 'components/Button';
 import * as actions from 'button-actions';
 import Vector from 'vigur';
 
+const {gridSize} = globals;
 const slotSize = globals.height / gridSize;
 const towers = [
   [100, 100, 'tower_weak'],
