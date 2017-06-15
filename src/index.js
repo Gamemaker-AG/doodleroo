@@ -9,6 +9,7 @@ import ButtonSystem from 'systems/Button';
 import Button from 'components/Button';
 import Range from 'systems/Range';
 import createGameEntities from 'createGameEntities';
+import createMenuEntities from 'createMenuEntities';
 import globals from 'globals';
 
 const game = newGameState();
@@ -45,6 +46,7 @@ function startGame () {
   game.ecs.addSystem(new Movement());
   game.ecs.addSystem(new Range());
 
+  createMenuEntities().forEach(e => menu.ecs.addEntity(e));
   createGameEntities().forEach(e => game.ecs.addEntity(e));
 
   ticker = new PIXI.ticker.Ticker();
@@ -58,4 +60,6 @@ PIXI.loader
   .add('tower_strong', '/img/tower_strong.png')
   .add('tower_long', '/img/tower_long.png')
   .add('slot', '/img/slot.png')
+  .add('button_newGame', '/img/button_newGame.png')
+  .add('button_credits', '/img/button_credits.png')
   .load(startGame);
