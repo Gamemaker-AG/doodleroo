@@ -12,6 +12,7 @@ const towers = [
   [100, 300, 'tower_strong'],
   [100, 500, 'tower_long']
 ];
+let constructionMenu;
 
 export default function createGameEntities () {
   let entities = [];
@@ -24,7 +25,8 @@ export default function createGameEntities () {
 
   entities = entities.concat(towers.map(specs => towerEntity(specs)));
 
-  entities.push(constructionMenu());
+  constructionMenu = constructionMenuEntity();
+  entities.push(constructionMenu);
 
   return entities;
 }
@@ -40,9 +42,10 @@ function towerEntity (specs) {
   return entity;
 }
 
-function constructionMenu () {
+function constructionMenuEntity () {
   let entity = new ECS.Entity(null, [Sprite]);
   entity.components.sprite.pixiSprite = new PIXI.Container();
+  entity.components.sprite.pixiSprite.visible = false;
   let children = towers.forEach((specs, index) => {
     let sprite = new PIXI.Sprite(PIXI.loader.resources[specs[2]].texture);
     sprite.anchor.set(0.5, 0.5);
@@ -53,10 +56,20 @@ function constructionMenu () {
 }
 
 function slotEntity (x, y) {
-  let entity = spriteEntity(slotSize / 2 + x * slotSize, slotSize / 2 + y * slotSize, 'slot');
-  entity.components.sprite.pixiSprite.anchor.set(0.5, 0.5);
+  let worldX = slotSize / 2 + x * slotSize;
+  let worldY = slotSize / 2 + y * slotSize;
+  let entity = spriteEntity(worldX, worldY, 'slot');
+  let {pixiSprite} = entity.components.sprite;
+  pixiSprite.anchor.set(0.5, 0.5);
   entity.addComponent('button', { action: () => {
-    console.log('This should open some purchase menu.');
+    let {pixiSprite} = constructionMenu.components.sprite;
+    let hasMoved = worldX != pixiSprite.position.x || worldY != pixiSprite.position.y;
+    if (!hasMoved && pixiSprite.visible) {
+      pixiSprite.visible = false;
+    } else {
+      pixiSprite.visible = true;
+      pixiSprite.position.set(worldX, worldY);
+    }
   }});
   return entity;
 }
