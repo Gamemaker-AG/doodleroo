@@ -72,6 +72,11 @@ function slotEntity (x, y) {
       pixiSprite.visible = true;
       pixiSprite.position.set(worldX, worldY);
     }
+    if (y > gridSize/2) {
+        pixiSprite.scale.y = -1;
+    } else {
+        pixiSprite.scale.y = 1;
+    }
   }});
 
   return entity;
