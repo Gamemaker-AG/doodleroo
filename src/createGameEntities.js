@@ -4,6 +4,7 @@ import globals from 'globals';
 import Button from 'components/Button';
 import * as actions from 'button-actions';
 import Vector from 'vigur';
+import Player from 'Player';
 
 const {gridSize} = globals;
 const slotSize = globals.height / gridSize;
