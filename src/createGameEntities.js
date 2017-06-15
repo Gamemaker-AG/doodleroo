@@ -61,6 +61,8 @@ function slotEntity (x, y) {
   let entity = spriteEntity(worldX, worldY, 'slot');
   let {pixiSprite} = entity.components.sprite;
   pixiSprite.anchor.set(0.5, 0.5);
+  pixiSprite.scale.set(slotSize / pixiSprite.texture.height);
+
   entity.addComponent('button', { action: () => {
     let {pixiSprite} = constructionMenu.components.sprite;
     let hasMoved = worldX != pixiSprite.position.x || worldY != pixiSprite.position.y;
@@ -71,6 +73,7 @@ function slotEntity (x, y) {
       pixiSprite.position.set(worldX, worldY);
     }
   }});
+
   return entity;
 }
 
