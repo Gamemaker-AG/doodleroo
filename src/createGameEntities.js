@@ -13,6 +13,10 @@ const towers = [
   [100, 500, 'tower_long']
 ];
 
+const enemies = [
+  [100, 100, 'tower_weak']
+];
+
 export default function createGameEntities () {
   let entities = [];
 
@@ -23,10 +27,19 @@ export default function createGameEntities () {
   }
 
   entities = entities.concat(towers.map(specs => towerEntity(specs)));
+  entities = entities.concat(enemies.map(specs => enemyEntity(specs)));
 
   entities.push(constructionMenu());
 
   return entities;
+}
+
+function enemyEntity (specs) {
+  let entity = spriteEntity(...specs);
+  entity.components.sprite.pixiSprite.anchor.set(0.5, 0.5);
+  entity.addComponent('gridPosition', {x: 1, y: 1});
+  entity.addComponent('enemy');
+  return entity;
 }
 
 function towerEntity (specs) {
