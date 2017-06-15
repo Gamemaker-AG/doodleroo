@@ -5,6 +5,7 @@ import Button from 'components/Button';
 import GridPosition from 'components/GridPosition';
 import * as actions from 'button-actions';
 import Vector from 'vigur';
+import Player from 'Player';
 
 const {gridSize} = globals;
 const slotSize = globals.height / gridSize;
@@ -14,6 +15,10 @@ const towers = [
   [100, 500, 'tower_long']
 ];
 let constructionMenu;
+
+const enemies = [
+  [100, 100, 'tower_weak']
+];
 
 export default function createGameEntities (addEntity) {
   let entities = [];
@@ -25,6 +30,7 @@ export default function createGameEntities (addEntity) {
   }
 
   entities = entities.concat(towers.map(specs => towerEntity(specs)));
+  entities = entities.concat(enemies.map(specs => enemyEntity(specs)));
 
   constructionMenu = constructionMenuEntity(addEntity);
   entities.push(constructionMenu);
@@ -37,6 +43,14 @@ function toWorldCoords (gridPosition) {
     x: gridPosition.x * slotSize,
     y: gridPosition.y * slotSize
   };
+}
+
+function enemyEntity (specs) {
+  let entity = spriteEntity(...specs);
+  entity.components.sprite.pixiSprite.anchor.set(0.5, 0.5);
+  entity.addComponent('gridPosition', {x: 1, y: 1});
+  entity.addComponent('enemy');
+  return entity;
 }
 
 function towerEntity (specs) {

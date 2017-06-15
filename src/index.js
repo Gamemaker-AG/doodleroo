@@ -6,6 +6,7 @@ import Render from './systems/Render.js';
 import Movement from './systems/Movement.js';
 import Sprite from './components/Sprite.js';
 import ButtonSystem from 'systems/Button';
+import GridSystem from 'systems/Grid';
 import Button from 'components/Button';
 import Range from 'systems/Range';
 import createGameEntities from 'createGameEntities';
@@ -59,6 +60,7 @@ function startGame () {
 
   game.ecs.addSystem(new Render(renderer, game.stage, globals.width, globals.height));
   game.ecs.addSystem(new ButtonSystem());
+  game.ecs.addSystem(new GridSystem());
   game.ecs.addSystem(new Movement());
   game.ecs.addSystem(new Range());
 
