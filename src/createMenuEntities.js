@@ -1,21 +1,25 @@
 import ECS from 'yagl-ecs';
 import Sprite from 'components/Sprite.js';
 import globals from 'globals';
+import Button from 'components/Button';
+import * as actions from 'button-actions';
 
-export default function createMenuEntities () {
+export default function createMenuEntities (newGame) {
+
   let entities = [];
 
-	entities.push(buttonNewGameEntity(globals.width / 2, globals.height / 2 - 100));
+	entities.push(buttonNewGameEntity(globals.width / 2, globals.height / 2 - 100, newGame));
 	entities.push(buttonCreditsEntity(globals.width / 2, globals.height / 2 + 100));
+	entities.push(buttonMuteEntity(globals.width - 100, 100));
 
   return entities;
 }
 
-function buttonNewGameEntity (x, y) {
+function buttonNewGameEntity (x, y, newGame) {
   let entity = spriteEntity(x, y, 'button_newGame');
   entity.components.sprite.pixiSprite.anchor.set(0.5, 0.5);
   entity.addComponent('button', { action: () => {
-    console.log('This should start the game.');
+    newGame();
   }});
   return entity;
 }
@@ -25,6 +29,15 @@ function buttonCreditsEntity (x, y) {
   entity.components.sprite.pixiSprite.anchor.set(0.5, 0.5);
   entity.addComponent('button', { action: () => {
     console.log('This should open the credits.');
+  }});
+  return entity;
+}
+
+function buttonMuteEntity (x, y) {
+	let entity = spriteEntity(x, y, 'red_square');  // TODO: button_mute.png
+  entity.components.sprite.pixiSprite.anchor.set(0.5, 0.5);
+  entity.addComponent('button', { action: () => {
+    console.log('This should mute the audio.');
   }});
   return entity;
 }

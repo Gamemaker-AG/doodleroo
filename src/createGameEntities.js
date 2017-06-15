@@ -15,6 +15,10 @@ const towers = [
 ];
 let constructionMenu;
 
+const enemies = [
+  [100, 100, 'tower_weak']
+];
+
 export default function createGameEntities () {
   let entities = [];
 
@@ -25,11 +29,20 @@ export default function createGameEntities () {
   }
 
   entities = entities.concat(towers.map(specs => towerEntity(specs)));
+  entities = entities.concat(enemies.map(specs => enemyEntity(specs)));
 
   constructionMenu = constructionMenuEntity();
   entities.push(constructionMenu);
 
   return entities;
+}
+
+function enemyEntity (specs) {
+  let entity = spriteEntity(...specs);
+  entity.components.sprite.pixiSprite.anchor.set(0.5, 0.5);
+  entity.addComponent('gridPosition', {x: 1, y: 1});
+  entity.addComponent('enemy');
+  return entity;
 }
 
 function towerEntity (specs) {
@@ -59,6 +72,7 @@ function constructionMenuEntity () {
 function slotEntity (x, y) {
   let worldX = slotSize / 2 + x * slotSize;
   let worldY = slotSize / 2 + y * slotSize;
+  let worldPos = new PIXI.Point(worldX, worldY);
   let entity = spriteEntity(worldX, worldY, 'slot');
   let {pixiSprite} = entity.components.sprite;
   pixiSprite.anchor.set(0.5, 0.5);
@@ -66,17 +80,17 @@ function slotEntity (x, y) {
 
   entity.addComponent('button', { action: () => {
     let {pixiSprite} = constructionMenu.components.sprite;
-    let hasMoved = worldX != pixiSprite.position.x || worldY != pixiSprite.position.y;
+    let hasMoved = !worldPos.equals(pixiSprite.position);
     if (!hasMoved && pixiSprite.visible) {
       pixiSprite.visible = false;
     } else {
       pixiSprite.visible = true;
       pixiSprite.position.set(worldX, worldY);
     }
-    if (y > gridSize/2) {
-        pixiSprite.scale.y = -1;
+    if (y > gridSize / 2) {
+      pixiSprite.scale.y = -1;
     } else {
-        pixiSprite.scale.y = 1;
+      pixiSprite.scale.y = 1;
     }
   }});
 
