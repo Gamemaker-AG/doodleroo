@@ -2,6 +2,7 @@ import ECS from 'yagl-ecs';
 import Sprite from 'components/Sprite.js';
 import globals from 'globals';
 import Button from 'components/Button';
+import GridPosition from 'components/GridPosition';
 import * as actions from 'button-actions';
 import Vector from 'vigur';
 
@@ -14,7 +15,7 @@ const towers = [
 ];
 let constructionMenu;
 
-export default function createGameEntities () {
+export default function createGameEntities (addEntity) {
   let entities = [];
 
   for (let x = 0; x < gridSize; x++) {
@@ -25,10 +26,17 @@ export default function createGameEntities () {
 
   entities = entities.concat(towers.map(specs => towerEntity(specs)));
 
-  constructionMenu = constructionMenuEntity();
+  constructionMenu = constructionMenuEntity(addEntity);
   entities.push(constructionMenu);
 
   return entities;
+}
+
+function toWorldCoords (gridPosition) {
+  return {
+    x: gridPosition.x * slotSize,
+    y: gridPosition.y * slotSize
+  };
 }
 
 function towerEntity (specs) {
@@ -42,16 +50,29 @@ function towerEntity (specs) {
   return entity;
 }
 
-function constructionMenuEntity () {
-  let entity = new ECS.Entity(null, [Sprite]);
+function constructionMenuEntity (addEntity) {
+  let entity = new ECS.Entity(null, [Sprite, GridPosition]);
   entity.components.sprite.pixiSprite = new PIXI.Container();
   entity.components.sprite.pixiSprite.visible = false;
+
   let children = towers.forEach((specs, index) => {
     let sprite = new PIXI.Sprite(PIXI.loader.resources[specs[2]].texture);
     sprite.anchor.set(0.5, 0.5);
     sprite.position.set(0, slotSize + slotSize * index);
+    sprite.interactive = true;
+    sprite.click = () => {
+      let worldCoords = toWorldCoords(entity.components.gridPosition);
+      let updatedSpecs = [
+        worldCoords.x,
+        worldCoords.y,
+        specs[2]
+      ];
+      addEntity(towerEntity(updatedSpecs));
+      entity.components.sprite.pixiSprite.visible = false;
+    };
     entity.components.sprite.pixiSprite.addChild(sprite);
   });
+
   return entity;
 }
 
@@ -72,6 +93,8 @@ function slotEntity (x, y) {
     } else {
       pixiSprite.visible = true;
       pixiSprite.position.set(worldX, worldY);
+      constructionMenu.components.gridPosition.x = x;
+      constructionMenu.components.gridPosition.y = y;
     }
     if (y > gridSize / 2) {
       pixiSprite.scale.y = -1;
