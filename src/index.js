@@ -11,6 +11,18 @@ import Range from 'systems/Range';
 import createGameEntities from 'createGameEntities';
 import createMenuEntities from 'createMenuEntities';
 import globals from 'globals';
+import PixiVector from 'PixiVector';
+
+const handler = {
+  get (receiver, name) {
+    if (name === 'Point') {
+      return PixiVector;
+    } else {
+      return receiver[name];
+    }
+  }
+};
+window.PIXI = new Proxy(window.PIXI, handler);
 
 const game = newGameState();
 const menu = newGameState();
