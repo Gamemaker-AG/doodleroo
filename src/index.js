@@ -26,8 +26,12 @@ window.PIXI = new Proxy(window.PIXI, handler);
 
 const game = newGameState();
 const menu = newGameState();
-let current_state = game;
+let current_state = menu;
 let ticker, renderer;
+
+let newGame = function() {
+  current_state = game;
+}
 
 function newGameState () {
   return {
@@ -58,7 +62,7 @@ function startGame () {
   game.ecs.addSystem(new Movement());
   game.ecs.addSystem(new Range());
 
-  createMenuEntities().forEach(e => menu.ecs.addEntity(e));
+  createMenuEntities(newGame).forEach(e => menu.ecs.addEntity(e));
   createGameEntities().forEach(e => game.ecs.addEntity(e));
 
   ticker = new PIXI.ticker.Ticker();
