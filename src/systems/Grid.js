@@ -27,7 +27,7 @@ export default class Grid extends ECS.System {
       this.cost[entity.x][entity.y] += (entity.gridPosition.obstacle_cost);
     }
     if (entity.components.enemy) {
-      console.log("correct path", this.findPath(entity, 12, 2));
+      // console.log("correct path", this.findPath(entity, 12, 2));
     }
   }
 
