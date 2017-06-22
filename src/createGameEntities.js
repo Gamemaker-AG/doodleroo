@@ -9,9 +9,9 @@ import Player from 'Player';
 const {gridSize} = globals;
 const slotSize = globals.height / gridSize;
 const towers = [
-  [100, 100, 'tower_weak'],
-  [100, 300, 'tower_strong'],
-  [100, 500, 'tower_long']
+  [100, 100, 'tower_weak', 100],
+  [100, 300, 'tower_strong', 200],
+  [100, 500, 'tower_long', 300]
 ];
 let constructionMenu;
 
