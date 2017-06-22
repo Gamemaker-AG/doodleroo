@@ -15,7 +15,7 @@ import globals from 'globals';
 import PixiVector from 'PixiVector';
 
 const handler = {
-  get (receiver, name) {
+  get(receiver, name) {
     if (name === 'Point') {
       return PixiVector;
     } else {
@@ -75,10 +75,13 @@ function startGame () {
 
 PIXI.loader
   .add('red_square', '/img/red_square.png')
+  .add('circular_background', '/img/circular_background.png')
   .add('tower_weak', '/img/tower_weak.png')
   .add('tower_strong', '/img/tower_strong.png')
   .add('tower_long', '/img/tower_long.png')
   .add('slot', '/img/slot.png')
   .add('button_newGame', '/img/button_newGame.png')
   .add('button_credits', '/img/button_credits.png')
+  .add('button_soundEnabled', '/img/button_soundEnabled.png')
+  .add('button_soundDisabled', '/img/button_soundDisabled.png')
   .load(startGame);
