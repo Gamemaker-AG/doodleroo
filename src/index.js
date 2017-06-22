@@ -15,7 +15,7 @@ import globals from 'globals';
 import PixiVector from 'PixiVector';
 
 const handler = {
-  get (receiver, name) {
+  get(receiver, name) {
     if (name === 'Point') {
       return PixiVector;
     } else {
@@ -30,9 +30,9 @@ const menu = newGameState();
 let current_state = menu;
 let ticker, renderer;
 
-let newGame = function() {
+let newGame = function () {
   current_state = game;
-}
+};
 
 function newGameState () {
   return {
@@ -65,7 +65,8 @@ function startGame () {
   game.ecs.addSystem(new Range());
 
   createMenuEntities(newGame).forEach(e => menu.ecs.addEntity(e));
-  createGameEntities().forEach(e => game.ecs.addEntity(e));
+  createGameEntities((entity) => game.ecs.addEntity(entity))
+    .forEach(e => game.ecs.addEntity(e));
 
   ticker = new PIXI.ticker.Ticker();
   ticker.add(gameLoop);
@@ -80,4 +81,6 @@ PIXI.loader
   .add('slot', '/img/slot.png')
   .add('button_newGame', '/img/button_newGame.png')
   .add('button_credits', '/img/button_credits.png')
+  .add('button_soundEnabled', '/img/button_soundEnabled.png')
+  .add('button_soundDisabled', '/img/button_soundDisabled.png')
   .load(startGame);
