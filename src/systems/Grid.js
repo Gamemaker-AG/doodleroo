@@ -9,8 +9,13 @@ export default class Grid extends ECS.System {
   }
 
   preUpdate () {
-    this.new_grid = [];
-    while (this.new_grid.push([[]]) < globals.gridSize);
+    this.costs = [];
+    let len = 0;
+    do {
+      let arr = [];
+      arr.fill(0.0, 0, globals.gridSize);
+      len = this.costs.push(arr);
+    } while (len < globals.gridSize);
   }
 
   test (entity) {
@@ -18,11 +23,11 @@ export default class Grid extends ECS.System {
   }
 
   update (entity) {
-    if (entity.components.obstacle) {
-      this.new_grid[entity.x][entity.y].push(entity);
+    if (entity.components.gridPosition.obstacle_cost) {
+      this.cost[entity.x][entity.y] += (entity.gridPosition.obstacle_cost);
     }
     if (entity.components.enemy) {
-      console.log(this.findPath(entity, 10, 12));
+      console.log("correct path", this.findPath(entity, 12, 2));
     }
   }
 
@@ -37,11 +42,26 @@ export default class Grid extends ECS.System {
         return 0;
       }
     });
-    let {x, y} = entity.components.gridPosition;
-    for (let pos in neighbors(x, y)) {
-      frontier.enqueue([(pos, heuristic(pos, [goalX, goalY]))]);
+    let startX = entity.components.gridPosition.x;
+    let startY = entity.components.gridPosition.y;
+
+    frontier.enqueue([[[startX, startY]], 1 + heuristic([startX, startY], [goalX, goalY])]);
+
+    let current = undefined;
+    while (current = frontier.dequeue()) {
+      if (current === undefined) {
+        return undefined;
+      } else {
+        let [x, y] = current[0][current[0].length - 1];
+        let path = current[0];
+        for (let pos of neighbors(x, y)) {
+          if (pos[0] === goalX && pos[1] === goalY) {
+            return path.concat([[goalX, goalY]]);
+          }
+          frontier.enqueue([path.concat([pos]), path.length + heuristic(pos, [goalX, goalY])]);
+        }
+      }
     }
-    return frontier;
   }
 
   postUpdate () {
@@ -56,11 +76,11 @@ function heuristic(current, goal) {
 }
 
 function neighbors(x, y) {
-  let xs = [x - 1, x + 1].filter((x) => { return x >= 0 && x < globals.gridSize});
-  let ys = [y - 1, y + 1].filter((y) => { return y >= 0 && y < globals.gridSize});
+  let xs = [x - 1, x + 1].filter((x) => { return x >= 0 && x < globals.gridSize; });
+  let ys = [y - 1, y + 1].filter((y) => { return y >= 0 && y < globals.gridSize; });
   let positions = [];
-  for (let newX in xs) {
-    for (let newY in ys) {
+  for (let newX of xs) {
+    for (let newY of ys) {
       positions.push([newX, newY]);
     }
   }
