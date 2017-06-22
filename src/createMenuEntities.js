@@ -5,39 +5,47 @@ import Button from 'components/Button';
 import * as actions from 'button-actions';
 
 export default function createMenuEntities (newGame) {
-
   let entities = [];
 
-	entities.push(buttonNewGameEntity(globals.width / 2, globals.height / 2 - 100, newGame));
-	entities.push(buttonCreditsEntity(globals.width / 2, globals.height / 2 + 100));
-	entities.push(buttonMuteEntity(globals.width - 100, 100));
+  entities.push(buttonNewGameEntity(globals.width / 2, globals.height / 2 - 100, newGame));
+  entities.push(buttonCreditsEntity(globals.width / 2, globals.height / 2 + 100));
+  entities.push(buttonMuteEntity(globals.width - 100, 100));
 
   return entities;
-}
+};
 
 function buttonNewGameEntity (x, y, newGame) {
   let entity = spriteEntity(x, y, 'button_newGame');
   entity.components.sprite.pixiSprite.anchor.set(0.5, 0.5);
   entity.addComponent('button', { action: () => {
-    newGame();
+      newGame();
   }});
   return entity;
 }
 
 function buttonCreditsEntity (x, y) {
-	let entity = spriteEntity(x, y, 'button_credits');
+  let entity = spriteEntity(x, y, 'button_credits');
   entity.components.sprite.pixiSprite.anchor.set(0.5, 0.5);
   entity.addComponent('button', { action: () => {
-    console.log('This should open the credits.');
+      console.log('This should open the credits.');
   }});
   return entity;
 }
 
 function buttonMuteEntity (x, y) {
-	let entity = spriteEntity(x, y, 'red_square');  // TODO: button_mute.png
+  let entity = spriteEntity(x, y, 'button_soundEnabled');
   entity.components.sprite.pixiSprite.anchor.set(0.5, 0.5);
+
+  let sprite = new PIXI.Sprite(PIXI.loader.resources['button_soundDisabled'].texture);
+  sprite.anchor.set(0.5, 0.5);
+  sprite.position.set(0, 0);
+  sprite.visible = false;
+
+  entity.components.sprite.pixiSprite.addChild(sprite);
+
   entity.addComponent('button', { action: () => {
-    console.log('This should mute the audio.');
+      console.log('This should mute the audio.');
+      sprite.visible = !sprite.visible;
   }});
   return entity;
 }
