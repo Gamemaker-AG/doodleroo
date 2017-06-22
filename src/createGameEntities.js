@@ -12,6 +12,7 @@ const slotSize = globals.height / gridSize;
 const towers = [
   [100, 100, 'tower_weak'],
   [100, 300, 'tower_strong'],
+  [100, 500, 'tower_long'],
   [100, 500, 'tower_long']
 ];
 let constructionMenu;
@@ -19,6 +20,8 @@ let constructionMenu;
 const enemies = [
   [100, 100, 'tower_weak']
 ];
+
+const deg2rad = 0.0174532925;
 
 export default function createGameEntities (addEntity) {
   let entities = [];
@@ -36,7 +39,7 @@ export default function createGameEntities (addEntity) {
   entities.push(constructionMenu);
 
   return entities;
-}
+};
 
 function toWorldCoords (gridPosition) {
   return {
@@ -57,10 +60,6 @@ function towerEntity (specs) {
   let entity = spriteEntity(...specs);
   entity.components.sprite.pixiSprite.anchor.set(0.5, 0.5);
   entity.addComponent('range', {range: 210, visibility: true, color: 0xFF0000});
-  entity.addComponent('movement', {
-    velocity: new Vector(0, 1),
-    angularVelocity: 0.1
-  });
   return entity;
 }
 
@@ -69,16 +68,24 @@ function constructionMenuEntity (addEntity) {
   entity.components.sprite.pixiSprite = new PIXI.Container();
   entity.components.sprite.pixiSprite.visible = false;
 
+  let background = new PIXI.Sprite(PIXI.loader.resources['circular_background'].texture);
+  background.anchor.set(0.5, 0.5);
+  background.position.set(0, 0);
+  background.alpha = 0.5;
+  entity.components.sprite.pixiSprite.addChild(background);
+
+  let angle = 360 / towers.length;
+
   let children = towers.forEach((specs, index) => {
     let sprite = new PIXI.Sprite(PIXI.loader.resources[specs[2]].texture);
     sprite.anchor.set(0.5, 0.5);
-    sprite.position.set(0, slotSize + slotSize * index);
+    sprite.position.set(80 * Math.cos(angle * index * deg2rad), 90 * Math.sin(angle * index * deg2rad));
     sprite.interactive = true;
     sprite.click = () => {
       let worldCoords = toWorldCoords(entity.components.gridPosition);
       let updatedSpecs = [
-        worldCoords.x,
-        worldCoords.y,
+        worldCoords.x + slotSize / 2,
+        worldCoords.y + slotSize / 2,
         specs[2]
       ];
       addEntity(towerEntity(updatedSpecs));
@@ -100,21 +107,21 @@ function slotEntity (x, y) {
   pixiSprite.scale.set(slotSize / pixiSprite.texture.height);
 
   entity.addComponent('button', { action: () => {
-    let {pixiSprite} = constructionMenu.components.sprite;
-    let hasMoved = !worldPos.equals(pixiSprite.position);
-    if (!hasMoved && pixiSprite.visible) {
-      pixiSprite.visible = false;
-    } else {
-      pixiSprite.visible = true;
-      pixiSprite.position.set(worldX, worldY);
-      constructionMenu.components.gridPosition.x = x;
-      constructionMenu.components.gridPosition.y = y;
-    }
-    if (y > gridSize / 2) {
-      pixiSprite.scale.y = -1;
-    } else {
-      pixiSprite.scale.y = 1;
-    }
+      let {pixiSprite} = constructionMenu.components.sprite;
+      let hasMoved = !worldPos.equals(pixiSprite.position);
+      if (!hasMoved && pixiSprite.visible) {
+        pixiSprite.visible = false;
+      } else {
+        pixiSprite.visible = true;
+        pixiSprite.position.set(worldX, worldY);
+        constructionMenu.components.gridPosition.x = x;
+        constructionMenu.components.gridPosition.y = y;
+      }
+      if (y > gridSize / 2) {
+        pixiSprite.scale.y = -1;
+      } else {
+        pixiSprite.scale.y = 1;
+      }
   }});
 
   return entity;

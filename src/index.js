@@ -75,6 +75,7 @@ function startGame () {
 
 PIXI.loader
   .add('red_square', '/img/red_square.png')
+  .add('circular_background', '/img/circular_background.png')
   .add('tower_weak', '/img/tower_weak.png')
   .add('tower_strong', '/img/tower_strong.png')
   .add('tower_long', '/img/tower_long.png')
