@@ -2,11 +2,10 @@ import * as PIXI from 'pixi.js';
 import ECS from 'yagl-ecs';
 import globals from 'globals';
 
-const slotSize = globals.height / globals.gridSize;
 function toWorldCoords (gridPosition) {
   return {
-    x: gridPosition.x * slotSize,
-    y: gridPosition.y * slotSize
+    x: gridPosition.x * globals.slotSize + globals.gridOffset,
+    y: gridPosition.y * globals.slotSize + globals.gridOffset
   };
 }
 
@@ -57,19 +56,19 @@ export default class Render extends ECS.System {
       entity.pathUpdated = false;
       entity.pathIndicator = new PIXI.Graphics();
       entity.pathIndicator.lineStyle(
-        5,
+        10,
         0xDDDD00,
-        1
+        0.5
       );
       let first = true;
       entity.pathIndicator.moveTo(0, 0);
       for (let pos of entity.components.goalPath.path) {
         let {x, y} = toWorldCoords({x: pos[0], y: pos[1]});
         if (first) {
-          entity.pathIndicator.moveTo(x + slotSize / 2, y + slotSize / 2);
+          entity.pathIndicator.moveTo(x + globals.slotSize / 2, y + globals.slotSize / 2);
           first = false;
         } else {
-          entity.pathIndicator.lineTo(x + slotSize / 2, y + slotSize / 2);
+          entity.pathIndicator.lineTo(x + globals.slotSize / 2, y + globals.slotSize / 2);
         }
       }
       this.stage.addChild(entity.pathIndicator);
