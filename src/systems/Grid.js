@@ -27,7 +27,9 @@ export default class Grid extends ECS.System {
       this.cost[entity.x][entity.y] += (entity.gridPosition.obstacle_cost);
     }
     if (entity.components.enemy) {
-      // console.log("correct path", this.findPath(entity, 12, 2));
+      entity.addComponent("goalPath", {
+          path: this.findPath(entity, 12, 2)
+        });
     }
   }
 
@@ -69,20 +71,21 @@ export default class Grid extends ECS.System {
   }
 }
 
-function heuristic(current, goal) {
+function heuristic (current, goal) {
   let [x, y] = current;
   let [goalX, goalY] = goal;
   return Math.abs(x - goalX) + Math.abs(y - goalY);
 }
 
-function neighbors(x, y) {
+function neighbors (x, y) {
   let xs = [x - 1, x + 1].filter((x) => { return x >= 0 && x < globals.gridSize; });
   let ys = [y - 1, y + 1].filter((y) => { return y >= 0 && y < globals.gridSize; });
   let positions = [];
   for (let newX of xs) {
-    for (let newY of ys) {
-      positions.push([newX, newY]);
-    }
+    positions.push([newX, y]);
+  }
+  for (let newY of ys) {
+    positions.push([x, newY]);
   }
   return positions;
 }
