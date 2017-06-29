@@ -24,7 +24,8 @@ export default function constructionMenuEntity (addEntity, towers) {
   let children = towers.forEach((specs, index) => {
     let sprite = new PIXI.Sprite(PIXI.loader.resources[specs[2]].texture);
     sprite.anchor.set(0.5, 0.5);
-    sprite.position = new PixiVector(background.height / 2, 0).rotate(angle * index);
+    let pos = new PixiVector(background.height / 2, 0).rotate((angle * index) - Math.PI / 2);
+    sprite.position = pos;
     sprite.interactive = true;
     sprite.click = () => {
       let worldCoords = entity.components.sprite.pixiSprite.position;

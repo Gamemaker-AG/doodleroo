@@ -13,7 +13,6 @@ const towers = [
   [100, 100, 'tower_weak', 100],
   [100, 300, 'tower_strong', 200],
   [100, 500, 'tower_long', 300],
-  [100, 500, 'tower_long', 300]
 ];
 let constructionMenu;
 
@@ -30,7 +29,6 @@ export default function createGameEntities (addEntity) {
     }
   }
 
-  entities = entities.concat(towers.map(specs => towerEntity(specs)));
   entities = entities.concat(enemies.map(specs => enemyEntity(specs)));
 
   constructionMenu = constructionMenuEntity(addEntity, towers);
@@ -59,7 +57,7 @@ export function towerEntity (specs) {
 function slotEntity (x, y) {
   let worldPos = new PixiVector(x, y)
     .multiply(slotSize)
-    .add(slotSize/2)
+    .add(slotSize / 2)
     .add(globals.gridOffset);
   let entity = spriteEntity(worldPos.x, worldPos.y, 'slot');
   let {pixiSprite} = entity.components.sprite;
