@@ -45,12 +45,14 @@ function enemyEntity (specs) {
   return entity;
 }
 
-export function towerEntity (specs) {
+export function towerEntity (x, y, specs) {
   let entity = spriteEntity(...specs);
   let {pixiSprite} = entity.components.sprite;
   pixiSprite.anchor.set(0.5, 0.5);
   pixiSprite.scale.set(slotSize / pixiSprite.texture.height);
   entity.addComponent('range', {range: 210, visibility: true, color: 0xFF0000});
+  entity.addComponent('obstacle', {cost: Infinity});
+  entity.addComponent('gridPosition', {x: x, y: y});
   return entity;
 }
 

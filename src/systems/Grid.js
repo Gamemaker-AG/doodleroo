@@ -23,14 +23,19 @@ export default class Grid extends ECS.System {
   }
 
   update (entity) {
-    if (entity.components.gridPosition.obstacle_cost) {
-      this.cost[entity.x][entity.y] += (entity.gridPosition.obstacle_cost);
+    if (entity.components.obstacle) {
+      this.costs[entity.components.gridPosition.x][entity.components.gridPosition.y] += entity.components.obstacle.cost;
     }
     if (entity.components.enemy) {
       let path = this.findPath(entity, 12, 2);
-      entity.addComponent('goalPath', {
-        path: path
-      });
+      if (entity.components.goalPath === undefined) {
+        entity.addComponent('goalPath', {
+          path: path
+        });
+      } else {
+        entity.components.goalPath.path = path;
+      }
+      entity.pathUpdated = true;
     }
   }
 

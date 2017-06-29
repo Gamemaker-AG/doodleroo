@@ -34,7 +34,10 @@ export default function constructionMenuEntity (addEntity, towers) {
         worldCoords.y,
         specs[2]
       ];
-      addEntity(towerEntity(updatedSpecs));
+      addEntity(towerEntity(
+        entity.components.gridPosition.x,
+        entity.components.gridPosition.y,
+        updatedSpecs));
       entity.components.sprite.pixiSprite.visible = false;
     };
     entity.components.sprite.pixiSprite.addChild(sprite);
