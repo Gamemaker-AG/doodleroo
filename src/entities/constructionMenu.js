@@ -32,7 +32,9 @@ export default function constructionMenuEntity (addEntity, towers) {
       let updatedSpecs = [
         worldCoords.x,
         worldCoords.y,
-        specs[2]
+        specs[2],
+				specs[3],
+				specs[4],
       ];
       addEntity(towerEntity(
         entity.components.gridPosition.x,

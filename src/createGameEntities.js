@@ -8,11 +8,13 @@ import Player from 'Player';
 import constructionMenuEntity from 'entities/constructionMenu';
 import PixiVector from 'PixiVector';
 
+const player = new Player();
 const {slotCount, slotSize} = globals;
 const towers = [
-  [100, 100, 'tower_weak', 100],
-  [100, 300, 'tower_strong', 200],
-  [100, 500, 'tower_long', 300],
+// [deprecated, deprecated, img, cost, range]
+  [100, 100, 'tower_weak', 100, 180],
+  [100, 300, 'tower_strong', 200, 200],
+  [100, 500, 'tower_long', 300, 300],
 ];
 let constructionMenu;
 
@@ -46,14 +48,15 @@ function enemyEntity (specs) {
 }
 
 export function towerEntity (x, y, specs) {
-  let entity = spriteEntity(...specs);
-  let {pixiSprite} = entity.components.sprite;
-  pixiSprite.anchor.set(0.5, 0.5);
-  pixiSprite.scale.set(slotSize / pixiSprite.texture.height);
-  entity.addComponent('range', {range: 210, visibility: true, color: 0xFF0000});
-  entity.addComponent('obstacle', {cost: Infinity});
-  entity.addComponent('gridPosition', {x: x, y: y});
-  return entity;
+	player.gold -= specs[3];
+	let entity = spriteEntity(...specs);
+	let {pixiSprite} = entity.components.sprite;
+	pixiSprite.anchor.set(0.5, 0.5);
+	pixiSprite.scale.set(slotSize / pixiSprite.texture.height);
+	entity.addComponent('range', {range: specs[4], visibility: true, color: 0xFF0000});
+	entity.addComponent('obstacle', {cost: Infinity});
+	entity.addComponent('gridPosition', {x: x, y: y});
+	return entity;
 }
 
 function slotEntity (x, y) {
