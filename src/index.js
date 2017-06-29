@@ -15,7 +15,7 @@ import globals from 'globals';
 import PixiVector from 'PixiVector';
 
 const handler = {
-  get(receiver, name) {
+  get (receiver, name) {
     if (name === 'Point') {
       return PixiVector;
     } else {

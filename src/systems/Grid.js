@@ -13,9 +13,9 @@ export default class Grid extends ECS.System {
     let len = 0;
     do {
       let arr = [];
-      arr.fill(0.0, 0, globals.gridSize);
+      arr.fill(0.0, 0, globals.slotCount);
       len = this.costs.push(arr);
-    } while (len < globals.gridSize);
+    } while (len < globals.slotCount);
   }
 
   test (entity) {
@@ -76,8 +76,8 @@ function heuristic(current, goal) {
 }
 
 function neighbors(x, y) {
-  let xs = [x - 1, x + 1].filter((x) => { return x >= 0 && x < globals.gridSize; });
-  let ys = [y - 1, y + 1].filter((y) => { return y >= 0 && y < globals.gridSize; });
+  let xs = [x - 1, x + 1].filter((x) => { return x >= 0 && x < globals.slotCount; });
+  let ys = [y - 1, y + 1].filter((y) => { return y >= 0 && y < globals.slotCount; });
   let positions = [];
   for (let newX of xs) {
     for (let newY of ys) {
