@@ -52,8 +52,9 @@ export default class Render extends ECS.System {
     this.stage.removeChild(entity.components.sprite.pixiSprite);
   }
 
-  update (entity) {
-    if (entity.components.goalPath) {
+  drawDebugPath (entity) {
+    if (entity.pathUpdated !== false && entity.components.goalPath.path !== undefined) {
+      entity.pathUpdated = false;
       entity.pathIndicator = new PIXI.Graphics();
       entity.pathIndicator.lineStyle(
         5,
@@ -72,6 +73,12 @@ export default class Render extends ECS.System {
         }
       }
       this.stage.addChild(entity.pathIndicator);
+    }
+  }
+
+  update (entity) {
+    if (entity.components.goalPath) {
+      this.drawDebugPath(entity);
     }
 
     if (entity.components.range) {
