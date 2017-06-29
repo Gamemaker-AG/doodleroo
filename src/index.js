@@ -13,6 +13,7 @@ import createGameEntities from 'createGameEntities';
 import createMenuEntities from 'createMenuEntities';
 import globals from 'globals';
 import PixiVector from 'PixiVector';
+import Player from 'Player';
 
 const handler = {
   get (receiver, name) {
@@ -54,6 +55,8 @@ function startGame () {
   renderer.backgroundColor = 0xFFFFFF;
   document.body.appendChild(renderer.view);
   document.body.style.margin = '0';
+
+  globals.player = new Player();
 
   menu.ecs.addSystem(new Render(renderer, menu.stage, globals.width, globals.height));
   menu.ecs.addSystem(new ButtonSystem());

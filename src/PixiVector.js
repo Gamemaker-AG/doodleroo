@@ -6,7 +6,7 @@ export default class PixiVector extends Vector {
     this.y = other.y;
   }
 
-  clone() {
+  clone () {
     return new PixiVector(this.x, this.y);
   }
 
