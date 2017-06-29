@@ -12,13 +12,13 @@ export default function createMenuEntities (newGame) {
   entities.push(buttonMuteEntity(globals.width - 100, 100));
 
   return entities;
-};
+}
 
 function buttonNewGameEntity (x, y, newGame) {
   let entity = spriteEntity(x, y, 'button_newGame');
   entity.components.sprite.pixiSprite.anchor.set(0.5, 0.5);
   entity.addComponent('button', { action: () => {
-      newGame();
+    newGame();
   }});
   return entity;
 }
@@ -27,7 +27,7 @@ function buttonCreditsEntity (x, y) {
   let entity = spriteEntity(x, y, 'button_credits');
   entity.components.sprite.pixiSprite.anchor.set(0.5, 0.5);
   entity.addComponent('button', { action: () => {
-      console.log('This should open the credits.');
+    console.log('This should open the credits.');
   }});
   return entity;
 }
@@ -43,14 +43,9 @@ function buttonMuteEntity (x, y) {
 
   entity.components.sprite.pixiSprite.addChild(sprite);
 
-  entity.addComponent('button', { action: () => {
-      sprite.visible = !sprite.visible;
-
-      if (sprite.visible)
-        console.log('This should mute the audio.');
-      else
-        console.log('This should play the audio.');
-  }});
+  entity.addComponent('button', {
+    action: actions.TOGGLE_SHOW_RANGES
+  });
   return entity;
 }
 

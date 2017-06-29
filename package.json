@@ -27,6 +27,6 @@
     "@raymond-lam/priority-queue": "^2.0.0",
     "pixi.js": "^4.5.1",
     "vigur": "^0.1.1",
-    "yagl-ecs": "^1.1.0"
+    "yagl-ecs": "1.0.0"
   }
 }
