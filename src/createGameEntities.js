@@ -57,7 +57,10 @@ export function towerEntity (x, y, specs) {
   entity.addComponent('obstacle', {cost: Infinity});
   entity.addComponent('gridPosition', {x: x, y: y});
   entity.addComponent('button', {
-    hoverAction: actions.TOGGLE_SHOW_RANGES
+    actions: {
+      'mouseover': actions.TOGGLE_SHOW_RANGES,
+      'mouseout': actions.TOGGLE_SHOW_RANGES
+    }
   });
   return entity;
 };
@@ -73,7 +76,9 @@ function slotEntity (x, y) {
   pixiSprite.scale.set(slotSize / pixiSprite.texture.height);
 
   entity.addComponent('button', {
-    action: [actions.TOGGLE_TOWER_MENU, constructionMenu, worldPos, new PixiVector(x, y)]
+    actions: {
+      'click': [actions.TOGGLE_TOWER_MENU, constructionMenu, worldPos, new PixiVector(x, y)]
+    }
   });
 
   return entity;

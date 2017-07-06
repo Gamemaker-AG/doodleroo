@@ -14,8 +14,9 @@ export default class Button extends ECS.System {
 
   enter (entity) {
     entity.components.sprite.pixiSprite.interactive = true;
-    let { action: clickAction, hoverAction } = entity.components.button;
-    for (let [listener, action] of [['click', clickAction], ['mouseover', hoverAction]]) {
+    let {actions} = entity.components.button;
+    for (let name of Object.keys(actions)) {
+      let action = actions[name];
       if (action instanceof Function) {
         entity.components.sprite.pixiSprite.click = action;
       } else if (action !== null){
@@ -24,7 +25,7 @@ export default class Button extends ECS.System {
           [action, ...args] = action;
         }
 
-        entity.components.sprite.pixiSprite[listener] = () => {
+        entity.components.sprite.pixiSprite[name] = () => {
           for (let system of entity.systems) {
             if (system[action] instanceof Function) {
               system[action](...args);
