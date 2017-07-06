@@ -13,7 +13,8 @@ export default class Grid extends ECS.System {
     let len = 0;
     do {
       let arr = [];
-      arr.fill(0.0, 0, globals.slotCount);
+      while (arr.push([]) < globals.slotCount)
+      arr.fill(1.0, 0, globals.slotCount);
       len = this.costs.push(arr);
     } while (len < globals.slotCount);
   }
