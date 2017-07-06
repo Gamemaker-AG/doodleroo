@@ -3,5 +3,8 @@ import * as actions from 'button-actions';
 
 export default {
   name: 'button',
-  defaults: { action: actions.ALERT }
+  defaults: {
+    action: actions.ALERT,
+    hoverAction: null
+  }
 };
