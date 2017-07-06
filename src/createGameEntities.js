@@ -25,6 +25,8 @@ const enemies = [
 export default function createGameEntities (addEntity) {
   let entities = [];
 
+  constructionMenu = constructionMenuEntity(addEntity, towers);
+
   for (let x = 0; x < slotCount; x++) {
     for (let y = 0; y < slotCount; y++) {
       entities.push(slotEntity(x, y));
@@ -32,8 +34,6 @@ export default function createGameEntities (addEntity) {
   }
 
   entities = entities.concat(enemies.map(specs => enemyEntity(specs)));
-
-  constructionMenu = constructionMenuEntity(addEntity, towers);
   entities.push(constructionMenu);
 
   return entities;
@@ -70,18 +70,7 @@ function slotEntity (x, y) {
   pixiSprite.scale.set(slotSize / pixiSprite.texture.height);
 
   entity.addComponent('button', {
-    action () {
-      let {pixiSprite} = constructionMenu.components.sprite;
-      let hasMoved = !worldPos.equals(pixiSprite.position);
-      if (!hasMoved && pixiSprite.visible) {
-        pixiSprite.visible = false;
-      } else {
-        pixiSprite.visible = true;
-        pixiSprite.position = worldPos.clone();
-        constructionMenu.components.gridPosition.x = x;
-        constructionMenu.components.gridPosition.y = y;
-      }
-    }
+    action: [actions.TOGGLE_TOWER_MENU, constructionMenu, worldPos, new PixiVector(x, y)]
   });
 
   return entity;

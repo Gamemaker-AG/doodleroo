@@ -18,16 +18,21 @@ export default class Button extends ECS.System {
       entity.components.sprite.pixiSprite.click = entity.components.button.action;
     } else {
       let {action} = entity.components.button;
+      let args = [];
+      if (action instanceof Array) {
+        [action, ...args] = action;
+      }
+
       entity.components.sprite.pixiSprite.click = () => {
         for (let system of entity.systems) {
           if (system[action] instanceof Function) {
-            system[action]();
+            system[action](...args);
           }
         }
       };
     }
   }
-  
+
   exit (entity) {
     entity.components.button.click = undefined;
   }

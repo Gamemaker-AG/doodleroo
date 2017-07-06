@@ -9,6 +9,7 @@ import ButtonSystem from 'systems/Button';
 import GridSystem from 'systems/Grid';
 import Button from 'components/Button';
 import Range from 'systems/Range';
+import Construction from 'systems/Construction';
 import createGameEntities from 'createGameEntities';
 import createMenuEntities from 'createMenuEntities';
 import globals from 'globals';
@@ -66,6 +67,7 @@ function startGame () {
   game.ecs.addSystem(new GridSystem());
   game.ecs.addSystem(new Movement());
   game.ecs.addSystem(new Range());
+  game.ecs.addSystem(new Construction());
 
   createMenuEntities(newGame).forEach(e => menu.ecs.addEntity(e));
   createGameEntities((entity) => game.ecs.addEntity(entity))
