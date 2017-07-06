@@ -17,7 +17,7 @@ import PixiVector from 'PixiVector';
 import Player from 'Player';
 
 const handler = {
-  get (receiver, name) {
+  get(receiver, name) {
     if (name === 'Point') {
       return PixiVector;
     } else {
@@ -66,7 +66,7 @@ function startGame () {
   game.ecs.addSystem(new ButtonSystem());
   game.ecs.addSystem(new GridSystem());
   game.ecs.addSystem(new Movement());
-  game.ecs.addSystem(new Range());
+  game.ecs.addSystem(new Range(game.stage));
   game.ecs.addSystem(new Construction());
 
   createMenuEntities(newGame).forEach(e => menu.ecs.addEntity(e));
