@@ -25,7 +25,6 @@ export default class Grid extends ECS.System {
     this.calculatePaths = [];
     this.costs = this.new_costs;
     this.new_costs = this.initializedArray(globals.slotCount, globals.slotCount, 1.0);
-    console.log(this.costs);
   }
 
   test (entity) {
