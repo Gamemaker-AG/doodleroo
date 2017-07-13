@@ -6,6 +6,7 @@ import PriorityQueue from '@raymond-lam/priority-queue';
 export default class Grid extends ECS.System {
   constructor () {
     super();
+    this.new_costs = this.initializedArray(globals.slotCount, globals.slotCount, 1.0);
   }
 
   initializedArray(x, y, value) {
@@ -21,10 +22,10 @@ export default class Grid extends ECS.System {
   }
 
   preUpdate () {
-    this.new_costs = [];
     this.calculatePaths = [];
-    this.costs = this.initializedArray(globals.slotCount, globals.slotCount, 1.0);
-    this.new_costs = this.initializedArray(globals.slotCount, globals.slotCount, 0);
+    this.costs = this.new_costs;
+    this.new_costs = this.initializedArray(globals.slotCount, globals.slotCount, 1.0);
+    console.log(this.costs);
   }
 
   test (entity) {
@@ -34,13 +35,18 @@ export default class Grid extends ECS.System {
   update (entity) {
     if (entity.components.obstacle) {
       this.new_costs[entity.components.gridPosition.x][entity.components.gridPosition.y] += entity.components.obstacle.cost;
+      return;
     }
     let path = this.findPath(entity, 12, 2);
+    if (!entity.components.enemy) {
+      return;
+    }
     if (entity.components.goalPath === undefined) {
       entity.addComponent('goalPath', {
         path: path
       });
     } else {
+      entity.path_updated = true;
       entity.components.goalPath.path = path;
     }
     entity.pathUpdated = true;
@@ -71,17 +77,13 @@ export default class Grid extends ECS.System {
         let path = current[0];
         for (let pos of neighbors(x, y)) {
           if (pos[0] === goalX && pos[1] === goalY) {
-            console.log("Found path with cost:", current[1]);
             return path.concat([[goalX, goalY]]);
-          }
+          };
           let cost = 0;
           for (let el of path) {
             cost += this.costs[el[0]][el[1]];
           }
-          if (cost !== path.length) {
-            console.log("Obstacles were avoided", cost, path.length);
-          }
-          frontier.enqueue([path.concat([pos]), path.length + heuristic(pos, [goalX, goalY])]);
+          frontier.enqueue([path.concat([pos]), cost + heuristic(pos, [goalX, goalY])]);
         }
       }
     }
