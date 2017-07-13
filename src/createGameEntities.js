@@ -54,7 +54,7 @@ export function towerEntity (x, y, specs) {
 	pixiSprite.anchor.set(0.5, 0.5);
 	pixiSprite.scale.set(slotSize / pixiSprite.texture.height);
 	entity.addComponent('range', {range: specs[4], visibility: true, color: 0xFF0000});
-	entity.addComponent('obstacle', {cost: Infinity});
+	entity.addComponent('obstacle', {cost: 2000});
 	entity.addComponent('gridPosition', {x: x, y: y});
 	return entity;
 }

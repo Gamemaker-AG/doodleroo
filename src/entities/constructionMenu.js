@@ -36,6 +36,10 @@ export default function constructionMenuEntity (addEntity, towers) {
 				specs[3],
 				specs[4],
       ];
+      console.log("Constructing at:",
+        entity.components.gridPosition.x,
+        entity.components.gridPosition.y
+      )
       addEntity(towerEntity(
         entity.components.gridPosition.x,
         entity.components.gridPosition.y,
