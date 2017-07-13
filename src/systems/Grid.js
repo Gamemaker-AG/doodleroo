@@ -4,18 +4,27 @@ import ECS from 'yagl-ecs';
 import PriorityQueue from '@raymond-lam/priority-queue';
 
 export default class Grid extends ECS.System {
-  constructor () {
-    super();
+  constructor (freq) {
+    super(freq);
+    this.new_costs = this.initializedArray(globals.slotCount, globals.slotCount, 1.0);
+  }
+
+  initializedArray(x, y, value) {
+    let len = 0;
+    let result = [];
+    do {
+      let arr = [];
+      while (arr.push([]) < globals.slotCount)
+      arr.fill(value, 0, x);
+      len = result.push(arr);
+    } while (len < y);
+    return result;
   }
 
   preUpdate () {
-    this.costs = [];
-    let len = 0;
-    do {
-      let arr = [];
-      arr.fill(0.0, 0, globals.slotCount);
-      len = this.costs.push(arr);
-    } while (len < globals.slotCount);
+    this.calculatePaths = [];
+    this.costs = this.new_costs;
+    this.new_costs = this.initializedArray(globals.slotCount, globals.slotCount, 1.0);
   }
 
   test (entity) {
@@ -24,19 +33,22 @@ export default class Grid extends ECS.System {
 
   update (entity) {
     if (entity.components.obstacle) {
-      this.costs[entity.components.gridPosition.x][entity.components.gridPosition.y] += entity.components.obstacle.cost;
+      this.new_costs[entity.components.gridPosition.x][entity.components.gridPosition.y] += entity.components.obstacle.cost;
+      return;
     }
-    if (entity.components.enemy) {
-      let path = this.findPath(entity, 12, 2);
-      if (entity.components.goalPath === undefined) {
-        entity.addComponent('goalPath', {
-          path: path
-        });
-      } else {
-        entity.components.goalPath.path = path;
-      }
-      entity.pathUpdated = true;
+    let path = this.findPath(entity, 12, 2);
+    if (!entity.components.enemy) {
+      return;
     }
+    if (entity.components.goalPath === undefined) {
+      entity.addComponent('goalPath', {
+        path: path
+      });
+    } else {
+      entity.path_updated = true;
+      entity.components.goalPath.path = path;
+    }
+    entity.pathUpdated = true;
   }
 
   findPath (entity, goalX, goalY) {
@@ -65,15 +77,19 @@ export default class Grid extends ECS.System {
         for (let pos of neighbors(x, y)) {
           if (pos[0] === goalX && pos[1] === goalY) {
             return path.concat([[goalX, goalY]]);
+          };
+          let cost = 0;
+          for (let el of path) {
+            cost += this.costs[el[0]][el[1]];
           }
-          frontier.enqueue([path.concat([pos]), path.length + heuristic(pos, [goalX, goalY])]);
+          frontier.enqueue([path.concat([pos]), cost + heuristic(pos, [goalX, goalY])]);
         }
       }
     }
   }
 
   postUpdate () {
-    this.gird = this.new_grid;
+    this.costs = this.new_costs;
   }
 }
 

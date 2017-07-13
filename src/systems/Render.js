@@ -36,9 +36,12 @@ export default class Render extends ECS.System {
   }
 
   drawDebugPath (entity) {
-    if (entity.pathUpdated !== false && entity.components.goalPath.path !== undefined) {
+    if (entity.components.goalPath.path !== undefined) {
       entity.pathUpdated = false;
-      entity.pathIndicator = new PIXI.Graphics();
+      if (entity.pathIndicator === undefined) {
+        entity.pathIndicator = new PIXI.Graphics();
+      }
+      entity.pathIndicator.clear();
       entity.pathIndicator.lineStyle(
         10,
         0xDDDD00,
