@@ -10,12 +10,25 @@ import PixiVector from 'PixiVector';
 
 const player = new Player();
 const {slotCount, slotSize} = globals;
+
 const towers = [
-  // [deprecated, deprecated, img, cost, range]
-  [100, 100, 'tower_weak', 100, 180],
-  [100, 300, 'tower_strong', 200, 200],
-  [100, 500, 'tower_long', 300, 300]
+  {
+    img: 'tower_weak',
+    cost: 100,
+    range: 180
+  },
+  {
+    img: 'tower_strong',
+    cost: 200,
+    range: 200
+  },
+  {
+    img: 'tower_long',
+    cost: 300,
+    range: 300
+  }
 ];
+
 let constructionMenu;
 
 const enemies = [
