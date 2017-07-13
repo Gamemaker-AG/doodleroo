@@ -4,11 +4,9 @@ import globals from 'globals';
 import Button from 'components/Button';
 import GridPosition from 'components/GridPosition';
 import * as actions from 'button-actions';
-import Player from 'Player';
 import constructionMenuEntity from 'entities/constructionMenu';
 import PixiVector from 'PixiVector';
 
-const player = new Player();
 const {slotCount, slotSize} = globals;
 
 const towers = [
@@ -61,7 +59,7 @@ function enemyEntity (specs) {
 }
 
 export function towerEntity (x, y, specs) {
-  player.gold -= specs[3];
+  globals.player.gold -= specs[3];
   let entity = spriteEntity(...specs);
   let {pixiSprite} = entity.components.sprite;
   pixiSprite.anchor.set(0.5, 0.5);
