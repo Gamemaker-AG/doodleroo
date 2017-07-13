@@ -51,7 +51,12 @@ function buttonMuteEntity (x, y) {
 
   entity.components.sprite.pixiSprite.addChild(sprite);
   entity.addComponent('button', {
-    actions: {'click': () => {console.log('toggle mute here')} }
+    actions: {
+      'click': () => {
+        console.log('toggle mute here');
+        sprite.visible = !sprite.visible;
+      }
+    }
   });
   return entity;
 }
