@@ -1,4 +1,4 @@
 export default {
   name: 'range',
-  defaults: { range: 3, visibility: true, color: 0xFF0000 }
+  defaults: { range: 3, isVisible: false, color: 0xFF0000 }
 };

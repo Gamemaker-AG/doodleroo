@@ -4,8 +4,8 @@ import ECS from 'yagl-ecs';
 import PriorityQueue from '@raymond-lam/priority-queue';
 
 export default class Grid extends ECS.System {
-  constructor () {
-    super();
+  constructor (freq) {
+    super(freq);
     this.new_costs = this.initializedArray(globals.slotCount, globals.slotCount, 1.0);
   }
 

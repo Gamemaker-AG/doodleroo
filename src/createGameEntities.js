@@ -10,12 +10,25 @@ import PixiVector from 'PixiVector';
 
 const player = new Player();
 const {slotCount, slotSize} = globals;
+
 const towers = [
-// [deprecated, deprecated, img, cost, range]
-  [100, 100, 'tower_weak', 100, 180],
-  [100, 300, 'tower_strong', 200, 200],
-  [100, 500, 'tower_long', 300, 300],
+  {
+    img: 'tower_weak',
+    cost: 100,
+    range: 180
+  },
+  {
+    img: 'tower_strong',
+    cost: 200,
+    range: 200
+  },
+  {
+    img: 'tower_long',
+    cost: 300,
+    range: 300
+  }
 ];
+
 let constructionMenu;
 
 const enemies = [
@@ -37,7 +50,7 @@ export default function createGameEntities (addEntity) {
   entities.push(constructionMenu);
 
   return entities;
-}
+};
 
 function enemyEntity (specs) {
   let entity = spriteEntity(...specs);
@@ -48,16 +61,22 @@ function enemyEntity (specs) {
 }
 
 export function towerEntity (x, y, specs) {
-	player.gold -= specs[3];
-	let entity = spriteEntity(...specs);
-	let {pixiSprite} = entity.components.sprite;
-	pixiSprite.anchor.set(0.5, 0.5);
-	pixiSprite.scale.set(slotSize / pixiSprite.texture.height);
-	entity.addComponent('range', {range: specs[4], visibility: true, color: 0xFF0000});
-	entity.addComponent('obstacle', {cost: 2000});
-	entity.addComponent('gridPosition', {x: x, y: y});
-	return entity;
-}
+  player.gold -= specs[3];
+  let entity = spriteEntity(...specs);
+  let {pixiSprite} = entity.components.sprite;
+  pixiSprite.anchor.set(0.5, 0.5);
+  pixiSprite.scale.set(slotSize / pixiSprite.texture.height);
+  entity.addComponent('range', {range: specs[4], color: 0xFF0000});
+  entity.addComponent('obstacle', {cost: 2000});
+  entity.addComponent('gridPosition', {x: x, y: y});
+  entity.addComponent('button', {
+    actions: {
+      'mouseover': actions.TOGGLE_SHOW_RANGES,
+      'mouseout': actions.TOGGLE_SHOW_RANGES
+    }
+  });
+  return entity;
+};
 
 function slotEntity (x, y) {
   let worldPos = new PixiVector(x, y)
@@ -70,7 +89,9 @@ function slotEntity (x, y) {
   pixiSprite.scale.set(slotSize / pixiSprite.texture.height);
 
   entity.addComponent('button', {
-    action: [actions.TOGGLE_TOWER_MENU, constructionMenu, worldPos, new PixiVector(x, y)]
+    actions: {
+      'click': [actions.TOGGLE_TOWER_MENU, constructionMenu, worldPos, new PixiVector(x, y)]
+    }
   });
 
   return entity;

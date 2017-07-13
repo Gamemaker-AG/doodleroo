@@ -29,22 +29,6 @@ export default class Render extends ECS.System {
 
   enter (entity) {
     this.stage.addChild(entity.components.sprite.pixiSprite);
-
-    if (entity.components.range) {
-      entity.rangeIndicator = new PIXI.Graphics();
-      let {pixiSprite} = entity.components.sprite;
-
-      entity.rangeIndicator.lineStyle(
-        3,
-        entity.components.range.color,
-        (entity.components.range.visibility ? 1 : 0)
-      );
-      entity.rangeIndicator.drawCircle(0, 0, entity.components.range.range);
-      entity.rangeIndicator.endFill();
-      entity.rangeIndicator.position.set(pixiSprite.position.x, pixiSprite.position.y);
-
-      this.stage.addChild(entity.rangeIndicator);
-    }
   }
 
   exit (entity) {
@@ -82,14 +66,6 @@ export default class Render extends ECS.System {
     if (entity.components.goalPath) {
       this.drawDebugPath(entity);
     }
-
-    if (entity.components.range) {
-      let {pixiSprite} = entity.components.sprite;
-
-      entity.rangeIndicator.alpha = 1;
-
-      entity.rangeIndicator.position.set(pixiSprite.position.x, pixiSprite.position.y);
-    }
   }
 
   resizeHandler () {
@@ -110,4 +86,4 @@ export default class Render extends ECS.System {
     this.renderer.resize(newWidth, newHeight);
     this.stage.scale.set(scaleFactor);
   }
-}
+};

@@ -3,7 +3,7 @@ import Sprite from 'components/Sprite.js';
 import GridPosition from 'components/GridPosition';
 import PixiVector from 'PixiVector';
 import globals from 'globals';
-import {towerEntity} from 'createGameEntities';
+import { towerEntity } from 'createGameEntities';
 
 const {slotCount, slotSize} = globals;
 
@@ -22,7 +22,8 @@ export default function constructionMenuEntity (addEntity, towers) {
   let angle = (Math.PI * 2) / towers.length;
 
   let children = towers.forEach((specs, index) => {
-    let sprite = new PIXI.Sprite(PIXI.loader.resources[specs[2]].texture);
+    // let sprite = new PIXI.Sprite(PIXI.loader.resources[specs[2]].texture)
+    let sprite = new PIXI.Sprite(PIXI.loader.resources[specs.img].texture);
     sprite.anchor.set(0.5, 0.5);
     let pos = new PixiVector(background.height / 2, 0).rotate((angle * index) - Math.PI / 2);
     sprite.position = pos;
@@ -32,9 +33,9 @@ export default function constructionMenuEntity (addEntity, towers) {
       let updatedSpecs = [
         worldCoords.x,
         worldCoords.y,
-        specs[2],
-				specs[3],
-				specs[4],
+        specs.img,
+        specs.cost,
+        specs.range
       ];
       console.log("Constructing at:",
         entity.components.gridPosition.x,
@@ -50,4 +51,4 @@ export default function constructionMenuEntity (addEntity, towers) {
   });
 
   return entity;
-}
+};
