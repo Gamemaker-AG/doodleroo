@@ -22,6 +22,7 @@ export default class Grid extends ECS.System {
   }
 
   preUpdate () {
+    console.time('pathfinding');
     this.calculatePaths = [];
     this.costs = this.new_costs;
     this.new_costs = this.initializedArray(globals.slotCount, globals.slotCount, 1.0);
@@ -90,6 +91,7 @@ export default class Grid extends ECS.System {
 
   postUpdate () {
     this.costs = this.new_costs;
+    console.timeEnd('pathfinding');
   }
 }
 
