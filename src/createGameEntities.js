@@ -46,6 +46,7 @@ export default function createGameEntities (addEntity) {
 
   entities = entities.concat(enemies.map(specs => enemyEntity(specs)));
   entities.push(constructionMenu);
+  entities.push(infoPanelEntity(globals.width - 200, 100));
 
   return entities;
 };
@@ -100,5 +101,18 @@ function spriteEntity (x, y, img_name) {
   let sprite = entity.components.sprite;
   sprite.pixiSprite = new PIXI.Sprite(PIXI.loader.resources[img_name].texture);
   sprite.pixiSprite.position.set(x, y);
+  return entity;
+}
+
+function infoPanelEntity (x, y) {
+  let entity = new ECS.Entity(null, [Sprite]);
+  let availableGold = entity.components.sprite;
+
+  availableGold.pixiSprite = new PIXI.Text(globals.player.gold, {fontFamily: 'Arial', fontSize: 50, fill: 0xFF0000, align: 'center'});
+  availableGold.pixiSprite.anchor.set(0.5, 0.5);
+  availableGold.pixiSprite.position.set(x, y);
+
+  entity.addComponent('infoPanelUpdater', {});
+
   return entity;
 }
