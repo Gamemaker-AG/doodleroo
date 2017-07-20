@@ -7,6 +7,7 @@ import Movement from './systems/Movement.js';
 import Sprite from './components/Sprite.js';
 import ButtonSystem from 'systems/Button';
 import GridSystem from 'systems/Grid';
+import FollowPath from 'systems/FollowPath';
 import Button from 'components/Button';
 import Range from 'systems/Range';
 import Construction from 'systems/Construction';
@@ -70,6 +71,7 @@ function startGame () {
   game.ecs.addSystem(new Range(game.stage));
   game.ecs.addSystem(new Construction());
   game.ecs.addSystem(new InfoPanelUpdater());
+  game.ecs.addSystem(new FollowPath());
 
   createMenuEntities(newGame).forEach(e => menu.ecs.addEntity(e));
   createGameEntities((entity) => game.ecs.addEntity(entity))
