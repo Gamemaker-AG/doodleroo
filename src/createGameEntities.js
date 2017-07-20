@@ -49,7 +49,7 @@ export default function createGameEntities (addEntity) {
   entities.push(infoPanelEntity(globals.width - 200, 100));
 
   return entities;
-};
+}
 
 function enemyEntity (specs) {
   let entity = spriteEntity(...specs);
@@ -68,6 +68,7 @@ export function towerEntity (x, y, specs) {
   entity.addComponent('range', {range: specs[4], color: 0xFF0000});
   entity.addComponent('obstacle', {cost: 2000});
   entity.addComponent('gridPosition', {x: x, y: y});
+  entity.addComponent('attack', {rate: 0.5, timeSinceLastAttack: 0});
   entity.addComponent('button', {
     actions: {
       'mouseover': actions.TOGGLE_SHOW_RANGES,
@@ -75,7 +76,7 @@ export function towerEntity (x, y, specs) {
     }
   });
   return entity;
-};
+}
 
 function slotEntity (x, y) {
   let worldPos = new PixiVector(x, y)
