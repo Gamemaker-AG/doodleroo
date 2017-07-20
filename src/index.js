@@ -9,24 +9,18 @@ import ButtonSystem from 'systems/Button';
 import GridSystem from 'systems/Grid';
 import Button from 'components/Button';
 import Range from 'systems/Range';
+import Attack from 'systems/Attack';
 import Construction from 'systems/Construction';
 import InfoPanelUpdater from 'systems/InfoPanelUpdater';
 import createGameEntities from 'createGameEntities';
 import createMenuEntities from 'createMenuEntities';
 import globals from 'globals';
 import PixiVector from 'PixiVector';
+import ObservablePixiVector from 'ObservablePixiVector';
 import Player from 'Player';
 
-const handler = {
-  get(receiver, name) {
-    if (name === 'Point') {
-      return PixiVector;
-    } else {
-      return receiver[name];
-    }
-  }
-};
-window.PIXI = new Proxy(window.PIXI, handler);
+window.PIXI.Point.prototype = PixiVector.prototype;
+window.PIXI.ObservablePoint.prototype = ObservablePixiVector.prototype;
 
 const game = newGameState();
 const menu = newGameState();
@@ -45,7 +39,7 @@ function newGameState () {
 }
 
 function gameLoop () {
-  window.dt = ticker.deltaTime;
+  window.dt = ticker.elapsedMS / 1000;
   current_state.ecs.update();
   renderer.render(current_state.stage);
 }
@@ -68,6 +62,7 @@ function startGame () {
   game.ecs.addSystem(new GridSystem(1));
   game.ecs.addSystem(new Movement());
   game.ecs.addSystem(new Range(game.stage));
+  game.ecs.addSystem(new Attack());
   game.ecs.addSystem(new Construction());
   game.ecs.addSystem(new InfoPanelUpdater());
 
