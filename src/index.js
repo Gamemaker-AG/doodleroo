@@ -15,18 +15,11 @@ import createGameEntities from 'createGameEntities';
 import createMenuEntities from 'createMenuEntities';
 import globals from 'globals';
 import PixiVector from 'PixiVector';
+import ObservablePixiVector from 'ObservablePixiVector';
 import Player from 'Player';
 
-const handler = {
-  get(receiver, name) {
-    if (name === 'Point') {
-      return PixiVector;
-    } else {
-      return receiver[name];
-    }
-  }
-};
-window.PIXI = new Proxy(window.PIXI, handler);
+window.PIXI.Point.prototype = PixiVector.prototype;
+window.PIXI.ObservablePoint.prototype = ObservablePixiVector.prototype;
 
 const game = newGameState();
 const menu = newGameState();
