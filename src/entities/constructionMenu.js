@@ -25,9 +25,14 @@ export default function constructionMenuEntity (addEntity, towers) {
     // let sprite = new PIXI.Sprite(PIXI.loader.resources[specs[2]].texture)
     let sprite = new PIXI.Sprite(PIXI.loader.resources[specs.img].texture);
     sprite.anchor.set(0.5, 0.5);
+
     let pos = new PixiVector(background.height / 2, 0).rotate((angle * index) - Math.PI / 2);
     sprite.position = pos;
     sprite.interactive = true;
+
+    if (specs.cost > globals.player.gold)
+      sprite.alpha = 0.5;
+
     sprite.click = () => {
       let worldCoords = entity.components.sprite.pixiSprite.position;
       let updatedSpecs = [
@@ -37,14 +42,18 @@ export default function constructionMenuEntity (addEntity, towers) {
         specs.cost,
         specs.range
       ];
-      console.log("Constructing at:",
-        entity.components.gridPosition.x,
-        entity.components.gridPosition.y
-      )
-      addEntity(towerEntity(
-        entity.components.gridPosition.x,
-        entity.components.gridPosition.y,
-        updatedSpecs));
+
+      if (updatedSpecs[3] <= globals.player.gold) {
+        console.log('Constructing at:',
+          entity.components.gridPosition.x,
+          entity.components.gridPosition.y
+        );
+        addEntity(towerEntity(
+          entity.components.gridPosition.x,
+          entity.components.gridPosition.y,
+          updatedSpecs));
+      }
+
       entity.components.sprite.pixiSprite.visible = false;
     };
     entity.components.sprite.pixiSprite.addChild(sprite);
