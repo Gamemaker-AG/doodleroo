@@ -33,6 +33,10 @@ export default class FollowPath extends ECS.System {
     let currentWorld = new PixiVector(x, y).toWorld();
     let goalWorld = new PixiVector(goal[0], goal[1]).toWorld();
     let direction = goalWorld.subtract(currentWorld);
-    entity.components.movement.velocity = direction.normalized.multiply(5);
+    if (direction.x === 0 && direction.y === 0) {
+      entity.components.velocity = new PixiVector(0, 0);
+    } else {
+      entity.components.movement.velocity = direction.normalized.multiply(5);
+    }
   }
 }
