@@ -9,9 +9,9 @@ export default class Movement extends ECS.System {
   update (entity) {
     let {pixiSprite} = entity.components.sprite;
     let {velocity, angularVelocity} = entity.components.movement;
-    if (velocity !== undefined) {
+    if (typeof velocity !== 'undefined') {
       pixiSprite.position.set(
-        pixiSprite.position.x + velocity.x * dt, pixiSprite.position.y + velocity.y * dt
+        pixiSprite.position.x + velocity.x * window.dt, pixiSprite.position.y + velocity.y * window.dt
       );
     }
     if (angularVelocity !== undefined) {

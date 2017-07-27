@@ -31,7 +31,7 @@ const towers = [
 let constructionMenu;
 
 const enemies = [
-  [100, 100, 'tower_weak']
+  [150, 150, 'tower_weak']
 ];
 
 export default function createGameEntities (addEntity) {
@@ -57,7 +57,9 @@ function enemyEntity (specs) {
   let entity = spriteEntity(...specs);
   entity.components.sprite.pixiSprite.anchor.set(0.5, 0.5);
   entity.addComponent('gridPosition', {x: 1, y: 1});
+  entity.addComponent('movement', {velocity: new PixiVector(0, 0), angularVelocity: 0});
   entity.addComponent('enemy');
+  entity.addComponent('goal', {x: 12, y: 12});
   return entity;
 }
 
