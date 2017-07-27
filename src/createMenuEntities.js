@@ -3,7 +3,7 @@ import Sprite from 'components/Sprite.js';
 import globals from 'globals';
 import Button from 'components/Button';
 import * as actions from 'button-actions';
-import { buttonMuteEntity } from 'UIButtonEntities';
+import { buttonMuteEntity } from 'UIEntities';
 
 export default function createMenuEntities (newGame) {
   let entities = [];

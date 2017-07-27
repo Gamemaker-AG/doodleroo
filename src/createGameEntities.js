@@ -6,7 +6,8 @@ import GridPosition from 'components/GridPosition';
 import * as actions from 'button-actions';
 import constructionMenuEntity from 'entities/constructionMenu';
 import PixiVector from 'PixiVector';
-import { buttonMuteEntity } from 'UIButtonEntities';
+import { buttonMuteEntity } from 'UIEntities';
+import { infoPanelEntity } from 'UIEntities';
 
 const {slotCount, slotSize} = globals;
 
@@ -106,25 +107,5 @@ function spriteEntity (x, y, img_name) {
   let sprite = entity.components.sprite;
   sprite.pixiSprite = new PIXI.Sprite(PIXI.loader.resources[img_name].texture);
   sprite.pixiSprite.position.set(x, y);
-  return entity;
-}
-
-function infoPanelEntity (x, y) {
-  let entity = new ECS.Entity(null, [Sprite]);
-  entity.components.sprite.pixiSprite = new PIXI.Container();
-  entity.components.sprite.pixiSprite.position.set(globals.width - 800, 100);
-
-  let style = {fontFamily: 'Arial', fontSize: 50, fill: 0xFF0000, align: 'center'};
-
-  let gold = new PIXI.Text('$' + globals.player.gold, style);
-  gold.position.set(0, 0);
-  entity.components.sprite.pixiSprite.addChild(gold);
-
-  let lives = new PIXI.Text('Remaining lives: ' + globals.player.lives, style);
-  lives.position.set(0, 100);
-  entity.components.sprite.pixiSprite.addChild(lives);
-
-  entity.addComponent('infoPanelUpdater');
-
   return entity;
 }
