@@ -18,7 +18,7 @@ export default class FollowPath extends ECS.System {
     let currentIndex = entity.components.goalPath.path.findIndex((el) => {
       return el[0] === x && el[1] === y;
     });
-    let goal = undefined;
+    let goal;
     if (typeof entity.components.goalPath.path === 'undefined') {
       entity.components.movement.velocity = new PixiVector(0, 0);
       return;
@@ -33,10 +33,11 @@ export default class FollowPath extends ECS.System {
     let currentWorld = new PixiVector(x, y).toWorld();
     let goalWorld = new PixiVector(goal[0], goal[1]).toWorld();
     let direction = goalWorld.subtract(currentWorld);
+    let { movement, velocity } = entity.components;
     if (direction.x === 0 && direction.y === 0) {
-      entity.components.velocity = new PixiVector(0, 0);
+      velocity = new PixiVector(0, 0);
     } else {
-      entity.components.movement.velocity = direction.normalized.multiply(5);
+      movement.velocity = direction.normalized.multiply(movement.maxSpeed ? movement.maxSpeed : 500);
     }
   }
 }
