@@ -57,6 +57,8 @@ function enemyEntity (specs) {
   entity.addComponent('gridPosition', {x: 1, y: 10});
   entity.addComponent('movement', {velocity: new PixiVector(0, 0), angularVelocity: 0, maxSpeed: 50});
   entity.addComponent('enemy');
+  entity.addComponent('autoUpdateGridPosition', {});
+  entity.addComponent('followPath', {});
   entity.addComponent('goal', {x: 12, y: 12});
   return entity;
 }

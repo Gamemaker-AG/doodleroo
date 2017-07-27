@@ -6,14 +6,12 @@ export default class FollowPath extends ECS.System {
     return entity.components &&
       entity.components.goal &&
       entity.components.gridPosition &&
-      entity.components.movement;
+      entity.components.movement &&
+      entity.components.followPath;
   }
 
   update (entity) {
     // set movement vector such that it points to the next gridPosition along the path
-    let sprite = entity.components.sprite.pixiSprite;
-    let worldPos = new PixiVector(sprite.position.x, sprite.position.y);
-    entity.components.gridPosition = worldPos.toGrid();
     let {x, y} = entity.components.gridPosition;
     let currentIndex = entity.components.goalPath.path.findIndex((el) => {
       return el[0] === x && el[1] === y;

@@ -12,6 +12,7 @@ import Button from 'components/Button';
 import Range from 'systems/Range';
 import Attack from 'systems/Attack';
 import Construction from 'systems/Construction';
+import UpdateGridPosition from 'systems/UpdateGridPosition';
 import InfoPanelUpdater from 'systems/InfoPanelUpdater';
 import createGameEntities from 'createGameEntities';
 import createMenuEntities from 'createMenuEntities';
@@ -66,6 +67,7 @@ function startGame () {
   game.ecs.addSystem(new Attack());
   game.ecs.addSystem(new Construction());
   game.ecs.addSystem(new InfoPanelUpdater());
+  game.ecs.addSystem(new UpdateGridPosition());
   game.ecs.addSystem(new FollowPath());
 
   createMenuEntities(newGame).forEach(e => menu.ecs.addEntity(e));
