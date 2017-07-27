@@ -15,7 +15,7 @@ export default class Movement extends ECS.System {
       );
     }
     if (angularVelocity !== undefined) {
-      pixiSprite.rotation += angularVelocity * dt;
+      pixiSprite.rotation += angularVelocity * window.dt;
     }
   }
 }

@@ -30,7 +30,7 @@ export default class FollowPath extends ECS.System {
     } else {
       goal = entity.components.goalPath.path[entity.components.goalPath.path.length - 1];
     }
-    let currentWorld = new PixiVector(x, y).toWorld();
+    let currentWorld = entity.components.sprite.pixiSprite.position;
     let goalWorld = new PixiVector(goal[0], goal[1]).toWorld();
     let direction = goalWorld.subtract(currentWorld);
     let { movement, velocity } = entity.components;
