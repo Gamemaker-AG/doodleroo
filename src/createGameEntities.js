@@ -6,6 +6,7 @@ import GridPosition from 'components/GridPosition';
 import * as actions from 'button-actions';
 import constructionMenuEntity from 'entities/constructionMenu';
 import PixiVector from 'PixiVector';
+import { buttonMuteEntity } from 'UIButtonEntities';
 
 const {slotCount, slotSize} = globals;
 
@@ -47,9 +48,10 @@ export default function createGameEntities (addEntity) {
   entities = entities.concat(enemies.map(specs => enemyEntity(specs)));
   entities.push(constructionMenu);
   entities.push(infoPanelEntity(globals.width - 200, 100));
+  entities.push(buttonMuteEntity(globals.width - 150, 100));
 
   return entities;
-}
+};
 
 function enemyEntity (specs) {
   let entity = spriteEntity(...specs);
@@ -76,7 +78,7 @@ export function towerEntity (x, y, specs) {
     }
   });
   return entity;
-}
+};
 
 function slotEntity (x, y) {
   let worldPos = new PixiVector(x, y)
@@ -117,7 +119,7 @@ function infoPanelEntity (x, y) {
   entity.components.sprite.pixiSprite.addChild(gold);
 
   let lives = new PIXI.Text('Remaining lives: ' + globals.player.lives, style);
-  lives.position.set(200, 0);
+  lives.position.set(0, 100);
   entity.components.sprite.pixiSprite.addChild(lives);
 
   entity.addComponent('infoPanelUpdater');
