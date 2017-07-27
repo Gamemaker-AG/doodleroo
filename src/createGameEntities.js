@@ -49,7 +49,7 @@ export default function createGameEntities (addEntity) {
   entities.push(infoPanelEntity(globals.width - 200, 100));
 
   return entities;
-};
+}
 
 function enemyEntity (specs) {
   let entity = spriteEntity(...specs);
@@ -70,6 +70,7 @@ export function towerEntity (x, y, specs) {
   entity.addComponent('range', {range: specs[4], color: 0xFF0000});
   entity.addComponent('obstacle', {cost: 2000});
   entity.addComponent('gridPosition', {x: x, y: y});
+  entity.addComponent('attack', {rate: 0.5, timeSinceLastAttack: 0});
   entity.addComponent('button', {
     actions: {
       'mouseover': actions.TOGGLE_SHOW_RANGES,
@@ -77,7 +78,7 @@ export function towerEntity (x, y, specs) {
     }
   });
   return entity;
-};
+}
 
 function slotEntity (x, y) {
   let worldPos = new PixiVector(x, y)
@@ -108,13 +109,20 @@ function spriteEntity (x, y, img_name) {
 
 function infoPanelEntity (x, y) {
   let entity = new ECS.Entity(null, [Sprite]);
-  let availableGold = entity.components.sprite;
+  entity.components.sprite.pixiSprite = new PIXI.Container();
+  entity.components.sprite.pixiSprite.position.set(globals.width - 800, 100);
 
-  availableGold.pixiSprite = new PIXI.Text(globals.player.gold, {fontFamily: 'Arial', fontSize: 50, fill: 0xFF0000, align: 'center'});
-  availableGold.pixiSprite.anchor.set(0.5, 0.5);
-  availableGold.pixiSprite.position.set(x, y);
+  let style = {fontFamily: 'Arial', fontSize: 50, fill: 0xFF0000, align: 'center'};
 
-  entity.addComponent('infoPanelUpdater', {});
+  let gold = new PIXI.Text('$' + globals.player.gold, style);
+  gold.position.set(0, 0);
+  entity.components.sprite.pixiSprite.addChild(gold);
+
+  let lives = new PIXI.Text('Remaining lives: ' + globals.player.lives, style);
+  lives.position.set(200, 0);
+  entity.components.sprite.pixiSprite.addChild(lives);
+
+  entity.addComponent('infoPanelUpdater');
 
   return entity;
 }
