@@ -57,10 +57,10 @@ export function infoPanelEntity (x, y) {
   return entity;
 };
 
-function spriteEntity (x, y, img_name) {
+export function spriteEntity (x, y, img_name) {
   let entity = new ECS.Entity(null, [Sprite]);
   let sprite = entity.components.sprite;
   sprite.pixiSprite = new PIXI.Sprite(PIXI.loader.resources[img_name].texture);
   sprite.pixiSprite.position.set(x, y);
   return entity;
-}
+};

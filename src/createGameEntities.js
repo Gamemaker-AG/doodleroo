@@ -6,6 +6,7 @@ import GridPosition from 'components/GridPosition';
 import * as actions from 'button-actions';
 import constructionMenuEntity from 'entities/constructionMenu';
 import PixiVector from 'PixiVector';
+import { spriteEntity } from 'UIEntities';
 import { buttonMuteEntity } from 'UIEntities';
 import { infoPanelEntity } from 'UIEntities';
 
@@ -101,13 +102,5 @@ function slotEntity (x, y) {
     }
   });
 
-  return entity;
-}
-
-function spriteEntity (x, y, img_name) {
-  let entity = new ECS.Entity(null, [Sprite]);
-  let sprite = entity.components.sprite;
-  sprite.pixiSprite = new PIXI.Sprite(PIXI.loader.resources[img_name].texture);
-  sprite.pixiSprite.position.set(x, y);
   return entity;
 }
