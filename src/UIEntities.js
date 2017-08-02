@@ -2,7 +2,7 @@ import ECS from 'yagl-ecs';
 import Sprite from 'components/Sprite.js';
 import globals from 'globals';
 
-export function buttonMuteEntity (x, y) {
+export function buttonMuteEntity (x, y, music) {
   let entity = spriteEntity(x, y, 'button_soundEnabled');
   entity.components.sprite.pixiSprite.anchor.set(0.5, 0.5);
 
@@ -17,6 +17,8 @@ export function buttonMuteEntity (x, y) {
       'click': () => {
         console.log('toggle mute here');
         sprite.visible = !sprite.visible;
+
+        music.volume == 1 ? music.volume = 0 : music.volume = 1;
       }
     }
   });

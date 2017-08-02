@@ -6,12 +6,12 @@ import * as actions from 'button-actions';
 import { spriteEntity } from 'UIEntities';
 import { buttonMuteEntity } from 'UIEntities';
 
-export default function createMenuEntities (newGame) {
+export default function createMenuEntities (newGame, music) {
   let entities = [];
 
   entities.push(buttonNewGameEntity(globals.width / 2, globals.height / 2 - 100, newGame));
   entities.push(buttonCreditsEntity(globals.width / 2, globals.height / 2 + 100));
-  entities.push(buttonMuteEntity(globals.width - 150, 100));
+  entities.push(buttonMuteEntity(globals.width - 150, 100, music));
 
   return entities;
 };

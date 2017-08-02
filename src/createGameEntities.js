@@ -36,7 +36,7 @@ const enemies = [
   [500, 250, 'tower_weak']
 ];
 
-export default function createGameEntities (addEntity) {
+export default function createGameEntities (addEntity, music) {
   let entities = [];
 
   constructionMenu = constructionMenuEntity(addEntity, towers);
@@ -50,7 +50,7 @@ export default function createGameEntities (addEntity) {
   entities = entities.concat(enemies.map(specs => enemyEntity(specs)));
   entities.push(constructionMenu);
   entities.push(infoPanelEntity(globals.width - 200, 100));
-  entities.push(buttonMuteEntity(globals.width - 150, 100));
+  entities.push(buttonMuteEntity(globals.width - 150, 100, music));
 
   return entities;
 };

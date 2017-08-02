@@ -1,4 +1,5 @@
 import * as PIXI from 'pixi.js';
+import sound from 'pixi-sound';
 import ECS from 'yagl-ecs';
 import Vector from 'vigur';
 
@@ -23,6 +24,10 @@ import Player from 'Player';
 
 window.PIXI.Point.prototype = PixiVector.prototype;
 window.PIXI.ObservablePoint.prototype = ObservablePixiVector.prototype;
+
+const sound = PIXI.sound.Sound.from('sounds/backgroundMusic.mp3');
+sound.loop = 1;
+sound.play();
 
 const game = newGameState();
 const menu = newGameState();
@@ -70,8 +75,8 @@ function startGame () {
   game.ecs.addSystem(new UpdateGridPosition());
   game.ecs.addSystem(new FollowPath());
 
-  createMenuEntities(newGame).forEach(e => menu.ecs.addEntity(e));
-  createGameEntities((entity) => game.ecs.addEntity(entity))
+  createMenuEntities(newGame, sound).forEach(e => menu.ecs.addEntity(e));
+  createGameEntities((entity) => game.ecs.addEntity(entity), sound)
     .forEach(e => game.ecs.addEntity(e));
 
   ticker = new PIXI.ticker.Ticker();
