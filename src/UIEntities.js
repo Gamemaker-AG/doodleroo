@@ -36,16 +36,15 @@ export function infoPanelEntity (x, y) {
 
   let gold = new PIXI.Text(globals.player.gold, style);
   gold.anchor.set(0, 0.5);
-  gold.position.set(30, 0);
+  gold.position.set(50, 0);
 
   let heart = new PIXI.Sprite(PIXI.loader.resources['heart'].texture);
   heart.anchor.set(0.5, 0.5);
   heart.position.set(0, 75);
-  heart.scale.set(1.5);
 
   let lives = new PIXI.Text(globals.player.lives, style);
   lives.anchor.set(0, 0.5);
-  lives.position.set(30, 75);
+  lives.position.set(50, 75);
 
   entity.components.sprite.pixiSprite.addChild(gold);
   entity.components.sprite.pixiSprite.addChild(lives);
