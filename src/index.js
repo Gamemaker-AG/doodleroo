@@ -17,6 +17,7 @@ import UpdateGridPosition from 'systems/UpdateGridPosition';
 import InfoPanelUpdater from 'systems/InfoPanelUpdater';
 import Spawner from 'systems/Spawner';
 import FadeOut from 'systems/FadeOut';
+import Health from 'systems/Health';
 
 import createGameEntities from 'createGameEntities';
 import createMenuEntities from 'createMenuEntities';
@@ -76,6 +77,7 @@ function startGame () {
   game.ecs.addSystem(new Destination(game.ecs));
   game.ecs.addSystem(new Spawner(game.ecs));
   game.ecs.addSystem(new FadeOut(game.ecs));
+  game.ecs.addSystem(new Health(game.ecs));
 
   createMenuEntities(newGame).forEach(e => menu.ecs.addEntity(e));
   createGameEntities((entity) => game.ecs.addEntity(entity))

@@ -40,7 +40,8 @@ export default function constructionMenuEntity (addEntity, towers) {
         worldCoords.y,
         specs.img,
         specs.cost,
-        specs.range
+        specs.range,
+        specs.damage
       ];
 
       if (updatedSpecs[3] <= globals.player.gold) {

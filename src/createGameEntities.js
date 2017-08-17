@@ -17,17 +17,20 @@ const towers = [
   {
     img: 'tower_weak',
     cost: 100,
-    range: 180
+    range: 180,
+    damage: 30
   },
   {
     img: 'tower_strong',
     cost: 200,
-    range: 200
+    range: 200,
+    damage: 100
   },
   {
     img: 'tower_long',
     cost: 300,
-    range: 300
+    range: 300,
+    damage: 50
   }
 ];
 
@@ -87,7 +90,7 @@ export function towerEntity (x, y, specs) {
   entity.addComponent('range', {range: specs[4], color: 0xFF0000});
   entity.addComponent('obstacle', {cost: 2000});
   entity.addComponent('gridPosition', {x: x, y: y});
-  entity.addComponent('attack', {rate: 0.5, timeSinceLastAttack: 0});
+  entity.addComponent('attack', {rate: 0.5, timeSinceLastAttack: 0, damage: specs[5]});
   entity.addComponent('button', {
     actions: {
       'mouseover': actions.TOGGLE_SHOW_RANGES,

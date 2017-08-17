@@ -20,7 +20,8 @@ export default {
       },
       'goal': {x: Math.floor(slotCount / 2), y: slotCount - 1},
       'autoUpdateGridPosition': {},
-      'followPath': {}
+      'followPath': {},
+      'health': {health: 50}
       }
     },
     count: 0,
