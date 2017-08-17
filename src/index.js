@@ -90,6 +90,8 @@ PIXI.loader
   .add('tower_strong', '/img/tower_strong.png')
   .add('tower_long', '/img/tower_long.png')
   .add('slot', '/img/slot.png')
+  .add('goal', '/img/goal.png')
+  .add('wall', '/img/wall.png')
   .add('button_newGame', '/img/button_newGame.png')
   .add('button_credits', '/img/button_credits.png')
   .add('button_soundEnabled', '/img/button_soundEnabled.png')
