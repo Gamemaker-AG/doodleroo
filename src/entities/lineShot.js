@@ -5,7 +5,7 @@ import FadeOut from 'components/FadeOut';
 
 export default function lineShot(origin, target) {
   var line = new PIXI.Graphics();
-  line.lineStyle(2, 0xDD0000, 1);
+  line.lineStyle(5, 0x4400DD, 1);
   line.moveTo(...origin.asArray());
   line.lineTo(...target.asArray());
 
