@@ -33,10 +33,6 @@ const towers = [
 
 let constructionMenu;
 
-const enemies = [
-  // [500, 250, 'tower_weak']
-];
-
 export default function createGameEntities (addEntity) {
   let entities = [];
 
@@ -63,7 +59,6 @@ export default function createGameEntities (addEntity) {
   entity.components.gridPosition = {x: 3, y: 3};
   entities.push(entity);
 
-  entities = entities.concat(enemies.map(specs => enemyEntity(specs)));
   entities.push(constructionMenu);
   entities.push(infoPanelEntity(globals.width - 200, 100));
   entities.push(buttonMuteEntity(globals.width - 150, 100));
