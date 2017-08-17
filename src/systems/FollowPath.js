@@ -10,6 +10,10 @@ export default class FollowPath extends ECS.System {
       entity.components.followPath;
   }
 
+  enter (entity) {
+    console.log("entered", entity)
+  }
+
   update (entity) {
     // set movement vector such that it points to the next gridPosition along the path
     let {x, y} = entity.components.gridPosition;
@@ -23,7 +27,6 @@ export default class FollowPath extends ECS.System {
     }
     if (entity.components.debug) {
       console.log('path index', currentIndex);
-      console.table(entity.components.goalPath.path);
     }
     if (currentIndex === -1) {
       goal = entity.components.goalPath.path[0];
@@ -37,13 +40,14 @@ export default class FollowPath extends ECS.System {
     let goalWorld = new PixiVector(goal[0], goal[1]).toWorld();
     let direction = goalWorld.clone().subtract(currentWorld);
     if (direction.x === 0 && direction.y === 0) {
-      entity.components.velocity = new PixiVector(0, 0);
+      entity.components.movement.velocity = new PixiVector(0, 0);
     } else {
+      let speed = direction.normalized.multiply(entity.components.movement.maxSpeed ? entity.components.movement.maxSpeed : 500);
       if (entity.components.debug) {
-        console.log("direction", direction.normalized.multiply(entity.components.movement.maxSpeed ? entity.components.movement.maxSpeed : 500));
-        console.log("goal", goal)
+        console.log("direction", speed);
+        console.log("goal", goal);
       }
-      entity.components.movement.velocity = direction.normalized.multiply(entity.components.movement.maxSpeed ? entity.components.movement.maxSpeed : 500);
+      entity.components.movement.velocity = speed;
     }
   }
 }

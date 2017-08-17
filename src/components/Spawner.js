@@ -6,7 +6,8 @@ export default {
   defaults: {
     timeSinceSpawn: 0,
     enemyImageName: 'tower_strong',
-    enemyComponents: {
+    enemyComponents: () => {
+      return {
       'enemy': {},
       'gridPosition': {x: 0, y: 0},
       'movement': {
@@ -17,6 +18,7 @@ export default {
       'goal': {x: 7, y: 13},
       'autoUpdateGridPosition': {},
       'followPath': {}
+      }
     },
     count: 0,
     interval: 1

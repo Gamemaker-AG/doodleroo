@@ -32,7 +32,7 @@ const towers = [
 let constructionMenu;
 
 const enemies = [
-  [500, 250, 'tower_weak']
+  // [500, 250, 'tower_weak']
 ];
 
 export default function createGameEntities (addEntity) {
@@ -47,7 +47,7 @@ export default function createGameEntities (addEntity) {
   }
 
   let entity = new ECS.Entity(null, [spawner, gridPosition]);
-  entity.components.gridPosition = {x: 10, y: 10};
+  entity.components.gridPosition = {x: 3, y: 3};
   entities.push(entity);
 
   entities = entities.concat(enemies.map(specs => enemyEntity(specs)));
