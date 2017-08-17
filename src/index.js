@@ -8,6 +8,7 @@ import Sprite from './components/Sprite.js';
 import ButtonSystem from 'systems/Button';
 import GridSystem from 'systems/Grid';
 import FollowPath from 'systems/FollowPath';
+import Destination from 'systems/Destination';
 import Button from 'components/Button';
 import Range from 'systems/Range';
 import Attack from 'systems/Attack';
@@ -70,6 +71,7 @@ function startGame () {
   game.ecs.addSystem(new InfoPanelUpdater());
   game.ecs.addSystem(new UpdateGridPosition());
   game.ecs.addSystem(new FollowPath());
+  game.ecs.addSystem(new Destination(game.ecs));
   game.ecs.addSystem(new Spawner(game.ecs));
 
   createMenuEntities(newGame).forEach(e => menu.ecs.addEntity(e));

@@ -16,7 +16,7 @@ export default {
       'movement': {
         velocity: new PixiVector(0, 0),
         angularVelocity: 0,
-        maxSpeed: 50
+        maxSpeed: 250
       },
       'goal': {x: Math.floor(slotCount / 2), y: slotCount - 1},
       'autoUpdateGridPosition': {},

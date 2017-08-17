@@ -42,12 +42,12 @@ export function infoPanelEntity (x, y) {
   heart.anchor.set(0.5, 0.5);
   heart.position.set(0, 75);
 
-  let lives = new PIXI.Text(globals.player.lives, style);
-  lives.anchor.set(0, 0.5);
-  lives.position.set(50, 75);
+  let lifes = new PIXI.Text(globals.player.lifes, style);
+  lifes.anchor.set(0, 0.5);
+  lifes.position.set(50, 75);
 
   entity.components.sprite.pixiSprite.addChild(gold);
-  entity.components.sprite.pixiSprite.addChild(lives);
+  entity.components.sprite.pixiSprite.addChild(lifes);
   entity.components.sprite.pixiSprite.addChild(coin);
   entity.components.sprite.pixiSprite.addChild(heart);
 

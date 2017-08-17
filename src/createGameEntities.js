@@ -142,9 +142,9 @@ function infoPanelEntity (x, y) {
   gold.position.set(0, 0);
   entity.components.sprite.pixiSprite.addChild(gold);
 
-  let lives = new PIXI.Text('Remaining lives: ' + globals.player.lives, style);
-  lives.position.set(0, 100);
-  entity.components.sprite.pixiSprite.addChild(lives);
+  let lifes = new PIXI.Text('Remaining lifes: ' + globals.player.lifes, style);
+  lifes.position.set(0, 100);
+  entity.components.sprite.pixiSprite.addChild(lifes);
 
   entity.addComponent('infoPanelUpdater');
 
