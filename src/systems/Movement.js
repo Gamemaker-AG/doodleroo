@@ -14,9 +14,6 @@ export default class Movement extends ECS.System {
         console.log("adding movement", velocity);
       }
       pixiSprite.position.add(velocity.multiply(window.dt))
-      // pixiSprite.position.set(
-      //   pixiSprite.position.x + velocity.x * window.dt, pixiSprite.position.y + velocity.y * window.dt
-      // );
     }
     if (angularVelocity !== undefined) {
       pixiSprite.rotation += angularVelocity * window.dt;

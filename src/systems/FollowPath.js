@@ -10,10 +10,6 @@ export default class FollowPath extends ECS.System {
       entity.components.followPath;
   }
 
-  enter (entity) {
-    console.log("entered", entity)
-  }
-
   update (entity) {
     // set movement vector such that it points to the next gridPosition along the path
     let {x, y} = entity.components.gridPosition;

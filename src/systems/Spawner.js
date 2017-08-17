@@ -19,10 +19,6 @@ export default class Spawner extends ECS.System {
     let entity = spriteEntity(vec.x, vec.y, 'tower_weak');
     entity.components.sprite.pixiSprite.anchor.set(0.5, 0.5);
     entity.addComponent('spawned');
-    if (!this.debugged) {
-      entity.addComponent('debug');
-      this.debugged = true;
-    }
     for (let [name, value] of Object.entries(spawner.enemyComponents())) {
       entity.addComponent(name, value);
     }
