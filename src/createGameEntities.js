@@ -41,10 +41,21 @@ export default function createGameEntities (addEntity) {
   let entities = [];
 
   constructionMenu = constructionMenuEntity(addEntity, towers);
-
+  let clickable;
+  let style;
   for (let x = 0; x < slotCount; x++) {
     for (let y = 0; y < slotCount; y++) {
-      entities.push(slotEntity(x, y));
+      if ((x === 0 || x === slotCount - 1) || (y === 0 || y === slotCount - 1)) {
+        clickable = false;
+        style = 'wall';
+      } else {
+        clickable = true;
+        style = 'slot';
+      }
+      if (y === slotCount - 1 && (x == Math.floor(slotCount / 2) || x == Math.ceil(slotCount / 2) - 1)) {
+        style = 'goal';
+      }
+      entities.push(slotEntity(x, y, clickable, style));
     }
   }
 
@@ -91,21 +102,23 @@ export function towerEntity (x, y, specs) {
   return entity;
 };
 
-function slotEntity (x, y) {
+function slotEntity (x, y, clickable = true, style = 'slot') {
   let worldPos = new PixiVector(x, y)
     .multiply(slotSize)
     .add(slotSize / 2)
     .add(globals.gridOffset);
-  let entity = spriteEntity(worldPos.x, worldPos.y, 'slot');
+  let entity = spriteEntity(worldPos.x, worldPos.y, style);
   let {pixiSprite} = entity.components.sprite;
   pixiSprite.anchor.set(0.5, 0.5);
   pixiSprite.scale.set(slotSize / pixiSprite.texture.height);
 
-  entity.addComponent('button', {
-    actions: {
-      'click': [actions.TOGGLE_TOWER_MENU, constructionMenu, worldPos, new PixiVector(x, y)]
-    }
-  });
+  if (clickable) {
+    entity.addComponent('button', {
+      actions: {
+        'click': [actions.TOGGLE_TOWER_MENU, constructionMenu, worldPos, new PixiVector(x, y)]
+      }
+    });
+  }
 
   return entity;
 }
@@ -129,9 +142,9 @@ function infoPanelEntity (x, y) {
   gold.position.set(0, 0);
   entity.components.sprite.pixiSprite.addChild(gold);
 
-  let lives = new PIXI.Text('Remaining lives: ' + globals.player.lives, style);
-  lives.position.set(0, 100);
-  entity.components.sprite.pixiSprite.addChild(lives);
+  let lifes = new PIXI.Text('Remaining lifes: ' + globals.player.lifes, style);
+  lifes.position.set(0, 100);
+  entity.components.sprite.pixiSprite.addChild(lifes);
 
   entity.addComponent('infoPanelUpdater');
 
