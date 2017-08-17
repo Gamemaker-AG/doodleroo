@@ -1,6 +1,6 @@
 export default class Player {
   constructor () {
-    this.gold = 500;
+    this.gold = Infinity;
     this.lives = 10;
   }
 }
