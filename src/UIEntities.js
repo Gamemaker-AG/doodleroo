@@ -15,7 +15,6 @@ export function buttonMuteEntity (x, y, music) {
   entity.addComponent('button', {
     actions: {
       'click': () => {
-        console.log('toggle mute here');
         sprite.visible = !sprite.visible;
 
         music.volume == 1 ? music.volume = 0 : music.volume = 1;
