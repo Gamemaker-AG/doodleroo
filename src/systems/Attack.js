@@ -1,8 +1,10 @@
 import ECS from 'yagl-ecs';
+import lineShot from 'entities/lineShot';
 
 export default class Attack extends ECS.System {
-  constructor () {
-    super();
+  constructor (ecs, freq) {
+    super(freq);
+    this.ecs = ecs;
     this.enemies = {};
   }
 
@@ -27,12 +29,18 @@ export default class Attack extends ECS.System {
         let {position: enemyPos} = enemy.components.sprite.pixiSprite;
         if (pos.distance(enemyPos) <= range.range &&
           attack.timeSinceLastAttack >= (1 / attack.rate)) {
-          console.log('he attac');
-          attack.timeSinceLastAttack = 0;
+            this.attack(entity, enemy);
+            attack.timeSinceLastAttack = 0;
         }
       }
 
       attack.timeSinceLastAttack += window.dt;
     }
+  }
+
+  attack(tower, enemy) {
+    let {position: origin} = tower.components.sprite.pixiSprite;
+    let {position: target} = enemy.components.sprite.pixiSprite;
+    this.ecs.addEntity(lineShot(origin, target));
   }
 }

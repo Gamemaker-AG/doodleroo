@@ -15,6 +15,8 @@ import Construction from 'systems/Construction';
 import UpdateGridPosition from 'systems/UpdateGridPosition';
 import InfoPanelUpdater from 'systems/InfoPanelUpdater';
 import Spawner from 'systems/Spawner';
+import FadeOut from 'systems/FadeOut';
+
 import createGameEntities from 'createGameEntities';
 import createMenuEntities from 'createMenuEntities';
 import globals from 'globals';
@@ -65,12 +67,13 @@ function startGame () {
   game.ecs.addSystem(new GridSystem(1));
   game.ecs.addSystem(new Movement());
   game.ecs.addSystem(new Range(game.stage));
-  game.ecs.addSystem(new Attack());
+  game.ecs.addSystem(new Attack(game.ecs));
   game.ecs.addSystem(new Construction());
   game.ecs.addSystem(new InfoPanelUpdater());
   game.ecs.addSystem(new UpdateGridPosition());
   game.ecs.addSystem(new FollowPath());
   game.ecs.addSystem(new Spawner(game.ecs));
+  game.ecs.addSystem(new FadeOut(game.ecs));
 
   createMenuEntities(newGame).forEach(e => menu.ecs.addEntity(e));
   createGameEntities((entity) => game.ecs.addEntity(entity))

@@ -25,6 +25,10 @@ export default class PixiVector extends Vector {
     return new PixiVector(x, y);
   }
 
+  asArray() {
+    return [this.x, this.y]
+  }
+
   equals (other) {
     return this.isEqual(other);
   }
