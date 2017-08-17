@@ -21,6 +21,9 @@ export default class FollowPath extends ECS.System {
       entity.components.movement.velocity = new PixiVector(0, 0);
       return;
     }
+    if (entity.components.debug) {
+      console.log('path index', currentIndex);
+    }
     if (currentIndex === -1) {
       goal = entity.components.goalPath.path[0];
     } else if (currentIndex + 1 < entity.components.goalPath.path.length) {
@@ -29,13 +32,18 @@ export default class FollowPath extends ECS.System {
       goal = entity.components.goalPath.path[entity.components.goalPath.path.length - 1];
     }
     let currentWorld = entity.components.sprite.pixiSprite.position;
+    currentWorld = new PixiVector(currentWorld.x, currentWorld.y);
     let goalWorld = new PixiVector(goal[0], goal[1]).toWorld();
-    let direction = goalWorld.subtract(currentWorld);
-    let { movement, velocity } = entity.components;
+    let direction = goalWorld.clone().subtract(currentWorld);
     if (direction.x === 0 && direction.y === 0) {
-      velocity = new PixiVector(0, 0);
+      entity.components.movement.velocity = new PixiVector(0, 0);
     } else {
-      movement.velocity = direction.normalized.multiply(movement.maxSpeed ? movement.maxSpeed : 500);
+      let speed = direction.normalized.multiply(entity.components.movement.maxSpeed ? entity.components.movement.maxSpeed : 500);
+      if (entity.components.debug) {
+        console.log("direction", speed);
+        console.log("goal", goal);
+      }
+      entity.components.movement.velocity = speed;
     }
   }
 }

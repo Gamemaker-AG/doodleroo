@@ -1,8 +1,9 @@
 import ECS from 'yagl-ecs';
 import Sprite from 'components/Sprite.js';
 import globals from 'globals';
+import spawner from 'components/Spawner';
 import Button from 'components/Button';
-import GridPosition from 'components/GridPosition';
+import gridPosition from 'components/GridPosition';
 import * as actions from 'button-actions';
 import constructionMenuEntity from 'entities/constructionMenu';
 import PixiVector from 'PixiVector';
@@ -33,7 +34,7 @@ const towers = [
 let constructionMenu;
 
 const enemies = [
-  [500, 250, 'tower_weak']
+  // [500, 250, 'tower_weak']
 ];
 
 export default function createGameEntities (addEntity) {
@@ -46,6 +47,10 @@ export default function createGameEntities (addEntity) {
       entities.push(slotEntity(x, y));
     }
   }
+
+  let entity = new ECS.Entity(null, [spawner, gridPosition]);
+  entity.components.gridPosition = {x: 3, y: 3};
+  entities.push(entity);
 
   entities = entities.concat(enemies.map(specs => enemyEntity(specs)));
   entities.push(constructionMenu);
@@ -60,7 +65,7 @@ function enemyEntity (specs) {
   entity.components.sprite.pixiSprite.anchor.set(0.5, 0.5);
   entity.addComponent('gridPosition', {x: 1, y: 10});
   entity.addComponent('movement', {velocity: new PixiVector(0, 0), angularVelocity: 0, maxSpeed: 50});
-  entity.addComponent('enemy');
+  entity.addComponent('enemy', {});
   entity.addComponent('autoUpdateGridPosition', {});
   entity.addComponent('followPath', {});
   entity.addComponent('goal', {x: 12, y: 12});
@@ -101,6 +106,34 @@ function slotEntity (x, y) {
       'click': [actions.TOGGLE_TOWER_MENU, constructionMenu, worldPos, new PixiVector(x, y)]
     }
   });
+
+  return entity;
+}
+
+export function spriteEntity (x, y, img_name) {
+  let entity = new ECS.Entity(null, [Sprite]);
+  let sprite = entity.components.sprite;
+  sprite.pixiSprite = new PIXI.Sprite(PIXI.loader.resources[img_name].texture);
+  sprite.pixiSprite.position.set(x, y);
+  return entity;
+}
+
+function infoPanelEntity (x, y) {
+  let entity = new ECS.Entity(null, [Sprite]);
+  entity.components.sprite.pixiSprite = new PIXI.Container();
+  entity.components.sprite.pixiSprite.position.set(globals.width - 800, 100);
+
+  let style = {fontFamily: 'Arial', fontSize: 50, fill: 0xFF0000, align: 'center'};
+
+  let gold = new PIXI.Text('$' + globals.player.gold, style);
+  gold.position.set(0, 0);
+  entity.components.sprite.pixiSprite.addChild(gold);
+
+  let lives = new PIXI.Text('Remaining lives: ' + globals.player.lives, style);
+  lives.position.set(0, 100);
+  entity.components.sprite.pixiSprite.addChild(lives);
+
+  entity.addComponent('infoPanelUpdater');
 
   return entity;
 }
