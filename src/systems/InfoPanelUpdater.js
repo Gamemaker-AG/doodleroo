@@ -14,14 +14,14 @@ export default class InfoPanel extends ECS.System {
 
   update (entity) {
     let text_gold = childAt(entity, 0).text;
-    let text_lives = childAt(entity, 1).text;
+    let text_lifes = childAt(entity, 1).text;
 
     if (text_gold != globals.player.gold) {
       childAt(entity, 0).text = globals.player.gold;
     }
 
-    if (text_lives != globals.player.lives) {
-      childAt(entity, 1).text = globals.player.lives;
+    if (text_lifes != globals.player.lifes) {
+      childAt(entity, 1).text = globals.player.lifes;
     }
   }
 };

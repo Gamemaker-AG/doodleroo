@@ -1,5 +1,6 @@
 import ECS from 'yagl-ecs';
 import lineShot from 'entities/lineShot';
+import PixiVector from 'PixiVector';
 
 export default class Attack extends ECS.System {
   constructor (ecs, freq) {
@@ -27,10 +28,15 @@ export default class Attack extends ECS.System {
       let {position: pos} = sprite.pixiSprite;
       for (let enemy of Object.values(this.enemies)) {
         let {position: enemyPos} = enemy.components.sprite.pixiSprite;
-        if (pos.distance(enemyPos) <= range.range &&
-          attack.timeSinceLastAttack >= (1 / attack.rate)) {
+        if (pos.distance(enemyPos) <= range.range) {
+          let posVec = new PixiVector(pos.x, pos.y);
+          let enemyPosVec = new PixiVector(enemyPos.x, enemyPos.y);
+          sprite.pixiSprite.rotation = ((enemyPosVec.subtract(posVec)).horizontalAngle);
+
+          if (attack.timeSinceLastAttack >= (1 / attack.rate)) {
             this.attack(entity, enemy);
             attack.timeSinceLastAttack = 0;
+          }
         }
       }
 
@@ -43,4 +49,4 @@ export default class Attack extends ECS.System {
     let {position: target} = enemy.components.sprite.pixiSprite;
     this.ecs.addEntity(lineShot(origin, target));
   }
-}
+};

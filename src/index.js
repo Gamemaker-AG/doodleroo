@@ -8,6 +8,7 @@ import Sprite from './components/Sprite.js';
 import ButtonSystem from 'systems/Button';
 import GridSystem from 'systems/Grid';
 import FollowPath from 'systems/FollowPath';
+import Destination from 'systems/Destination';
 import Button from 'components/Button';
 import Range from 'systems/Range';
 import Attack from 'systems/Attack';
@@ -72,6 +73,7 @@ function startGame () {
   game.ecs.addSystem(new InfoPanelUpdater());
   game.ecs.addSystem(new UpdateGridPosition());
   game.ecs.addSystem(new FollowPath());
+  game.ecs.addSystem(new Destination(game.ecs));
   game.ecs.addSystem(new Spawner(game.ecs));
   game.ecs.addSystem(new FadeOut(game.ecs));
 
@@ -93,6 +95,8 @@ PIXI.loader
   .add('tower_strong', '/img/tower_strong.png')
   .add('tower_long', '/img/tower_long.png')
   .add('slot', '/img/slot.png')
+  .add('goal', '/img/goal.png')
+  .add('wall', '/img/wall.png')
   .add('button_newGame', '/img/button_newGame.png')
   .add('button_credits', '/img/button_credits.png')
   .add('button_soundEnabled', '/img/button_soundEnabled.png')
