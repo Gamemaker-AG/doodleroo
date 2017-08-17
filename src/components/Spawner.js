@@ -1,5 +1,8 @@
 import Vector from 'vigur';
 import PixiVector from 'PixiVector';
+import globals from 'globals';
+
+const { slotCount } = globals;
 
 export default {
   name: 'spawner',
@@ -15,7 +18,7 @@ export default {
         angularVelocity: 0,
         maxSpeed: 50
       },
-      'goal': {x: 7, y: 13},
+      'goal': {x: Math.floor(slotCount / 2), y: slotCount - 1},
       'autoUpdateGridPosition': {},
       'followPath': {}
       }
