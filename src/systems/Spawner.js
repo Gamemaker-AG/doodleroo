@@ -22,7 +22,6 @@ export default class Spawner extends ECS.System {
     for (let [name, value] of Object.entries(spawner.enemyComponents())) {
       entity.addComponent(name, value);
     }
-    console.log(entity.components);
     this.ecs.addEntity(entity);
   }
 
