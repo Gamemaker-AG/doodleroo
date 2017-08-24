@@ -86,6 +86,14 @@ function startGame () {
   ticker = new PIXI.ticker.Ticker();
   ticker.add(gameLoop);
   ticker.start();
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      ticker.stop();
+    } else {
+      ticker.start();
+    }
+  });
 }
 
 PIXI.loader
