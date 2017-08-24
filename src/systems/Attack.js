@@ -49,6 +49,5 @@ export default class Attack extends ECS.System {
     let {position: target} = enemy.components.sprite.pixiSprite;
     this.ecs.addEntity(lineShot(origin, target));
     enemy.components.health.health -= tower.components.attack.damage;
-    console.log(enemy.components.health.health);
   }
 };
