@@ -9,13 +9,21 @@ export default class Grid extends ECS.System {
     this.new_costs = this.initializedArray(globals.slotCount, globals.slotCount, 1.0);
   }
 
-  initializedArray(xSize, ySize, value) {
+  initializedArray(xSize, ySize, value, edgeValue = Infinity) {
     let len = 0;
     let result = [];
     for (let y = 0; y < ySize; y++) {
       let row = [];
+      let fieldValue = value;
+      if (y === ySize - 1 || y === 0) {
+        fieldValue = edgeValue;
+      }
       for (let x = 0; x < xSize; x++) {
-        row.push(value);
+        if (x === xSize - 1 || x === 0) {
+          row.push(edgeValue);
+        } else {
+          row.push(fieldValue);
+        }
       }
       result.push(row);
     }
