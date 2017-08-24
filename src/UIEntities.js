@@ -21,7 +21,29 @@ export function buttonMuteEntity (x, y) {
     }
   });
   return entity;
-};
+}
+
+export function speedUpEntity (x, y) {
+  let entity = spriteEntity(x, y, 'button_slow');
+  entity.components.sprite.pixiSprite.anchor.set(0.5, 0.5);
+
+  let sprite = new PIXI.Sprite(PIXI.loader.resources['button_fast'].texture);
+  sprite.anchor.set(0.5, 0.5);
+  sprite.position.set(0, 0);
+  sprite.visible = false;
+
+  entity.components.sprite.pixiSprite.addChild(sprite);
+  entity.addComponent('button', {
+    actions: {
+      'click': () => {
+        window.speed = (window.speed % 2) + 1;
+        sprite.visible = !sprite.visible;
+      }
+    }
+  });
+
+  return entity;
+}
 
 export function infoPanelEntity (x, y) {
   let entity = new ECS.Entity(null, [Sprite]);
@@ -54,7 +76,7 @@ export function infoPanelEntity (x, y) {
   entity.addComponent('infoPanelUpdater');
 
   return entity;
-};
+}
 
 export function spriteEntity (x, y, img_name) {
   let entity = new ECS.Entity(null, [Sprite]);
@@ -62,4 +84,4 @@ export function spriteEntity (x, y, img_name) {
   sprite.pixiSprite = new PIXI.Sprite(PIXI.loader.resources[img_name].texture);
   sprite.pixiSprite.position.set(x, y);
   return entity;
-};
+}

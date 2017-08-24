@@ -7,9 +7,7 @@ import gridPosition from 'components/GridPosition';
 import * as actions from 'button-actions';
 import constructionMenuEntity from 'entities/constructionMenu';
 import PixiVector from 'PixiVector';
-import { spriteEntity } from 'UIEntities';
-import { buttonMuteEntity } from 'UIEntities';
-import { infoPanelEntity } from 'UIEntities';
+import { spriteEntity, buttonMuteEntity, infoPanelEntity, speedUpEntity } from 'UIEntities';
 
 const {slotCount, slotSize} = globals;
 
@@ -65,9 +63,10 @@ export default function createGameEntities (addEntity) {
   entities.push(constructionMenu);
   entities.push(infoPanelEntity(globals.width - 200, 100));
   entities.push(buttonMuteEntity(globals.width - 150, 100));
+  entities.push(speedUpEntity(globals.width - 150, 200));
 
   return entities;
-};
+}
 
 function enemyEntity (specs) {
   let entity = spriteEntity(...specs);
@@ -98,7 +97,7 @@ export function towerEntity (x, y, specs) {
     }
   });
   return entity;
-};
+}
 
 function slotEntity (x, y, clickable = true, style = 'slot') {
   let worldPos = new PixiVector(x, y)

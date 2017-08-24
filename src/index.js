@@ -46,7 +46,7 @@ function newGameState () {
 }
 
 function gameLoop () {
-  window.dt = ticker.elapsedMS / 1000;
+  window.dt = ticker.elapsedMS * window.speed / 1000;
   current_state.ecs.update();
   renderer.render(current_state.stage);
 }
@@ -83,6 +83,7 @@ function startGame () {
   createGameEntities((entity) => game.ecs.addEntity(entity))
     .forEach(e => game.ecs.addEntity(e));
 
+  window.speed = 1;
   ticker = new PIXI.ticker.Ticker();
   ticker.add(gameLoop);
   ticker.start();
@@ -111,4 +112,6 @@ PIXI.loader
   .add('button_credits', '/img/button_credits.png')
   .add('button_soundEnabled', '/img/button_soundEnabled.png')
   .add('button_soundDisabled', '/img/button_soundDisabled.png')
+  .add('button_fast', '/img/button_fast.png')
+  .add('button_slow', '/img/button_slow.png')
   .load(startGame);
