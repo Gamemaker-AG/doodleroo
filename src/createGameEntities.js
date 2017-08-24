@@ -115,23 +115,3 @@ export function spriteEntity (x, y, img_name) {
   sprite.pixiSprite.position.set(x, y);
   return entity;
 }
-
-function infoPanelEntity (x, y) {
-  let entity = new ECS.Entity(null, [Sprite]);
-  entity.components.sprite.pixiSprite = new PIXI.Container();
-  entity.components.sprite.pixiSprite.position.set(globals.width - 800, 100);
-
-  let style = {fontFamily: 'Arial', fontSize: 50, fill: 0xFF0000, align: 'center'};
-
-  let gold = new PIXI.Text('$' + globals.player.gold, style);
-  gold.position.set(0, 0);
-  entity.components.sprite.pixiSprite.addChild(gold);
-
-  let lifes = new PIXI.Text('Remaining lifes: ' + globals.player.lifes, style);
-  lifes.position.set(0, 100);
-  entity.components.sprite.pixiSprite.addChild(lifes);
-
-  entity.addComponent('infoPanelUpdater');
-
-  return entity;
-}
