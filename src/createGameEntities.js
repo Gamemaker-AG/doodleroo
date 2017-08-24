@@ -68,18 +68,6 @@ export default function createGameEntities (addEntity) {
   return entities;
 }
 
-function enemyEntity (specs) {
-  let entity = spriteEntity(...specs);
-  entity.components.sprite.pixiSprite.anchor.set(0.5, 0.5);
-  entity.addComponent('gridPosition', {x: 1, y: 10});
-  entity.addComponent('movement', {velocity: new PixiVector(0, 0), angularVelocity: 0, maxSpeed: 50});
-  entity.addComponent('enemy', {});
-  entity.addComponent('autoUpdateGridPosition', {});
-  entity.addComponent('followPath', {});
-  entity.addComponent('goal', {x: 12, y: 12});
-  return entity;
-}
-
 export function towerEntity (x, y, specs) {
   globals.player.gold -= specs[3];
   let entity = spriteEntity(...specs);
