@@ -41,7 +41,24 @@ export default class Grid extends ECS.System {
   }
 
   update (entity) {
+    let avoidAttacks = false;
     if (entity.components.obstacle) {
+      if (avoidAttacks) {
+        let {x, y} = entity.components.gridPosition;
+        if (entity.components.range) {
+          let offset = Math.ceil(entity.components.range.range / globals.slotSize);
+          for (let dx = -offset; dx++; dx <= offset) {
+            for (let dy = -offset; dy++; dy <= offset) {
+              let xpos = x + dx;
+              let ypos = y + dy;
+              if (ypos < 0 || ypos >= globals.slotCount || xpos < 0 || xpos >= globals.slotCount) {
+                continue;
+              }
+              this.new_costs[xpos][ypos] += entity.components.attack.damage * entity.components.attack.rate * 10;
+            }
+          }
+        }
+      }
       this.new_costs[entity.components.gridPosition.x][entity.components.gridPosition.y] += entity.components.obstacle.cost;
       return;
     }
