@@ -52,9 +52,9 @@ export default class Grid extends ECS.System {
                 x * globals.slotSize + globals.slotSize / 2,
                 y * globals.slotSize + globals.slotSize / 2
               );
-              if (
-                (vec.distance(entity.components.sprite.pixiSprite.position) / globals.slotSize) - globals.slotSize < entity.components.range.range
-              )
+              let tower_pos = entity.components.sprite.pixiSprite.position.clone();
+              let distance = vec.distance(tower_pos) / globals.slotSize;
+              if (distance - globals.slotSize < entity.components.range.range)
               {
                 this.new_costs[x][y] += entity.components.attack.damage * entity.components.attack.rate * 10000;
               }
