@@ -7,6 +7,7 @@ export default class Attack extends ECS.System {
     super(freq);
     this.ecs = ecs;
     this.enemies = {};
+    this.unitToAttack = null;
   }
 
   test (entity) {
@@ -24,19 +25,29 @@ export default class Attack extends ECS.System {
 
   update (entity) {
     let { range, attack, sprite } = entity.components;
+
     if (range && attack) {
       let {position: pos} = sprite.pixiSprite;
       for (let enemy of Object.values(this.enemies)) {
         let {position: enemyPos} = enemy.components.sprite.pixiSprite;
         if (pos.distance(enemyPos) <= range.range) {
+          if (!this.unitToAttack) {
+            this.unitToAttack = enemy;
+            console.log(this.unitToAttack);
+          }
+
+          let {position: unitToAttackPos} = this.unitToAttack.components.sprite.pixiSprite;
+
           let posVec = new PixiVector(pos.x, pos.y);
-          let enemyPosVec = new PixiVector(enemyPos.x, enemyPos.y);
+          let enemyPosVec = new PixiVector(unitToAttackPos.x, unitToAttackPos.y);
           sprite.pixiSprite.rotation = ((enemyPosVec.subtract(posVec)).horizontalAngle);
 
           if (attack.timeSinceLastAttack >= (1 / attack.rate)) {
-            this.attack(entity, enemy);
+            this.attack(entity, this.unitToAttack);
             attack.timeSinceLastAttack = 0;
           }
+        } else if (this.unitToAttack == enemy) {
+          this.unitToAttack = null;
         }
       }
 
@@ -44,10 +55,14 @@ export default class Attack extends ECS.System {
     }
   }
 
-  attack(tower, enemy) {
+  attack (tower, enemy) {
     let {position: origin} = tower.components.sprite.pixiSprite;
     let {position: target} = enemy.components.sprite.pixiSprite;
     this.ecs.addEntity(lineShot(origin, target));
     enemy.components.health.health -= tower.components.attack.damage;
+
+    if (enemy.components.health.health <= 0) {
+      this.unitToAttack = null;
+    }
   }
 };

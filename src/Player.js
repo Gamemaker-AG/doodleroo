@@ -7,7 +7,7 @@ export default class Player {
   deduct_life () {
     this.lifes -= 1;
     if (this.lifes <= 0) {
-      alert("You lost!")
+      console.log('You lost!');
     }
   }
-}
+};

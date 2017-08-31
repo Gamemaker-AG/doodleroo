@@ -69,9 +69,6 @@ export default class Render extends ECS.System {
   }
 
   resizeHandler () {
-    console.log('innerWidth', window.innerWidth);
-    console.log('innerHeight', window.innerHeight);
-
     const scaleFactor = Math.min(
       window.innerWidth / this.width,
       window.innerHeight / this.height
