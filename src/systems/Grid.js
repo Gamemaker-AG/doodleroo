@@ -1,6 +1,7 @@
 import * as PIXI from 'pixi.js';
 import globals from 'globals';
 import ECS from 'yagl-ecs';
+import PixiVector from 'PixiVector';
 import PriorityQueue from '@raymond-lam/priority-queue';
 
 export default class Grid extends ECS.System {
@@ -41,20 +42,22 @@ export default class Grid extends ECS.System {
   }
 
   update (entity) {
-    let avoidAttacks = false;
+    let avoidAttacks = true;
     if (entity.components.obstacle) {
-      if (avoidAttacks) {
-        let {x, y} = entity.components.gridPosition;
+      if (true) {
         if (entity.components.range) {
-          let offset = Math.ceil(entity.components.range.range / globals.slotSize);
-          for (let dx = -offset; dx++; dx <= offset) {
-            for (let dy = -offset; dy++; dy <= offset) {
-              let xpos = x + dx;
-              let ypos = y + dy;
-              if (ypos < 0 || ypos >= globals.slotCount || xpos < 0 || xpos >= globals.slotCount) {
-                continue;
+          for (let x = 0; x < globals.slotCount; x++) {
+            for (let y = 0; y < globals.slotCount; y++) {
+              let vec = new PixiVector(
+                x * globals.slotSize + globals.slotSize / 2,
+                y * globals.slotSize + globals.slotSize / 2
+              );
+              if (
+                (vec.distance(entity.components.sprite.pixiSprite.position) / globals.slotSize) - globals.slotSize < entity.components.range.range
+              )
+              {
+                this.new_costs[x][y] += entity.components.attack.damage * entity.components.attack.rate * 10000;
               }
-              this.new_costs[xpos][ypos] += entity.components.attack.damage * entity.components.attack.rate * 10;
             }
           }
         }
