@@ -1,5 +1,6 @@
 import * as PIXI from 'pixi.js';
 import ECS from 'yagl-ecs';
+import globals from 'globals';
 import { hasSprite } from 'components/Sprite';
 import * as actions from 'button-actions';
 
@@ -21,7 +22,7 @@ export default class Range extends ECS.System {
       let {pixiSprite} = entity.components.sprite;
 
       range.indicator.lineStyle(3, range.color, 1);
-      range.indicator.drawCircle(0, 0, range.range);
+      range.indicator.drawCircle(0, 0, range.range * globals.slotSize);
       range.indicator.endFill();
       range.indicator.position.set(pixiSprite.position.x, pixiSprite.position.y);
 

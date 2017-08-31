@@ -15,19 +15,19 @@ const towers = [
   {
     img: 'tower_weak',
     cost: 100,
-    range: 180,
+    range: 1.8,
     damage: 30
   },
   {
     img: 'tower_strong',
     cost: 200,
-    range: 200,
+    range: 2,
     damage: 100
   },
   {
     img: 'tower_long',
     cost: 300,
-    range: 300,
+    range: 3,
     damage: 50
   }
 ];

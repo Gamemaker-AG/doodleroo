@@ -1,4 +1,5 @@
 import ECS from 'yagl-ecs';
+import globals from 'globals';
 import lineShot from 'entities/lineShot';
 import PixiVector from 'PixiVector';
 
@@ -30,14 +31,13 @@ export default class Attack extends ECS.System {
       let {position: pos} = sprite.pixiSprite;
       for (let enemy of Object.values(this.enemies)) {
         let {position: enemyPos} = enemy.components.sprite.pixiSprite;
-        if (pos.distance(enemyPos) <= range.range) {
+        if (pos.distance(enemyPos) <= range.range * globals.slotSize) {
           if (!this.unitToAttack) {
             this.unitToAttack = enemy;
             console.log(this.unitToAttack);
           }
 
           let {position: unitToAttackPos} = this.unitToAttack.components.sprite.pixiSprite;
-
           let posVec = new PixiVector(pos.x, pos.y);
           let enemyPosVec = new PixiVector(unitToAttackPos.x, unitToAttackPos.y);
           sprite.pixiSprite.rotation = ((enemyPosVec.subtract(posVec)).horizontalAngle);
