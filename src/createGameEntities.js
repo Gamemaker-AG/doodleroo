@@ -66,7 +66,7 @@ export default function createGameEntities (addEntity) {
   entities.push(speedUpEntity(globals.width - 150, 200));
 
   return entities;
-}
+};
 
 export function towerEntity (x, y, specs) {
   globals.player.gold -= specs[3];
@@ -74,6 +74,14 @@ export function towerEntity (x, y, specs) {
   let {pixiSprite} = entity.components.sprite;
   pixiSprite.anchor.set(0.5, 0.5);
   pixiSprite.scale.set(slotSize / pixiSprite.texture.height);
+
+  if (specs[2] == 'tower_weak') {
+    let rotatable = new PIXI.Sprite(PIXI.loader.resources['tower_weak_top'].texture);
+    rotatable.anchor.set(0.5, 0.5);
+    rotatable.scale.set(pixiSprite.scale.x);
+    pixiSprite.addChild(rotatable);
+  }
+
   entity.addComponent('range', {range: specs[4], color: 0xFF0000});
   entity.addComponent('obstacle', {cost: 2000});
   entity.addComponent('gridPosition', {x: x, y: y});
@@ -85,9 +93,9 @@ export function towerEntity (x, y, specs) {
     }
   });
   return entity;
-}
+};
 
-function slotEntity (x, y, clickable = true, style = 'slot') {
+function slotEntity (x, y, clickable = true , style = 'slot') {
   let worldPos = new PixiVector(x, y)
     .multiply(slotSize)
     .add(slotSize / 2)
@@ -114,4 +122,4 @@ export function spriteEntity (x, y, img_name) {
   sprite.pixiSprite = new PIXI.Sprite(PIXI.loader.resources[img_name].texture);
   sprite.pixiSprite.position.set(x, y);
   return entity;
-}
+};

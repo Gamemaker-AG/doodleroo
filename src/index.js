@@ -103,6 +103,7 @@ PIXI.loader
   .add('coin', '/img/coin.png')
   .add('circular_background', '/img/circular_background.png')
   .add('tower_weak', '/img/tower_weak.png')
+  .add('tower_weak_top', '/img/tower_weak_top.png')
   .add('tower_strong', '/img/tower_strong.png')
   .add('tower_long', '/img/tower_long.png')
   .add('slot', '/img/slot.png')
