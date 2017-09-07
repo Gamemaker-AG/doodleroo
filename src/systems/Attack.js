@@ -36,7 +36,6 @@ export default class Attack extends ECS.System {
         if (pos.distance(enemyPos) <= range.range * globals.slotSize) {
           if (!this.unitToAttack) {
             this.unitToAttack = enemy;
-            console.log(this.unitToAttack);
           }
 
           let {position: unitToAttackPos} = this.unitToAttack.components.sprite.pixiSprite;

@@ -16,9 +16,8 @@ export default class Destination extends ECS.System {
   update (entity) {
     if (entity.components.gridPosition.x === entity.components.goal.x &&
       entity.components.gridPosition.y === entity.components.goal.y) {
-      globals.player.deduct_life()
-      this.ecs.removeEntity(entity)
+      globals.player.deduct_life();
+      this.ecs.removeEntity(entity);
     }
   }
 }
-

@@ -11,9 +11,9 @@ export default class Movement extends ECS.System {
     let {velocity, angularVelocity} = entity.components.movement;
     if (typeof velocity !== 'undefined') {
       if (entity.components.debug) {
-        console.log("adding movement", velocity);
+        console.log('adding movement', velocity);
       }
-      pixiSprite.position.add(velocity.multiply(window.dt))
+      pixiSprite.position.add(velocity.multiply(window.dt));
     }
     if (angularVelocity !== undefined) {
       pixiSprite.rotation += angularVelocity * window.dt;

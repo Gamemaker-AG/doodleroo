@@ -10,7 +10,7 @@ export default class Grid extends ECS.System {
     this.new_costs = this.initializedArray(globals.slotCount, globals.slotCount, 1.0);
   }
 
-  initializedArray(xSize, ySize, value, edgeValue = Infinity) {
+  initializedArray (xSize, ySize, value, edgeValue = Infinity) {
     let len = 0;
     let result = [];
     for (let y = 0; y < ySize; y++) {
@@ -96,7 +96,7 @@ export default class Grid extends ECS.System {
 
     frontier.enqueue([[[startX, startY]], 1 + heuristic([startX, startY], [goalX, goalY])]);
 
-    let current = undefined;
+    let current;
     let i = 0;
     while (current = frontier.dequeue()) {
       i++;
@@ -113,7 +113,7 @@ export default class Grid extends ECS.System {
                 cost += this.costs[el[0]][el[1]];
               }
               return path.concat([[goalX, goalY]]);
-            };
+            }
             let cost = 0;
             let newPath = path.concat([pos]);
             for (let el of newPath) {
