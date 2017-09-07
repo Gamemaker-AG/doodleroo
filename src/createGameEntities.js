@@ -1,3 +1,4 @@
+import * as PIXI from 'pixi.js';
 import ECS from 'yagl-ecs';
 import Sprite from 'components/Sprite.js';
 import globals from 'globals';
@@ -74,7 +75,7 @@ export function towerEntity (x, y, specs) {
   pixiSprite.anchor.set(0.5, 0.5);
   pixiSprite.scale.set(slotSize / pixiSprite.texture.height);
 
-  if (specs[2] == 'tower_weak') {
+  if (specs[2] === 'tower_weak') {
     let rotatable = new PIXI.Sprite(PIXI.loader.resources['tower_weak_top'].texture);
     rotatable.anchor.set(0.5, 0.5);
     rotatable.scale.set(pixiSprite.scale.x);
@@ -115,10 +116,10 @@ function slotEntity (x, y, clickable = true, style = 'slot') {
   return entity;
 }
 
-export function spriteEntity (x, y, img_name) {
+export function spriteEntity (x, y, imgName) {
   let entity = new ECS.Entity(null, [Sprite]);
   let sprite = entity.components.sprite;
-  sprite.pixiSprite = new PIXI.Sprite(PIXI.loader.resources[img_name].texture);
+  sprite.pixiSprite = new PIXI.Sprite(PIXI.loader.resources[imgName].texture);
   sprite.pixiSprite.position.set(x, y);
   return entity;
 }
