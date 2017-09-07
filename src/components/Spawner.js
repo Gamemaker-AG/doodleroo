@@ -1,4 +1,3 @@
-import Vector from 'vigur';
 import PixiVector from 'PixiVector';
 import globals from 'globals';
 
@@ -9,7 +8,7 @@ export default {
   defaults: {
     timeSinceSpawn: 0,
     enemyImageName: 'tower_strong',
-    enemyComponents: () => {
+    enemyComponents: (x, y) => {
       return {
         'enemy': {},
         'gridPosition': {x: 0, y: 0},
