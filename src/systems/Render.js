@@ -17,6 +17,7 @@ export default class Render extends ECS.System {
     this.width = width;
     this.height = height;
     this.stage = stage;
+    this.pathIndicators = {}
 
     window.addEventListener('resize', this.resizeHandler.bind(this), false);
     this.resizeHandler();
@@ -36,29 +37,34 @@ export default class Render extends ECS.System {
   }
 
   drawDebugPath (entity) {
-    if (entity.components.goalPath.path !== undefined) {
-      entity.pathUpdated = false;
-      if (entity.pathIndicator === undefined) {
-        entity.pathIndicator = new PIXI.Graphics();
+    entity.components.goalPath.pathUpdated = false;
+    if (this.pathIndicators[entity.id] === undefined) {
+      this.pathIndicators[entity.id] = new PIXI.Graphics();
+    }
+    let pathIndicator = this.pathIndicators[entity.id]
+    pathIndicator.clear();
+    pathIndicator.lineStyle(
+      10,
+      0xDDDD00,
+      0.5
+    );
+    let first = true;
+    pathIndicator.moveTo(0, 0);
+    for (let pos of entity.components.goalPath.path) {
+      let {x, y} = toWorldCoords({x: pos[0], y: pos[1]});
+      if (first) {
+        pathIndicator.moveTo(x + globals.slotSize / 2, y + globals.slotSize / 2);
+        first = false;
+      } else {
+        pathIndicator.lineTo(x + globals.slotSize / 2, y + globals.slotSize / 2);
       }
-      entity.pathIndicator.clear();
-      entity.pathIndicator.lineStyle(
-        10,
-        0xDDDD00,
-        0.5
-      );
-      let first = true;
-      entity.pathIndicator.moveTo(0, 0);
-      for (let pos of entity.components.goalPath.path) {
-        let {x, y} = toWorldCoords({x: pos[0], y: pos[1]});
-        if (first) {
-          entity.pathIndicator.moveTo(x + globals.slotSize / 2, y + globals.slotSize / 2);
-          first = false;
-        } else {
-          entity.pathIndicator.lineTo(x + globals.slotSize / 2, y + globals.slotSize / 2);
-        }
-      }
-      this.stage.addChild(entity.pathIndicator);
+    }
+    this.stage.addChild(pathIndicator);
+  }
+
+  preUpdate () {
+    for (let indicator of Object.values(this.pathIndicators)) {
+      indicator.clear();
     }
   }
 

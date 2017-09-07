@@ -52,7 +52,7 @@ export default class Grid extends ECS.System {
               let tower_pos = entity.components.sprite.pixiSprite.position.toGrid();
               let distance = slot_pos.distance(tower_pos);
               if (distance <= entity.components.range.range) {
-                this.new_costs[x][y] += entity.components.attack.damage * entity.components.attack.rate * 10000;
+                this.new_costs[x][y] += entity.components.attack.damage * entity.components.attack.rate * 100;
               }
             }
           }
@@ -72,10 +72,10 @@ export default class Grid extends ECS.System {
           path: path
         });
       } else {
-        entity.path_updated = true;
+        entity.components.goalPath.pathUpdated = true;
         entity.components.goalPath.path = path;
       }
-      entity.pathUpdated = true;
+      entity.components.goalPath.pathUpdated = true;
     }
   }
 
