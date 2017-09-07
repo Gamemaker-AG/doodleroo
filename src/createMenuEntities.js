@@ -1,10 +1,5 @@
-import ECS from 'yagl-ecs';
-import Sprite from 'components/Sprite.js';
 import globals from 'globals';
-import Button from 'components/Button';
-import * as actions from 'button-actions';
-import { spriteEntity } from 'UIEntities';
-import { buttonMuteEntity } from 'UIEntities';
+import { spriteEntity, buttonMuteEntity } from 'entities/ui';
 
 export default function createMenuEntities (newGame) {
   let entities = [];
@@ -14,7 +9,7 @@ export default function createMenuEntities (newGame) {
   entities.push(buttonMuteEntity(globals.width - 150, 100));
 
   return entities;
-};
+}
 
 function buttonNewGameEntity (x, y, newGame) {
   let entity = spriteEntity(x, y, 'button_newGame');

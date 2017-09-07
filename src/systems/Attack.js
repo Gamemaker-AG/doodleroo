@@ -29,8 +29,10 @@ export default class Attack extends ECS.System {
 
     if (range && attack) {
       let {position: pos} = sprite.pixiSprite;
+
       for (let enemy of Object.values(this.enemies)) {
         let {position: enemyPos} = enemy.components.sprite.pixiSprite;
+
         if (pos.distance(enemyPos) <= range.range * globals.slotSize) {
           if (!this.unitToAttack) {
             this.unitToAttack = enemy;
@@ -40,13 +42,18 @@ export default class Attack extends ECS.System {
           let {position: unitToAttackPos} = this.unitToAttack.components.sprite.pixiSprite;
           let posVec = new PixiVector(pos.x, pos.y);
           let enemyPosVec = new PixiVector(unitToAttackPos.x, unitToAttackPos.y);
-          sprite.pixiSprite.rotation = ((enemyPosVec.subtract(posVec)).horizontalAngle);
+
+          if (sprite.pixiSprite.children.length === 0) {
+            sprite.pixiSprite.rotation = ((enemyPosVec.subtract(posVec)).horizontalAngle);
+          } else {
+            sprite.pixiSprite.getChildAt(0).rotation = ((enemyPosVec.subtract(posVec)).horizontalAngle);
+          }
 
           if (attack.timeSinceLastAttack >= (1 / attack.rate)) {
             this.attack(entity, this.unitToAttack);
             attack.timeSinceLastAttack = 0;
           }
-        } else if (this.unitToAttack == enemy) {
+        } else if (this.unitToAttack === enemy) {
           this.unitToAttack = null;
         }
       }
@@ -65,4 +72,4 @@ export default class Attack extends ECS.System {
       this.unitToAttack = null;
     }
   }
-};
+}

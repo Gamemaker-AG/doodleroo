@@ -1,13 +1,13 @@
+import * as PIXI from 'pixi.js';
 import ECS from 'yagl-ecs';
 import Sprite from 'components/Sprite.js';
 import globals from 'globals';
 import spawner from 'components/Spawner';
-import Button from 'components/Button';
 import gridPosition from 'components/GridPosition';
 import * as actions from 'button-actions';
 import constructionMenuEntity from 'entities/constructionMenu';
 import PixiVector from 'PixiVector';
-import { spriteEntity, buttonMuteEntity, infoPanelEntity, speedUpEntity } from 'UIEntities';
+import { buttonMuteEntity, infoPanelEntity, speedUpEntity } from 'entities/ui';
 
 const {slotCount, slotSize} = globals;
 
@@ -49,7 +49,7 @@ export default function createGameEntities (addEntity) {
         clickable = true;
         style = 'slot';
       }
-      if (y === slotCount - 1 && (x == Math.floor(slotCount / 2) || x == Math.ceil(slotCount / 2) - 1)) {
+      if (y === slotCount - 1 && (x === Math.floor(slotCount / 2) || x === Math.ceil(slotCount / 2) - 1)) {
         style = 'goal';
       }
       entities.push(slotEntity(x, y, clickable, style));
@@ -74,6 +74,14 @@ export function towerEntity (x, y, specs) {
   let {pixiSprite} = entity.components.sprite;
   pixiSprite.anchor.set(0.5, 0.5);
   pixiSprite.scale.set(slotSize / pixiSprite.texture.height);
+
+  if (specs[2] === 'tower_weak') {
+    let rotatable = new PIXI.Sprite(PIXI.loader.resources['tower_weak_top'].texture);
+    rotatable.anchor.set(0.5, 0.5);
+    rotatable.scale.set(pixiSprite.scale.x);
+    pixiSprite.addChild(rotatable);
+  }
+
   entity.addComponent('range', {range: specs[4], color: 0xFF0000});
   entity.addComponent('obstacle', {cost: 2000});
   entity.addComponent('gridPosition', {x: x, y: y});
@@ -108,10 +116,10 @@ function slotEntity (x, y, clickable = true, style = 'slot') {
   return entity;
 }
 
-export function spriteEntity (x, y, img_name) {
+export function spriteEntity (x, y, imgName) {
   let entity = new ECS.Entity(null, [Sprite]);
   let sprite = entity.components.sprite;
-  sprite.pixiSprite = new PIXI.Sprite(PIXI.loader.resources[img_name].texture);
+  sprite.pixiSprite = new PIXI.Sprite(PIXI.loader.resources[imgName].texture);
   sprite.pixiSprite.position.set(x, y);
   return entity;
 }

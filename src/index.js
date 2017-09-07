@@ -1,15 +1,12 @@
 import * as PIXI from 'pixi.js';
 import ECS from 'yagl-ecs';
-import Vector from 'vigur';
 
 import Render from './systems/Render.js';
 import Movement from './systems/Movement.js';
-import Sprite from './components/Sprite.js';
 import ButtonSystem from 'systems/Button';
 import GridSystem from 'systems/Grid';
 import FollowPath from 'systems/FollowPath';
 import Destination from 'systems/Destination';
-import Button from 'components/Button';
 import Range from 'systems/Range';
 import Attack from 'systems/Attack';
 import Construction from 'systems/Construction';
@@ -31,11 +28,11 @@ window.PIXI.ObservablePoint.prototype = ObservablePixiVector.prototype;
 
 const game = newGameState();
 const menu = newGameState();
-let current_state = menu;
+let currentState = menu;
 let ticker, renderer;
 
 let newGame = function () {
-  current_state = game;
+  currentState = game;
 };
 
 function newGameState () {
@@ -47,8 +44,8 @@ function newGameState () {
 
 function gameLoop () {
   window.dt = ticker.elapsedMS * window.speed / 1000;
-  current_state.ecs.update();
-  renderer.render(current_state.stage);
+  currentState.ecs.update();
+  renderer.render(currentState.stage);
 }
 
 function startGame () {
@@ -103,6 +100,7 @@ PIXI.loader
   .add('coin', '/img/coin.png')
   .add('circular_background', '/img/circular_background.png')
   .add('tower_weak', '/img/tower_weak.png')
+  .add('tower_weak_top', '/img/tower_weak_top.png')
   .add('tower_strong', '/img/tower_strong.png')
   .add('tower_long', '/img/tower_long.png')
   .add('slot', '/img/slot.png')
