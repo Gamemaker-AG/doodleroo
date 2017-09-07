@@ -2,12 +2,11 @@ import ECS from 'yagl-ecs';
 import Sprite from 'components/Sprite.js';
 import globals from 'globals';
 import spawner from 'components/Spawner';
-import Button from 'components/Button';
 import gridPosition from 'components/GridPosition';
 import * as actions from 'button-actions';
 import constructionMenuEntity from 'entities/constructionMenu';
 import PixiVector from 'PixiVector';
-import { spriteEntity, buttonMuteEntity, infoPanelEntity, speedUpEntity } from 'UIEntities';
+import { buttonMuteEntity, infoPanelEntity, speedUpEntity } from 'entities/ui';
 
 const {slotCount, slotSize} = globals;
 
@@ -49,7 +48,7 @@ export default function createGameEntities (addEntity) {
         clickable = true;
         style = 'slot';
       }
-      if (y === slotCount - 1 && (x == Math.floor(slotCount / 2) || x == Math.ceil(slotCount / 2) - 1)) {
+      if (y === slotCount - 1 && (x === Math.floor(slotCount / 2) || x === Math.ceil(slotCount / 2) - 1)) {
         style = 'goal';
       }
       entities.push(slotEntity(x, y, clickable, style));
@@ -66,7 +65,7 @@ export default function createGameEntities (addEntity) {
   entities.push(speedUpEntity(globals.width - 150, 200));
 
   return entities;
-};
+}
 
 export function towerEntity (x, y, specs) {
   globals.player.gold -= specs[3];
@@ -93,9 +92,9 @@ export function towerEntity (x, y, specs) {
     }
   });
   return entity;
-};
+}
 
-function slotEntity (x, y, clickable = true , style = 'slot') {
+function slotEntity (x, y, clickable = true, style = 'slot') {
   let worldPos = new PixiVector(x, y)
     .multiply(slotSize)
     .add(slotSize / 2)
@@ -122,4 +121,4 @@ export function spriteEntity (x, y, img_name) {
   sprite.pixiSprite = new PIXI.Sprite(PIXI.loader.resources[img_name].texture);
   sprite.pixiSprite.position.set(x, y);
   return entity;
-};
+}
