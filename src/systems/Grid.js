@@ -10,7 +10,7 @@ export default class Grid extends ECS.System {
     this.new_costs = this.initializedArray(globals.slotCount, globals.slotCount, 1.0);
   }
 
-  initializedArray(xSize, ySize, value, edgeValue = Infinity) {
+  initializedArray (xSize, ySize, value, edgeValue = Infinity) {
     let len = 0;
     let result = [];
     for (let y = 0; y < ySize; y++) {
@@ -54,9 +54,12 @@ export default class Grid extends ECS.System {
               );
               let tower_pos = entity.components.sprite.pixiSprite.position.clone();
               let distance = vec.distance(tower_pos) / globals.slotSize;
-              if (distance - globals.slotSize < entity.components.range.range)
-              {
-                this.new_costs[x][y] += entity.components.attack.damage * entity.components.attack.rate * 10000;
+              if (distance - globals.slotSize < entity.components.range.range) {
+                if (entity.components.attack) {
+                  this.new_costs[x][y] += entity.components.attack.damage * entity.components.attack.rate * 10000;
+                } else {
+                  this.new_costs[x][y] += entity.components.slow.rate * entity.components.slow.duration * 10000;
+                }
               }
             }
           }
@@ -117,7 +120,7 @@ export default class Grid extends ECS.System {
                 cost += this.costs[el[0]][el[1]];
               }
               return path.concat([[goalX, goalY]]);
-            };
+            }
             let cost = 0;
             let newPath = path.concat([pos]);
             for (let el of newPath) {
@@ -134,13 +137,13 @@ export default class Grid extends ECS.System {
   postUpdate () {
     this.costs = this.new_costs;
   }
-}
+};
 
 function alreadyVisited (pos, visited) {
   return typeof visited.find((visitedPosition) => {
-    return pos[0] == visitedPosition[0] &&
-      pos[1] == visitedPosition[1];
-  }) !== 'undefined';
+      return pos[0] == visitedPosition[0] &&
+        pos[1] == visitedPosition[1];
+    }) !== 'undefined';
 }
 
 function heuristic (current, goal) {
@@ -150,8 +153,10 @@ function heuristic (current, goal) {
 }
 
 function neighbors (x, y) {
-  let xs = [x - 1, x + 1].filter((x) => { return x >= 0 && x < globals.slotCount; });
-  let ys = [y - 1, y + 1].filter((y) => { return y >= 0 && y < globals.slotCount; });
+  let xs = [x - 1, x + 1].filter((x) => {
+    return x >= 0 && x < globals.slotCount;});
+  let ys = [y - 1, y + 1].filter((y) => {
+    return y >= 0 && y < globals.slotCount;});
   let positions = [];
   for (let newX of xs) {
     positions.push([newX, y]);

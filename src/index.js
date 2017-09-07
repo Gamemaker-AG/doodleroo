@@ -9,6 +9,7 @@ import FollowPath from 'systems/FollowPath';
 import Destination from 'systems/Destination';
 import Range from 'systems/Range';
 import Attack from 'systems/Attack';
+import Slow from 'systems/Slow';
 import Construction from 'systems/Construction';
 import UpdateGridPosition from 'systems/UpdateGridPosition';
 import InfoPanelUpdater from 'systems/InfoPanelUpdater';
@@ -67,6 +68,7 @@ function startGame () {
   game.ecs.addSystem(new Movement());
   game.ecs.addSystem(new Range(game.stage));
   game.ecs.addSystem(new Attack(game.ecs));
+  game.ecs.addSystem(new Slow(game.ecs));
   game.ecs.addSystem(new Construction());
   game.ecs.addSystem(new InfoPanelUpdater());
   game.ecs.addSystem(new UpdateGridPosition());

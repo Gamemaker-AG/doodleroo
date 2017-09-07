@@ -3,17 +3,18 @@ import globals from 'globals';
 import lineShot from 'entities/lineShot';
 import PixiVector from 'PixiVector';
 
-export default class Attack extends ECS.System {
+export default class Slow extends ECS.System {
   constructor (ecs, freq) {
     super(freq);
     this.ecs = ecs;
     this.enemies = {};
-    this.unitToAttack = null;
+    this.unitToSlow = null;
+    this.timeSinceLastSlow = 0;
   }
 
   test (entity) {
     return (entity.components.enemy && entity.components.sprite) ||
-      (entity.components.range && entity.components.attack && entity.components.sprite);
+      (entity.components.range && entity.components.slow && entity.components.sprite);
   }
 
   enter (entity) {
@@ -25,24 +26,22 @@ export default class Attack extends ECS.System {
   }
 
   update (entity) {
-    let { range, attack, sprite } = entity.components;
+    let { range, slow, sprite} = entity.components;
 
-    if (range && attack) {
+    if (range && slow) {
       let {position: pos} = sprite.pixiSprite;
-
-      sprite.pixiSprite.rotation += 1;
 
       for (let enemy of Object.values(this.enemies)) {
         let {position: enemyPos} = enemy.components.sprite.pixiSprite;
 
         if (pos.distance(enemyPos) <= range.range * globals.slotSize) {
-          if (!this.unitToAttack) {
-            this.unitToAttack = enemy;
+          if (!this.unitToSlow) {
+            this.unitToSlow = enemy;
           }
 
-          let {position: unitToAttackPos} = this.unitToAttack.components.sprite.pixiSprite;
+          let {position: unitToSlowPos} = this.unitToSlow.components.sprite.pixiSprite;
           let posVec = new PixiVector(pos.x, pos.y);
-          let enemyPosVec = new PixiVector(unitToAttackPos.x, unitToAttackPos.y);
+          let enemyPosVec = new PixiVector(unitToSlowPos.x, unitToSlowPos.y);
 
           if (sprite.pixiSprite.children.length == 0) {
             sprite.pixiSprite.rotation = ((enemyPosVec.subtract(posVec)).horizontalAngle);
@@ -50,27 +49,30 @@ export default class Attack extends ECS.System {
             sprite.pixiSprite.getChildAt(0).rotation = ((enemyPosVec.subtract(posVec)).horizontalAngle);
           }
 
-          if (attack.timeSinceLastAttack >= (1 / attack.rate)) {
-            this.attack(entity, this.unitToAttack);
-            attack.timeSinceLastAttack = 0;
-          }
-        } else if (this.unitToAttack == enemy) {
-          this.unitToAttack = null;
+          if (slow.timeSinceLastSlow >= (1 / slow.rate)) {
+            this.slow(entity, this.unitToSlow);
+            slow.timeSinceLastSlow = 0;
+          } /*else if (slow.timeSinceLastSlow >= slow.duration && this.unitToSlow.components.movement.speedFactor != 1) {
+            this.unitToSlow.components.movement.speedFactor = 1
+          }*/
+        } else if (this.unitToSlow == enemy) {
+          this.unitToSlow = null;
         }
       }
 
-      attack.timeSinceLastAttack += window.dt;
+      slow.timeSinceLastSlow += window.dt;
     }
   }
 
-  attack (tower, enemy) {
+  slow (tower, enemy) {
     let {position: origin} = tower.components.sprite.pixiSprite;
     let {position: target} = enemy.components.sprite.pixiSprite;
     this.ecs.addEntity(lineShot(origin, target));
-    enemy.components.health.health -= tower.components.attack.damage;
 
-    if (enemy.components.health.health <= 0) {
-      this.unitToAttack = null;
+    if (tower.components.slow.duration > enemy.components.movement.slowDuration) {
+      enemy.components.movement.slowDuration = tower.components.slow.duration;
     }
+
+    enemy.components.movement.speedFactor = tower.components.slow.speedFactor;
   }
 };
