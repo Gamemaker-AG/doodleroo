@@ -43,7 +43,7 @@ export default class Attack extends ECS.System {
           let posVec = new PixiVector(pos.x, pos.y);
           let enemyPosVec = new PixiVector(unitToAttackPos.x, unitToAttackPos.y);
 
-          if (sprite.pixiSprite.children.length == 0) {
+          if (sprite.pixiSprite.children.length === 0) {
             sprite.pixiSprite.rotation = ((enemyPosVec.subtract(posVec)).horizontalAngle);
           } else {
             sprite.pixiSprite.getChildAt(0).rotation = ((enemyPosVec.subtract(posVec)).horizontalAngle);
@@ -53,7 +53,7 @@ export default class Attack extends ECS.System {
             this.attack(entity, this.unitToAttack);
             attack.timeSinceLastAttack = 0;
           }
-        } else if (this.unitToAttack == enemy) {
+        } else if (this.unitToAttack === enemy) {
           this.unitToAttack = null;
         }
       }
@@ -72,4 +72,4 @@ export default class Attack extends ECS.System {
       this.unitToAttack = null;
     }
   }
-};
+}

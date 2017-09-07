@@ -8,10 +8,10 @@ export default {
   defaults: {
     timeSinceSpawn: 0,
     enemyImageName: 'tower_strong',
-    enemyComponents: () => {
+    enemyComponents: (x, y) => {
       return {
         'enemy': {},
-        'gridPosition': {x: 0, y: 0},
+        'gridPosition': {x, y},
         'movement': {
           velocity: new PixiVector(0, 0),
           angularVelocity: 0,
