@@ -44,18 +44,15 @@ export default class Grid extends ECS.System {
   update (entity) {
     let avoidAttacks = true;
     if (entity.components.obstacle) {
-      if (true) {
+      if (avoidAttacks) {
         if (entity.components.range) {
           for (let x = 0; x < globals.slotCount; x++) {
             for (let y = 0; y < globals.slotCount; y++) {
-              let vec = new PixiVector(
-                x * globals.slotSize + globals.slotSize / 2,
-                y * globals.slotSize + globals.slotSize / 2
-              );
-              let tower_pos = entity.components.sprite.pixiSprite.position.clone();
-              let distance = vec.distance(tower_pos) / globals.slotSize;
-              if (distance - globals.slotSize < entity.components.range.range)
-              {
+              let slot_pos = new PixiVector(x, y);
+              let tower_pos = entity.components.sprite.pixiSprite.position.toGrid();
+              let distance = slot_pos.distance(tower_pos);
+              console.log(distance);
+              if (distance <= entity.components.range.range) {
                 this.new_costs[x][y] += entity.components.attack.damage * entity.components.attack.rate * 10000;
               }
             }
