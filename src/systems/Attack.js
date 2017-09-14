@@ -21,7 +21,12 @@ export default class Attack extends ECS.System {
   }
 
   exit (entity) {
-    if (entity.components.enemy) delete this.enemies[entity.id];
+    if (entity.components.enemy) {
+      delete this.enemies[entity.id];
+      if (this.unitToAttack === entity) {
+        this.unitToAttack = null;
+      }
+    }
   }
 
   update (entity) {
@@ -49,9 +54,11 @@ export default class Attack extends ECS.System {
           }
 
           if (attack.timeSinceLastAttack >= (1 / attack.rate)) {
+            console.log(enemyPos);
             this.attack(entity, this.unitToAttack);
             attack.timeSinceLastAttack = 0;
           }
+        // Enemy is out of range, stop attacking him
         } else if (this.unitToAttack === enemy) {
           this.unitToAttack = null;
         }
@@ -66,9 +73,5 @@ export default class Attack extends ECS.System {
     let {position: target} = enemy.components.sprite.pixiSprite;
     this.ecs.addEntity(lineShot(origin, target));
     enemy.components.health.health -= tower.components.attack.damage;
-
-    if (enemy.components.health.health <= 0) {
-      this.unitToAttack = null;
-    }
   }
 };
