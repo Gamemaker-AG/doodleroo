@@ -7,7 +7,7 @@ import PriorityQueue from '@raymond-lam/priority-queue';
 export default class Grid extends ECS.System {
   constructor (freq) {
     super(freq);
-    this.new_costs = this.initializedArray(globals.slotCount, globals.slotCount, 1.0);
+    this.towers = this.initializedArray(globals.slotCount, globals.slotCount, {}, {});
   }
 
   initializedArray (xSize, ySize, value, edgeValue = Infinity) {
@@ -31,10 +31,54 @@ export default class Grid extends ECS.System {
     return result;
   }
 
+  enter (entity) {
+    if (entity.components.gridPosition && entity.components.obstacle) {
+      this.towers[entity.components.gridPosition.x][entity.components.gridPosition.y][entity.id] = entity;
+    }
+  }
+
+  exit (entity) {
+    if (entity.components.gridPosition && entity.components.obstacle) {
+      delete this.towers[entity.gridPosition.x][entity.gridPostion.y][entity.id];
+    }
+  }
+
   preUpdate () {
     this.calculatePaths = [];
-    this.costs = this.new_costs;
-    this.new_costs = this.initializedArray(globals.slotCount, globals.slotCount, 1.0);
+    this.costs = this.initializedArray(globals.slotCount, globals.slotCount, 1.0);
+    for (let x = 0; x < globals.slotCount; x++) {
+      for (let y = 0; y < globals.slotCount; y++) {
+        for (let id of Object.keys(this.towers[x][y])) {
+          let entity = this.towers[x][y][id];
+          let { gridPosition } = entity.components
+          this.updateAttackablePositions(entity);
+          this.costs[gridPosition.x][gridPosition.y] += entity.components.obstacle.cost;
+        }
+      }
+    }
+  }
+
+  updateAttackablePositions (entity) {
+    let range = entity.components.range.range;
+    let { gridPosition } = entity.components;
+    let x_lower = Math.max(gridPosition.x - range, 0);
+    let y_lower = Math.max(gridPosition.y - range, 0);
+    let x_upper = Math.min(gridPosition.x + range, globals.slotCount);
+    let y_upper = Math.min(gridPosition.y + range, globals.slotCount);
+    for (let x = x_lower; x < x_upper; x++) {
+      for (let y = y_lower; y < y_upper; y++) {
+        let slot_pos = new PixiVector(x, y);
+        let tower_pos = entity.components.sprite.pixiSprite.position.toGrid();
+        let distance = slot_pos.distance(tower_pos);
+        if (distance <= entity.components.range.range) {
+          if (entity.components.attack) {
+            this.costs[x][y] += entity.components.attack.damage * entity.components.attack.rate * 100;
+          } else {
+            this.costs[x][y] += entity.components.slow.rate * entity.components.slow.duration * 100;
+          }
+        }
+      }
+    }
   }
 
   test (entity) {
@@ -44,25 +88,6 @@ export default class Grid extends ECS.System {
   update (entity) {
     let avoidAttacks = true;
     if (entity.components.obstacle) {
-      if (avoidAttacks) {
-        if (entity.components.range) {
-          for (let x = 0; x < globals.slotCount; x++) {
-            for (let y = 0; y < globals.slotCount; y++) {
-              let slot_pos = new PixiVector(x, y);
-              let tower_pos = entity.components.sprite.pixiSprite.position.toGrid();
-              let distance = slot_pos.distance(tower_pos);
-              if (distance <= entity.components.range.range) {
-                if (entity.components.attack) {
-                  this.new_costs[x][y] += entity.components.attack.damage * entity.components.attack.rate * 100;
-                } else {
-                  this.new_costs[x][y] += entity.components.slow.rate * entity.components.slow.duration * 100;
-                }
-              }
-            }
-          }
-        }
-      }
-      this.new_costs[entity.components.gridPosition.x][entity.components.gridPosition.y] += entity.components.obstacle.cost;
       return;
     }
     if (!entity.components.enemy) {
@@ -129,10 +154,6 @@ export default class Grid extends ECS.System {
         }
       }
     }
-  }
-
-  postUpdate () {
-    this.costs = this.new_costs;
   }
 };
 
