@@ -16,8 +16,10 @@ export default class Movement extends ECS.System {
       }
 
       if (entity.components.movement.slowDuration == 0) {
+        entity.components.sprite.pixiSprite.tint = '0xFFFFFF';
         entity.components.movement.speedFactor = 1;
       } else {
+        entity.components.sprite.pixiSprite.tint = '0xB2DFEE';
         entity.components.movement.slowDuration -= window.dt;
 
         if (entity.components.movement.slowDuration < 0) {
