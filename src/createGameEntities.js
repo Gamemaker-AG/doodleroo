@@ -75,6 +75,7 @@ export function towerEntity (x, y, specs) {
   pixiSprite.anchor.set(0.5, 0.5);
   pixiSprite.scale.set(slotSize / pixiSprite.texture.height);
 
+
   if (specs[2] === 'tower_weak') {
     let rotatable = new PIXI.Sprite(PIXI.loader.resources['tower_weak_top'].texture);
     rotatable.anchor.set(0.5, 0.5);
@@ -92,6 +93,7 @@ export function towerEntity (x, y, specs) {
   if (specs[2] !== 'tower_long') {
     entity.addComponent('attack', {rate: 0.5, timeSinceLastAttack: 0, damage: specs[5]});
   }
+  entity.addComponent('purchased', {cost: specs[3]});
   entity.addComponent('button', {
     actions: {
       'mouseover': actions.TOGGLE_SHOW_RANGES,

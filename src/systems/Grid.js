@@ -65,16 +65,14 @@ export default class Grid extends ECS.System {
     let y_lower = Math.floor(Math.max(gridPosition.y - range, 0));
     let x_upper = Math.ceil(Math.min(gridPosition.x + range, globals.slotCount));
     let y_upper = Math.ceil(Math.min(gridPosition.y + range, globals.slotCount));
-    for (let x = x_lower; x < x_upper; x++) {
-      for (let y = y_lower; y < y_upper; y++) {
+    for (let x = x_lower; x <= x_upper; x++) {
+      for (let y = y_lower; y <= y_upper; y++) {
         let slot_pos = new PixiVector(x, y);
         let tower_pos = entity.components.sprite.pixiSprite.position.toGrid();
         let distance = slot_pos.distance(tower_pos);
         if (distance <= entity.components.range.range) {
-          if (entity.components.attack) {
-            this.costs[x][y] += entity.components.attack.damage * entity.components.attack.rate * 100;
-          } else {
-            this.costs[x][y] += entity.components.slow.rate * entity.components.slow.duration * 100;
+          if (entity.components.purchased) {
+            this.costs[x][y] += entity.components.purchased.cost / entity.components.purchased.cost;
           }
         }
       }
