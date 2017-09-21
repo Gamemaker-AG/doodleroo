@@ -60,16 +60,20 @@ function startGame () {
 
   globals.player = new Player();
 
+  // Menu
+
   menu.ecs.addSystem(new Render(renderer, menu.stage, globals.width, globals.height));
   menu.ecs.addSystem(new ButtonSystem());
 
+  // Game
+  let rangeSystem = new Range(game.stage);
+
   game.ecs.addSystem(new Render(renderer, game.stage, globals.width, globals.height));
-  game.ecs.addSystem(new ButtonSystem());
+  game.ecs.addSystem(new ButtonSystem(rangeSystem));
   game.ecs.addSystem(new GridSystem(1));
   game.ecs.addSystem(new Movement());
-  game.ecs.addSystem(new Range(game.stage));
+  game.ecs.addSystem(rangeSystem);
   game.ecs.addSystem(new Attack(game.ecs));
-  // game.ecs.addSystem(new Slow(game.ecs))
   game.ecs.addSystem(new Construction());
   game.ecs.addSystem(new InfoPanelUpdater());
   game.ecs.addSystem(new UpdateGridPosition());
@@ -99,6 +103,7 @@ function startGame () {
 
 PIXI.loader
   .add('red_square', 'img/red_square.png')
+  .add('green_square', 'img/green_square.png')
   .add('heart', 'img/heart.png')
   .add('coin', 'img/coin.png')
   .add('circular_background', 'img/circular_background.png')

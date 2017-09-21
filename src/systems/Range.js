@@ -36,8 +36,8 @@ export default class Range extends ECS.System {
     entity.components.range.indicator.alpha = (entity.components.range.isVisible ? 1 : 0);
   }
 
-  [ actions.TOGGLE_SHOW_RANGES ] () {
-    for (let entity of this.entities) {
+  [ actions.TOGGLE_SHOW_RANGES_SINGLE ] (entity, button) {
+    if (!button.components.sprite.pixiSprite.children[0].visible) {
       entity.components.range.isVisible = !entity.components.range.isVisible;
     }
   }

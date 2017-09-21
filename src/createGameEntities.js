@@ -7,7 +7,7 @@ import gridPosition from 'components/GridPosition';
 import * as actions from 'button-actions';
 import constructionMenuEntity from 'entities/constructionMenu';
 import PixiVector from 'PixiVector';
-import { buttonMuteEntity, infoPanelEntity, speedUpEntity } from 'entities/ui';
+import { buttonMuteEntity, infoPanelEntity, speedUpEntity, showRangesEntity } from 'entities/ui';
 
 const {slotCount, slotSize} = globals;
 
@@ -32,7 +32,7 @@ const towers = [
   }
 ];
 
-let constructionMenu;
+let constructionMenu, buttonShowRanges;
 
 export default function createGameEntities (addEntity) {
   let entities = [];
@@ -65,6 +65,9 @@ export default function createGameEntities (addEntity) {
   entities.push(buttonMuteEntity(globals.width - 150, 100));
   entities.push(speedUpEntity(globals.width - 150, 200));
 
+  buttonShowRanges = showRangesEntity(globals.width - 150, 300);
+  entities.push(buttonShowRanges);
+
   return entities;
 };
 
@@ -74,7 +77,6 @@ export function towerEntity (x, y, specs) {
   let {pixiSprite} = entity.components.sprite;
   pixiSprite.anchor.set(0.5, 0.5);
   pixiSprite.scale.set(slotSize / pixiSprite.texture.height);
-
 
   if (specs[2] === 'tower_weak') {
     let rotatable = new PIXI.Sprite(PIXI.loader.resources['tower_weak_top'].texture);
@@ -94,8 +96,8 @@ export function towerEntity (x, y, specs) {
   entity.addComponent('attack', {rate: 0.5, timeSinceLastAttack: 0, damage: specs[5]});
   entity.addComponent('button', {
     actions: {
-      'mouseover': actions.TOGGLE_SHOW_RANGES,
-      'mouseout': actions.TOGGLE_SHOW_RANGES
+      'mouseover': [actions.TOGGLE_SHOW_RANGES_SINGLE, entity, buttonShowRanges],
+      'mouseout': [actions.TOGGLE_SHOW_RANGES_SINGLE, entity, buttonShowRanges]
     }
   });
   return entity;

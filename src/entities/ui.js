@@ -1,6 +1,7 @@
 import ECS from 'yagl-ecs';
 import Sprite from 'components/Sprite.js';
 import globals from 'globals';
+import * as actions from 'button-actions';
 
 export function buttonMuteEntity (x, y) {
   let entity = spriteEntity(x, y, 'button_soundEnabled');
@@ -21,7 +22,26 @@ export function buttonMuteEntity (x, y) {
     }
   });
   return entity;
-}
+};
+
+export function showRangesEntity (x, y) {
+  let entity = spriteEntity(x, y, 'red_square');
+  entity.components.sprite.pixiSprite.anchor.set(0.5, 0.5);
+
+  let sprite = new PIXI.Sprite(PIXI.loader.resources['green_square'].texture);
+  sprite.anchor.set(0.5, 0.5);
+  sprite.position.set(0, 0);
+  sprite.visible = false;
+
+  entity.components.sprite.pixiSprite.addChild(sprite);
+  entity.addComponent('button', {
+    actions: {
+      'click': [actions.TOGGLE_SHOW_RANGES_ALL, sprite]
+    }
+  });
+
+  return entity;
+};
 
 export function speedUpEntity (x, y) {
   let entity = spriteEntity(x, y, 'button_slow');
@@ -43,7 +63,7 @@ export function speedUpEntity (x, y) {
   });
 
   return entity;
-}
+};
 
 export function infoPanelEntity (x, y) {
   let entity = new ECS.Entity(null, [Sprite]);
@@ -76,7 +96,7 @@ export function infoPanelEntity (x, y) {
   entity.addComponent('infoPanelUpdater');
 
   return entity;
-}
+};
 
 export function spriteEntity (x, y, img_name) {
   let entity = new ECS.Entity(null, [Sprite]);
@@ -84,4 +104,4 @@ export function spriteEntity (x, y, img_name) {
   sprite.pixiSprite = new PIXI.Sprite(PIXI.loader.resources[img_name].texture);
   sprite.pixiSprite.position.set(x, y);
   return entity;
-}
+};
