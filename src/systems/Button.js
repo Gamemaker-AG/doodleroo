@@ -18,7 +18,7 @@ export default class Button extends ECS.System {
     for (let name of Object.keys(actions)) {
       let action = actions[name];
       if (action instanceof Function) {
-        entity.components.sprite.pixiSprite.click = action;
+        entity.components.sprite.pixiSprite[name] = action;
       } else if (action !== null){
         let args = [];
         if (action instanceof Array) {
