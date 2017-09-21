@@ -5,8 +5,7 @@ module.exports = {
   devtool: 'cheap-module-eval-source-map',
   output: {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist'),
-    publicPath: 'basement-attack'
+    path: path.resolve(__dirname, 'dist')
   },
   devServer: {
     contentBase: path.join(__dirname, 'assets')
