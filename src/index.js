@@ -24,6 +24,8 @@ import PixiVector from 'PixiVector';
 import ObservablePixiVector from 'ObservablePixiVector';
 import Player from 'Player';
 
+console.log('build test');
+
 window.PIXI.Point.prototype = PixiVector.prototype;
 window.PIXI.ObservablePoint.prototype = ObservablePixiVector.prototype;
 
