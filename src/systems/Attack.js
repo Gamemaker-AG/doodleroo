@@ -72,6 +72,17 @@ export default class Attack extends ECS.System {
     let {position: origin} = tower.components.sprite.pixiSprite;
     let {position: target} = enemy.components.sprite.pixiSprite;
     this.ecs.addEntity(lineShot(origin, target));
-    enemy.components.health.health -= tower.components.attack.damage;
+
+    if (tower.components.slow) {
+      // slow
+      if (tower.components.slow.duration > enemy.components.movement.slowDuration) {
+        enemy.components.movement.slowDuration = tower.components.slow.duration;
+      }
+
+      enemy.components.movement.speedFactor = tower.components.slow.speedFactor;
+    } else {
+      // attack
+      enemy.components.health.health -= tower.components.attack.damage;
+    }
   }
 };

@@ -83,15 +83,13 @@ export function towerEntity (x, y, specs) {
   }
 
   if (specs[2] === 'tower_long') {
-    entity.addComponent('slow', {rate: 0.5, timeSinceLastSlow: 0, speedFactor: 0.5, duration: 0.8});
+    entity.addComponent('slow', {speedFactor: 0.5, duration: 0.8});
   }
 
   entity.addComponent('range', {range: specs[4], color: 0xFF0000});
   entity.addComponent('obstacle', {cost: 3});
   entity.addComponent('gridPosition', {x: x, y: y});
-  if (specs[2] !== 'tower_long') {
-    entity.addComponent('attack', {rate: 0.5, timeSinceLastAttack: 0, damage: specs[5]});
-  }
+  entity.addComponent('attack', {rate: 0.5, timeSinceLastAttack: 0, damage: specs[5]});
   entity.addComponent('button', {
     actions: {
       'mouseover': actions.TOGGLE_SHOW_RANGES,
