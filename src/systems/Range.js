@@ -31,8 +31,6 @@ export default class Range extends ECS.System {
   }
 
   update (entity) {
-    let {pixiSprite} = entity.components.sprite;
-
     entity.components.range.indicator.alpha = (entity.components.range.isVisible ? 1 : 0);
   }
 
