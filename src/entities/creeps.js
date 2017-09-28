@@ -4,7 +4,8 @@ import globals from 'globals';
 
 const creep_types = [
   {cost: 100, factory: baseCreep},
-  {cost: 200, factory: tankCreep}
+  {cost: 200, factory: tankCreep},
+  {cost: 300, factory: speedCreep}
 ]
 
 export default function randomCreeps (x, y, difficulty) {
@@ -46,7 +47,13 @@ export function baseCreep (x, y) {
 
 
 export function tankCreep (x, y) {
-  let entity = baseCreep(x, y, 100);
+  let entity = baseCreep(x, y);
   entity.components.health = 1000;
+  return entity;
+}
+
+export function speedCreep (x, y) {
+  let entity = baseCreep(x, y);
+  entity.components.movement.maxSpeed *= 1.5;
   return entity;
 }
