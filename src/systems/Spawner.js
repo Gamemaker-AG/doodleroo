@@ -1,6 +1,7 @@
 import ECS from 'yagl-ecs';
 import { spriteEntity } from 'createGameEntities';
 import PixiVector from 'PixiVector';
+import baseCreep from 'entities/creeps';
 
 export default class Spawner extends ECS.System {
   constructor (ecs, freq) {
@@ -15,13 +16,7 @@ export default class Spawner extends ECS.System {
   spawn (spawnerEntity) {
     let { spawner } = spawnerEntity.components;
     let { x, y } = spawnerEntity.components.gridPosition;
-    let vec = new PixiVector(x, y).toWorld();
-    let entity = spriteEntity(vec.x, vec.y, 'tower_weak');
-    entity.components.sprite.pixiSprite.anchor.set(0.5, 0.5);
-    entity.addComponent('spawned');
-    for (let [name, value] of Object.entries(spawner.enemyComponents(x, y))) {
-      entity.addComponent(name, value);
-    }
+    let entity = baseCreep(x, y, 100);
     this.ecs.addEntity(entity);
   }
 
