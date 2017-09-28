@@ -1,6 +1,7 @@
 import ECS from 'yagl-ecs';
 import { spriteEntity } from 'createGameEntities';
 import PixiVector from 'PixiVector';
+import randomCreeps from 'entities/creeps';
 
 export default class Spawner extends ECS.System {
   constructor (ecs, freq) {
@@ -12,23 +13,39 @@ export default class Spawner extends ECS.System {
     return entity.components.spawner;
   }
 
-  spawn (spawnerEntity) {
+  difficulty (wave) {
+    // TODO: scale difficulty in some reasonable way here
+    return wave ** wave * 100
+  }
+
+  setUpWave (spawnerEntity) {
     let { spawner } = spawnerEntity.components;
     let { x, y } = spawnerEntity.components.gridPosition;
-    let vec = new PixiVector(x, y).toWorld();
-    let entity = spriteEntity(vec.x, vec.y, 'tower_weak');
-    entity.components.sprite.pixiSprite.anchor.set(0.5, 0.5);
-    entity.addComponent('spawned');
-    for (let [name, value] of Object.entries(spawner.enemyComponents(x, y))) {
-      entity.addComponent(name, value);
+    spawner.inWave = true;
+    spawner.timeSinceWave = 0;
+    spawner.toSpawn = randomCreeps(x, y, this.difficulty(spawner.waveCounter));
+    spawner.waveCounter += 1;
+  }
+
+  spawn (spawnerEntity) {
+    let { spawner } = spawnerEntity.components;
+    if (spawner.toSpawn.length > 0) {
+      this.ecs.addEntity(spawner.toSpawn.pop());
+    } else {
+      spawner.inWave = false;
     }
-    this.ecs.addEntity(entity);
   }
 
   update (entity) {
     let { spawner } = entity.components;
     spawner.timeSinceSpawn += window.dt;
-    if (spawner.timeSinceSpawn > spawner.interval) {
+    if (!spawner.inWave) {
+      spawner.timeSinceWave += window.dt;
+      if (spawner.timeSinceWave > spawner.waveDelay) {
+        this.setUpWave(entity);
+      }
+    }
+    if (spawner.timeSinceSpawn > spawner.interval && spawner.inWave) {
       this.spawn(entity);
       spawner.timeSinceSpawn = 0;
     }
