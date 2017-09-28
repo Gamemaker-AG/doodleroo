@@ -78,7 +78,7 @@ export default class Grid extends ECS.System {
         let distance = slot_pos.distance(tower_pos);
         if (distance <= entity.components.range.range) {
           if (entity.components.purchased) {
-            this.costs[x][y] += entity.components.purchased.cost / entity.components.purchased.cost;
+            this.costs[x][y] += entity.components.purchased.cost / entity.components.range.range;
           }
         }
       }
