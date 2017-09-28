@@ -7,6 +7,10 @@ export default {
   name: 'spawner',
   defaults: {
     timeSinceSpawn: 0,
+    timeSinceWave: 0,
+    inWave: false,
+    waveDelay: 5,
+    toSpawn: [],
     enemyImageName: 'tower_strong',
     enemyComponents: (x, y) => {
       return {

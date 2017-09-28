@@ -1,7 +1,7 @@
 import ECS from 'yagl-ecs';
 import { spriteEntity } from 'createGameEntities';
 import PixiVector from 'PixiVector';
-import baseCreep from 'entities/creeps';
+import randomCreeps from 'entities/creeps';
 
 export default class Spawner extends ECS.System {
   constructor (ecs, freq) {
@@ -13,17 +13,33 @@ export default class Spawner extends ECS.System {
     return entity.components.spawner;
   }
 
-  spawn (spawnerEntity) {
+  setUpWave (spawnerEntity) {
     let { spawner } = spawnerEntity.components;
     let { x, y } = spawnerEntity.components.gridPosition;
-    let entity = baseCreep(x, y, 100);
-    this.ecs.addEntity(entity);
+    spawner.inWave = true;
+    spawner.timeSinceWave = 0;
+    spawner.toSpawn = randomCreeps(x, y, 1000);
+  }
+
+  spawn (spawnerEntity) {
+    let { spawner } = spawnerEntity.components;
+    if (spawner.toSpawn.length > 0) {
+      this.ecs.addEntity(spawner.toSpawn.pop());
+    } else {
+      spawner.inWave = false;
+    }
   }
 
   update (entity) {
     let { spawner } = entity.components;
     spawner.timeSinceSpawn += window.dt;
-    if (spawner.timeSinceSpawn > spawner.interval) {
+    if (!spawner.inWave) {
+      spawner.timeSinceWave += window.dt;
+      if (spawner.timeSinceWave > spawner.waveDelay) {
+        this.setUpWave(entity);
+      }
+    }
+    if (spawner.timeSinceSpawn > spawner.interval && spawner.inWave) {
       this.spawn(entity);
       spawner.timeSinceSpawn = 0;
     }
