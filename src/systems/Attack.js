@@ -59,7 +59,6 @@ export default class Attack extends ECS.System {
           }
 
           if (attack.timeSinceLastAttack >= (1 / attack.rate) && rotationDiff <= 0.1) {
-            console.log(enemyPos);
             this.attack(entity, this.unitToAttack);
             attack.timeSinceLastAttack = 0;
           }

@@ -23,8 +23,6 @@ import PixiVector from 'PixiVector';
 import ObservablePixiVector from 'ObservablePixiVector';
 import Player from 'Player';
 
-console.log('build test');
-
 window.PIXI.Point.prototype = PixiVector.prototype;
 window.PIXI.ObservablePoint.prototype = ObservablePixiVector.prototype;
 
@@ -70,14 +68,15 @@ function startGame () {
 
   game.ecs.addSystem(new Render(renderer, game.stage, globals.width, globals.height));
   game.ecs.addSystem(new ButtonSystem(rangeSystem));
-  game.ecs.addSystem(new GridSystem(1));
+  let grid = new GridSystem();
+  game.ecs.addSystem(grid);
   game.ecs.addSystem(new Movement());
   game.ecs.addSystem(rangeSystem);
   game.ecs.addSystem(new Attack(game.ecs));
   game.ecs.addSystem(new Construction());
   game.ecs.addSystem(new InfoPanelUpdater());
   game.ecs.addSystem(new UpdateGridPosition());
-  game.ecs.addSystem(new FollowPath());
+  game.ecs.addSystem(new FollowPath(grid.towers));
   game.ecs.addSystem(new Destination(game.ecs));
   game.ecs.addSystem(new Spawner(game.ecs));
   game.ecs.addSystem(new FadeOut(game.ecs));

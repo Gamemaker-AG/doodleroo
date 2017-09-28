@@ -35,7 +35,7 @@ export default class Range extends ECS.System {
   }
 
   [ actions.TOGGLE_SHOW_RANGES_SINGLE ] (entity, button) {
-    if (!button.components.sprite.pixiSprite.children[0].visible) {
+    if (!globals.showRange) {
       entity.components.range.isVisible = !entity.components.range.isVisible;
     }
   }
