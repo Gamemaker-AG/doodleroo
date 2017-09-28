@@ -10,5 +10,6 @@ globals.gridOffset = 100;
 globals.slotSize = (globals.height - globals.gridOffset * 2) / globals.slotCount;
 
 globals.player = new Player();
+globals.showRange = false;
 
 export default globals;

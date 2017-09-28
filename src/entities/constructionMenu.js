@@ -3,7 +3,7 @@ import Sprite from 'components/Sprite.js';
 import GridPosition from 'components/GridPosition';
 import PixiVector from 'PixiVector';
 import globals from 'globals';
-import { towerEntity } from 'createGameEntities';
+import towerEntity from 'entities/towerEntity';
 
 const {slotCount, slotSize} = globals;
 
