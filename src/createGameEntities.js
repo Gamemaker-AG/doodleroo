@@ -92,6 +92,7 @@ export function towerEntity (x, y, specs) {
   let showRange = buttonShowRanges.components.sprite.pixiSprite.children[0].visible;
   entity.addComponent('range', {range: specs[4], color: 0xFF0000, isVisible: showRange});
   entity.addComponent('obstacle', {cost: 3});
+  entity.addComponent('health', {health: 100})
   entity.addComponent('gridPosition', {x: x, y: y});
   entity.addComponent('purchased', {cost: specs[3]});
   entity.addComponent('attack', {rate: 0.5, timeSinceLastAttack: 0, damage: specs[5]});

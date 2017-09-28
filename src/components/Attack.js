@@ -3,6 +3,7 @@ export default {
   defaults: {
     rate: 1,
     timeSinceLastAttack: 0,
-    damage: 50
+    damage: 50,
+    active: true
   }
 };
