@@ -7,23 +7,29 @@ import PriorityQueue from '@raymond-lam/priority-queue';
 export default class Grid extends ECS.System {
   constructor (freq) {
     super(freq);
-    this.towers = this.initializedArray(globals.slotCount, globals.slotCount, {}, {});
+    let newObj = () => { return {};};
+    this.towers = this.initializedArray(globals.slotCount, globals.slotCount, newObj, newObj);
   }
 
   initializedArray (xSize, ySize, value, edgeValue = Infinity) {
+    let generateValue = value;
+    let generateEdgeValue = edgeValue;
+    if (typeof(value) !== 'function') {
+      generateValue = () => value;
+    }
+    if (typeof(edgeValue) !== 'function') {
+      generateEdgeValue = () => edgeValue;
+    }
+
     let len = 0;
     let result = [];
     for (let y = 0; y < ySize; y++) {
       let row = [];
-      let fieldValue = value;
-      if (y === ySize - 1 || y === 0) {
-        fieldValue = edgeValue;
-      }
       for (let x = 0; x < xSize; x++) {
-        if (x === xSize - 1 || x === 0) {
-          row.push(edgeValue);
+        if (x === xSize - 1 || x === 0 || y === ySize -1 || y === 0) {
+          row.push(generateEdgeValue());
         } else {
-          row.push(fieldValue);
+          row.push(generateValue());
         }
       }
       result.push(row);

@@ -73,7 +73,6 @@ export default function createGameEntities (addEntity) {
   return entities;
 };
 
-
 function slotEntity (x, y, clickable = true , style = 'slot') {
   let worldPos = new PixiVector(x, y)
     .multiply(slotSize)
