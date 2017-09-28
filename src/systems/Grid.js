@@ -63,8 +63,8 @@ export default class Grid extends ECS.System {
     let { gridPosition } = entity.components;
     let x_lower = Math.floor(Math.max(gridPosition.x - range, 0));
     let y_lower = Math.floor(Math.max(gridPosition.y - range, 0));
-    let x_upper = Math.ceil(Math.min(gridPosition.x + range, globals.slotCount));
-    let y_upper = Math.ceil(Math.min(gridPosition.y + range, globals.slotCount));
+    let x_upper = Math.ceil(Math.min(gridPosition.x + range, globals.slotCount - 1));
+    let y_upper = Math.ceil(Math.min(gridPosition.y + range, globals.slotCount - 1));
     for (let x = x_lower; x <= x_upper; x++) {
       for (let y = y_lower; y <= y_upper; y++) {
         let slot_pos = new PixiVector(x, y);
