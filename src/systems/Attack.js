@@ -47,13 +47,18 @@ export default class Attack extends ECS.System {
           let posVec = new PixiVector(pos.x, pos.y);
           let enemyPosVec = new PixiVector(unitToAttackPos.x, unitToAttackPos.y);
 
+          let currentRotation = entity.components.sprite.pixiSprite.rotation;
+          let targetRotation = (enemyPosVec.clone().subtract(posVec)).horizontalAngle;
+          let rotationSpeed = 3;
+          let rotationDiff = Math.abs(currentRotation - targetRotation);
+
           if (sprite.pixiSprite.children.length === 0) {
-            sprite.pixiSprite.rotation = ((enemyPosVec.subtract(posVec)).horizontalAngle);
+            sprite.pixiSprite.rotation = currentRotation + rotationSpeed * window.dt * (targetRotation - currentRotation);
           } else {
-            sprite.pixiSprite.getChildAt(0).rotation = ((enemyPosVec.subtract(posVec)).horizontalAngle);
+            sprite.pixiSprite.getChildAt(0).rotation = currentRotation + rotationSpeed * window.dt * (targetRotation - currentRotation);
           }
 
-          if (attack.timeSinceLastAttack >= (1 / attack.rate)) {
+          if (attack.timeSinceLastAttack >= (1 / attack.rate) && rotationDiff <= 0.1) {
             console.log(enemyPos);
             this.attack(entity, this.unitToAttack);
             attack.timeSinceLastAttack = 0;
