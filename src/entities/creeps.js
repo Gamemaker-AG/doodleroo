@@ -48,7 +48,8 @@ export function baseCreep (x, y) {
 
 export function tankCreep (x, y) {
   let entity = baseCreep(x, y);
-  entity.components.health = 1000;
+  entity.components.health *= 5;
+  entity.components.movement.maxSpeed *= 0.75;
   return entity;
 }
 

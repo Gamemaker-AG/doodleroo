@@ -11,6 +11,7 @@ export default {
     inWave: false,
     waveDelay: 5,
     toSpawn: [],
+    waveCounter: 0,
     enemyImageName: 'tower_strong',
     enemyComponents: (x, y) => {
       return {
