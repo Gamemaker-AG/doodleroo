@@ -16,12 +16,16 @@ import Spawner from 'systems/Spawner';
 import FadeOut from 'systems/FadeOut';
 import Health from 'systems/Health';
 
+import * as actions from 'button-actions';
 import createGameEntities from 'createGameEntities';
 import createMenuEntities from 'createMenuEntities';
+import { buttonMuteEntity } from 'entities/ui';
+import spriteEntity from 'entities/spriteEntity';
 import globals from 'globals';
 import PixiVector from 'PixiVector';
 import ObservablePixiVector from 'ObservablePixiVector';
 import Player from 'Player';
+import sound from 'pixi-sound';
 
 window.PIXI.Point.prototype = PixiVector.prototype;
 window.PIXI.ObservablePoint.prototype = ObservablePixiVector.prototype;
@@ -30,6 +34,10 @@ const game = newGameState();
 const menu = newGameState();
 let currentState = menu;
 let ticker, renderer;
+
+const backgroundMusic = PIXI.sound.Sound.from('sounds/backgroundMusic.mp3');
+backgroundMusic.loop = true;
+backgroundMusic.play();
 
 let newGame = function () {
   currentState = game;
@@ -59,7 +67,6 @@ function startGame () {
   globals.player = new Player();
 
   // Menu
-
   menu.ecs.addSystem(new Render(renderer, menu.stage, globals.width, globals.height));
   menu.ecs.addSystem(new ButtonSystem());
 
@@ -82,8 +89,8 @@ function startGame () {
   game.ecs.addSystem(new FadeOut(game.ecs));
   game.ecs.addSystem(new Health(game.ecs));
 
-  createMenuEntities(newGame).forEach(e => menu.ecs.addEntity(e));
-  createGameEntities((entity) => game.ecs.addEntity(entity))
+  createMenuEntities(newGame, backgroundMusic).forEach(e => menu.ecs.addEntity(e));
+  createGameEntities((entity) => game.ecs.addEntity(entity), backgroundMusic)
     .forEach(e => game.ecs.addEntity(e));
 
   window.speed = 1;

@@ -35,7 +35,7 @@ const towers = [
 
 let constructionMenu, buttonShowRanges;
 
-export default function createGameEntities (addEntity) {
+export default function createGameEntities (addEntity, backgroundMusic) {
   let entities = [];
 
   constructionMenu = constructionMenuEntity(addEntity, towers);
@@ -63,7 +63,7 @@ export default function createGameEntities (addEntity) {
 
   entities.push(constructionMenu);
   entities.push(infoPanelEntity(globals.width - 200, 100));
-  entities.push(buttonMuteEntity(globals.width - 150, 100));
+  entities.push(buttonMuteEntity(globals.width - 150, 100, backgroundMusic));
   entities.push(speedUpEntity(globals.width - 150, 200));
 
   buttonShowRanges = showRangesEntity(globals.width - 150, 300);
