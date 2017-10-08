@@ -1,0 +1,15 @@
+language: node_js
+skip_cleanup: true
+install:
+  - npm install
+script:
+  - npm run-script build
+  - mv assets/* dist
+  - find -maxdepth 1 ! -name 'dist' -exec rm -rf {} +
+  - mv dist/* .
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN # Set in travis-ci.org dashboard
+  on:
+    branch: gh-pages

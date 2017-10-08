@@ -6,8 +6,7 @@
   "scripts": {
     "start": "webpack-dev-server",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack",
-    "deploy": "rm -rf docs/* && cp -r assets/* docs && webpack --config webpack-deploy.config.js && git add docs/"
+    "build": "webpack"
   },
   "precommit": [
     "deploy"
