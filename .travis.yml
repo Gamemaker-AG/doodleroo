@@ -1,5 +1,4 @@
 language: node_js
-skip_cleanup: true
 install:
   - npm install
 script:
