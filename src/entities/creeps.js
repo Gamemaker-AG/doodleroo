@@ -1,6 +1,8 @@
 import PixiVector from 'PixiVector';
-import spriteEntity from 'entities/spriteEntity';
 import globals from 'globals';
+import spriteEntity from 'entities/spriteEntity';
+
+import Attack from '../components/Attack';
 
 const creep_types = [
   {cost: 100, factory: baseCreep},
@@ -42,6 +44,11 @@ export function baseCreep (x, y) {
   entity.addComponent('goal', {x: Math.floor(globals.slotCount / 2), y: globals.slotCount - 1});
   entity.addComponent('autoUpdateGridPosition', {});
   entity.addComponent('spawned');
+  entity.addComponent('attack', {
+    rate: 1,
+    timeSinceLastAttack: 0,
+    damage: 10
+  });
   return entity;
 }
 

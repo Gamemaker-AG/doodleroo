@@ -4,6 +4,6 @@ export default {
     rate: 1,
     timeSinceLastAttack: 0,
     damage: 50,
-    active: true
+    unitToAttack: null
   }
 };

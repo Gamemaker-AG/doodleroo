@@ -1,27 +1,28 @@
-import * as PIXI from 'pixi.js';
 import ECS from 'yagl-ecs';
+import * as PIXI from 'pixi.js';
 
-import Render from './systems/Render.js';
-import Movement from './systems/Movement.js';
-import ButtonSystem from 'systems/Button';
-import GridSystem from 'systems/Grid';
-import FollowPath from 'systems/FollowPath';
-import Destination from 'systems/Destination';
-import Range from 'systems/Range';
 import Attack from 'systems/Attack';
+import ButtonSystem from 'systems/Button';
 import Construction from 'systems/Construction';
-import UpdateGridPosition from 'systems/UpdateGridPosition';
-import InfoPanelUpdater from 'systems/InfoPanelUpdater';
-import Spawner from 'systems/Spawner';
+import Destination from 'systems/Destination';
 import FadeOut from 'systems/FadeOut';
+import FollowPath from 'systems/FollowPath';
+import GridSystem from 'systems/Grid';
 import Health from 'systems/Health';
-
+import InfoPanelUpdater from 'systems/InfoPanelUpdater';
+import ObservablePixiVector from 'ObservablePixiVector';
+import PixiVector from 'PixiVector';
+import Player from 'Player';
+import Range from 'systems/Range';
+import Spawner from 'systems/Spawner';
+import UpdateGridPosition from 'systems/UpdateGridPosition';
 import createGameEntities from 'createGameEntities';
 import createMenuEntities from 'createMenuEntities';
 import globals from 'globals';
-import PixiVector from 'PixiVector';
-import ObservablePixiVector from 'ObservablePixiVector';
-import Player from 'Player';
+
+import Movement from './systems/Movement.js';
+import Render from './systems/Render.js';
+import TargetInRange from './systems/TargetInRange';
 
 window.PIXI.Point.prototype = PixiVector.prototype;
 window.PIXI.ObservablePoint.prototype = ObservablePixiVector.prototype;
@@ -59,7 +60,6 @@ function startGame () {
   globals.player = new Player();
 
   // Menu
-
   menu.ecs.addSystem(new Render(renderer, menu.stage, globals.width, globals.height));
   menu.ecs.addSystem(new ButtonSystem());
 
@@ -77,6 +77,7 @@ function startGame () {
   game.ecs.addSystem(new InfoPanelUpdater());
   game.ecs.addSystem(new UpdateGridPosition());
   game.ecs.addSystem(new FollowPath(grid.towers));
+  game.ecs.addSystem(new TargetInRange(grid.towers));
   game.ecs.addSystem(new Destination(game.ecs));
   game.ecs.addSystem(new Spawner(game.ecs));
   game.ecs.addSystem(new FadeOut(game.ecs));

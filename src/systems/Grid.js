@@ -38,14 +38,16 @@ export default class Grid extends ECS.System {
   }
 
   enter (entity) {
-    if (entity.components.gridPosition && entity.components.obstacle) {
-      this.towers[entity.components.gridPosition.x][entity.components.gridPosition.y][entity.id] = entity;
+    let {gridPosition} = entity.components;
+    if (gridPosition && entity.components.obstacle) {
+      this.towers[gridPosition.x][gridPosition.y][entity.id] = entity;
     }
   }
 
   exit (entity) {
-    if (entity.components.gridPosition && entity.components.obstacle) {
-      delete this.towers[entity.gridPosition.x][entity.gridPostion.y][entity.id];
+    let {gridPosition} = entity.components;
+    if (gridPosition && entity.components.obstacle) {
+      delete this.towers[gridPosition.x][gridPosition.y][entity.id];
     }
   }
 
