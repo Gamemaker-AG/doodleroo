@@ -2,6 +2,7 @@ import ECS from 'yagl-ecs';
 import globals from 'globals';
 import lineShot from 'entities/lineShot';
 import PixiVector from 'PixiVector';
+import { radianLerp } from 'math-utils';
 
 export default class Attack extends ECS.System {
   constructor (ecs, freq) {
@@ -52,7 +53,7 @@ export default class Attack extends ECS.System {
           let rotationSpeed = 3;
           let rotationDiff = Math.abs(currentRotation - targetRotation);
 
-          let lerpRotation = currentRotation + rotationSpeed * window.dt * (targetRotation - currentRotation);
+          let lerpRotation = radianLerp(currentRotation, targetRotation, rotationSpeed * window.dt);
 
           if (sprite.pixiSprite.children.length === 0) {
             sprite.pixiSprite.rotation = lerpRotation;
