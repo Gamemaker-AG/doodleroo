@@ -29,7 +29,7 @@
   "dependencies": {
     "@raymond-lam/priority-queue": "^2.0.0",
     "pixi-particles": "^2.1.5",
-    "pixi-sound": "^1.4.2",
+    "pixi-sound": "^2.0.0-alpha.6",
     "pixi.js": "^4.5.1",
     "vigur": "^0.1.1",
     "yagl-ecs": "raffomania/ecs"

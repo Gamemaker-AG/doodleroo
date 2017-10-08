@@ -7,7 +7,7 @@ import gridPosition from 'components/GridPosition';
 import * as actions from 'button-actions';
 import constructionMenuEntity from 'entities/constructionMenu';
 import PixiVector from 'PixiVector';
-import spriteEntity from 'entities/spriteEntity'
+import spriteEntity from 'entities/spriteEntity';
 import { buttonMuteEntity, infoPanelEntity, speedUpEntity, showRangesEntity } from 'entities/ui';
 
 const {slotCount, slotSize} = globals;
@@ -35,7 +35,7 @@ const towers = [
 
 let constructionMenu, buttonShowRanges;
 
-export default function createGameEntities (addEntity) {
+export default function createGameEntities (addEntity, backgroundMusic) {
   let entities = [];
 
   constructionMenu = constructionMenuEntity(addEntity, towers);
@@ -63,7 +63,7 @@ export default function createGameEntities (addEntity) {
 
   entities.push(constructionMenu);
   entities.push(infoPanelEntity(globals.width - 200, 100));
-  entities.push(buttonMuteEntity(globals.width - 150, 100));
+  entities.push(buttonMuteEntity(globals.width - 150, 100, backgroundMusic));
   entities.push(speedUpEntity(globals.width - 150, 200));
 
   buttonShowRanges = showRangesEntity(globals.width - 150, 300);
@@ -93,11 +93,3 @@ function slotEntity (x, y, clickable = true , style = 'slot') {
 
   return entity;
 }
-
-export function spriteEntity (x, y, imgName) {
-  let entity = new ECS.Entity(null, [Sprite]);
-  let sprite = entity.components.sprite;
-  sprite.pixiSprite = new PIXI.Sprite(PIXI.loader.resources[imgName].texture);
-  sprite.pixiSprite.position.set(x, y);
-  return entity;
-};

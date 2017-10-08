@@ -1,6 +1,7 @@
 import ECS from 'yagl-ecs';
 import globals from 'globals';
 import PixiVector from 'PixiVector';
+import { radianLerp } from 'math-utils';
 
 export default class TargetInRange extends ECS.System {
   constructor(towers, freq) {
@@ -62,7 +63,8 @@ export default class TargetInRange extends ECS.System {
           attack.unitToAttack = unitInRange;
         }
 
-        let lerpRotation = currentRotation + rotationSpeed * window.dt * (targetRotation - currentRotation);
+
+        let lerpRotation = radianLerp(currentRotation, targetRotation, rotationSpeed * window.dt);
         if (sprite.pixiSprite.children.length === 0) {
           sprite.pixiSprite.rotation = lerpRotation;
         } else {

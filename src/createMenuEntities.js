@@ -1,15 +1,16 @@
 import globals from 'globals';
-import { spriteEntity, buttonMuteEntity } from 'entities/ui';
+import { buttonMuteEntity } from 'entities/ui';
+import spriteEntity from 'entities/spriteEntity';
 
-export default function createMenuEntities (newGame) {
+export default function createMenuEntities (newGame, backgroundMusic) {
   let entities = [];
 
   entities.push(buttonNewGameEntity(globals.width / 2, globals.height / 2 - 100, newGame));
   entities.push(buttonCreditsEntity(globals.width / 2, globals.height / 2 + 100));
-  entities.push(buttonMuteEntity(globals.width - 150, 100));
+  entities.push(buttonMuteEntity(globals.width - 150, 100, backgroundMusic));
 
   return entities;
-}
+};
 
 function buttonNewGameEntity (x, y, newGame) {
   let entity = spriteEntity(x, y, 'button_newGame');
