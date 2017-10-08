@@ -1,5 +1,6 @@
 import globals from 'globals';
-import { spriteEntity, buttonMuteEntity } from 'entities/ui';
+import { buttonMuteEntity } from 'entities/ui';
+import spriteEntity from 'entities/spriteEntity';
 
 export default function createMenuEntities (newGame) {
   let entities = [];
@@ -9,7 +10,7 @@ export default function createMenuEntities (newGame) {
   entities.push(buttonMuteEntity(globals.width - 150, 100));
 
   return entities;
-}
+};
 
 function buttonNewGameEntity (x, y, newGame) {
   let entity = spriteEntity(x, y, 'button_newGame');

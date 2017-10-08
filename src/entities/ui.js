@@ -2,6 +2,7 @@ import ECS from 'yagl-ecs';
 import Sprite from 'components/Sprite.js';
 import globals from 'globals';
 import * as actions from 'button-actions';
+import spriteEntity from 'entities/spriteEntity';
 
 export function buttonMuteEntity (x, y) {
   let entity = spriteEntity(x, y, 'button_soundEnabled');
@@ -95,13 +96,5 @@ export function infoPanelEntity (x, y) {
 
   entity.addComponent('infoPanelUpdater');
 
-  return entity;
-};
-
-export function spriteEntity (x, y, img_name) {
-  let entity = new ECS.Entity(null, [Sprite]);
-  let sprite = entity.components.sprite;
-  sprite.pixiSprite = new PIXI.Sprite(PIXI.loader.resources[img_name].texture);
-  sprite.pixiSprite.position.set(x, y);
   return entity;
 };

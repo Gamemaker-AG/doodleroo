@@ -7,7 +7,7 @@ import gridPosition from 'components/GridPosition';
 import * as actions from 'button-actions';
 import constructionMenuEntity from 'entities/constructionMenu';
 import PixiVector from 'PixiVector';
-import spriteEntity from 'entities/spriteEntity'
+import spriteEntity from 'entities/spriteEntity';
 import { buttonMuteEntity, infoPanelEntity, speedUpEntity, showRangesEntity } from 'entities/ui';
 
 const {slotCount, slotSize} = globals;
@@ -93,11 +93,3 @@ function slotEntity (x, y, clickable = true , style = 'slot') {
 
   return entity;
 }
-
-export function spriteEntity (x, y, imgName) {
-  let entity = new ECS.Entity(null, [Sprite]);
-  let sprite = entity.components.sprite;
-  sprite.pixiSprite = new PIXI.Sprite(PIXI.loader.resources[imgName].texture);
-  sprite.pixiSprite.position.set(x, y);
-  return entity;
-};
