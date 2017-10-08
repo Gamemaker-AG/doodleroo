@@ -1,7 +1,10 @@
-import * as PIXI from 'pixi.js';
 import ECS from 'yagl-ecs';
+import * as PIXI from 'pixi.js';
+
 import { hasSprite } from 'components/Sprite';
 import * as actions from 'button-actions';
+
+import globals from '../globals';
 
 export default class Button extends ECS.System {
   constructor (rangeSystem) {
@@ -47,8 +50,9 @@ export default class Button extends ECS.System {
   }
 
   [ actions.TOGGLE_SHOW_RANGES_ALL ] (sprite) {
+    globals.showRange = !globals.showRange;
     for (let entity of this.rangeSystem.entities) {
-      entity.components.range.isVisible = !entity.components.range.isVisible;
+      entity.components.range.isVisible = globals.showRange;
     }
 
     sprite.visible = !sprite.visible;
