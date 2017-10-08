@@ -68,7 +68,7 @@ function startGame () {
 
   game.ecs.addSystem(new Render(renderer, game.stage, globals.width, globals.height));
   game.ecs.addSystem(new ButtonSystem(rangeSystem));
-  let grid = new GridSystem();
+  let grid = new GridSystem(10);
   game.ecs.addSystem(grid);
   game.ecs.addSystem(new Movement());
   game.ecs.addSystem(rangeSystem);

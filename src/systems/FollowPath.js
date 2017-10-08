@@ -13,6 +13,7 @@ export default class FollowPath extends ECS.System {
       entity.components.goal &&
       entity.components.gridPosition &&
       entity.components.movement &&
+      entity.components.goalPath &&
       entity.components.followPath;
   }
 

@@ -32,6 +32,6 @@
     "pixi-sound": "^1.4.2",
     "pixi.js": "^4.5.1",
     "vigur": "^0.1.1",
-    "yagl-ecs": "1.0.0"
+    "yagl-ecs": "raffomania/ecs"
   }
 }
