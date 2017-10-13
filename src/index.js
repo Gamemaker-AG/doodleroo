@@ -33,8 +33,8 @@ import sound from 'pixi-sound';
 window.PIXI.Point.prototype = PixiVector.prototype;
 window.PIXI.ObservablePoint.prototype = ObservablePixiVector.prototype;
 
-const game = newGameState();
-const menu = newGameState();
+let game;
+let menu;
 let currentState = menu;
 let ticker, renderer;
 
@@ -42,11 +42,14 @@ const backgroundMusic = PIXI.sound.Sound.from('sounds/backgroundMusic.mp3');
 backgroundMusic.loop = true;
 backgroundMusic.play();
 
-let newGame = function () {
-  currentState = game;
-};
+renderer = PIXI.autoDetectRenderer(globals.width, globals.height, {
+  resolution: window.devicePixelRatio || 1
+});
+renderer.backgroundColor = 0xFFFFFF;
+document.body.appendChild(renderer.view);
+document.body.style.margin = '0';
 
-function newGameState () {
+function newState () {
   return {
     stage: new PIXI.Container(),
     ecs: new ECS()
@@ -59,19 +62,21 @@ function gameLoop () {
   renderer.render(currentState.stage);
 }
 
-function startGame () {
-  renderer = PIXI.autoDetectRenderer(globals.width, globals.height, {
-    resolution: window.devicePixelRatio || 1
-  });
-  renderer.backgroundColor = 0xFFFFFF;
-  document.body.appendChild(renderer.view);
-  document.body.style.margin = '0';
-
-  globals.player = new Player();
+function startMenu () {
+  menu = newState();
 
   // Menu
   menu.ecs.addSystem(new Render(renderer, menu.stage, globals.width, globals.height));
   menu.ecs.addSystem(new ButtonSystem());
+
+  createMenuEntities(startGame, backgroundMusic).forEach(e => menu.ecs.addEntity(e));
+
+  currentState = menu;
+}
+
+function startGame () {
+  globals.player = new Player(startMenu);
+  game = newState();
 
   // Game
   let rangeSystem = new Range(game.stage);
@@ -93,10 +98,13 @@ function startGame () {
   game.ecs.addSystem(new FadeOut(game.ecs));
   game.ecs.addSystem(new Health(game.ecs));
 
-  createMenuEntities(newGame, backgroundMusic).forEach(e => menu.ecs.addEntity(e));
   createGameEntities((entity) => game.ecs.addEntity(entity), backgroundMusic)
     .forEach(e => game.ecs.addEntity(e));
 
+  currentState = game;
+}
+
+function startLoop () {
   window.speed = 1;
   ticker = new PIXI.ticker.Ticker();
   ticker.add(gameLoop);
@@ -109,6 +117,8 @@ function startGame () {
       ticker.start();
     }
   });
+
+  startMenu();
 }
 
 PIXI.loader
@@ -130,4 +140,4 @@ PIXI.loader
   .add('button_soundDisabled', 'img/button_soundDisabled.png')
   .add('button_fast', 'img/button_fast.png')
   .add('button_slow', 'img/button_slow.png')
-  .load(startGame);
+  .load(startLoop);

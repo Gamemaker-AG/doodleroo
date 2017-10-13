@@ -1,13 +1,14 @@
 export default class Player {
-  constructor () {
+  constructor (restart) {
     this.gold = 10000;
     this.lifes = 10;
+    this.restart = restart;
   }
 
   deduct_life () {
     this.lifes -= 1;
     if (this.lifes <= 0) {
-      console.log('You lost!');
+      this.restart();
     }
   }
 };
