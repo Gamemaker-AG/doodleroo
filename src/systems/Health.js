@@ -11,7 +11,12 @@ export default class Health extends ECS.System {
   }
 
   update(entity) {
-    if (entity.components.health.health <= 0) {
+    let {components: cs} = entity;
+    if (cs.sprite && cs.sprite.pixiSprite) {
+      cs.sprite.pixiSprite.alpha = cs.health.health / cs.health.initialHealth;
+    }
+
+    if (cs.health.health <= 0) {
       this.ecs.removeEntity(entity);
     }
   }

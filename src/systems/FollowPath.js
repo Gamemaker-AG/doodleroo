@@ -13,7 +13,9 @@ export default class FollowPath extends ECS.System {
       entity.components.goal &&
       entity.components.gridPosition &&
       entity.components.movement &&
-      entity.components.followPath;
+      entity.components.goalPath &&
+      entity.components.followPath &&
+      entity.components.attack;
   }
 
   update (entity) {
@@ -49,12 +51,13 @@ export default class FollowPath extends ECS.System {
 
     // If there's a tower in the way, stop and attack it
     let entitiesOnGoal = this.towers[goal[0]][goal[1]];
-    let obstacleIds = Object.keys(entitiesOnGoal).filter((key) => {
+    let obstacleIds = Object.keys(entitiesOnGoal).filter(key => {
       let {components} = entitiesOnGoal[key];
       return components.obstacle && components.health;
     });
     if (obstacleIds.length > 0) {
       movement.velocity = new PixiVector(0, 0);
+      entity.components.attack.unitToAttack = entitiesOnGoal[obstacleIds[0]];
       return;
     }
 

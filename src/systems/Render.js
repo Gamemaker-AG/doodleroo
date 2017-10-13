@@ -69,7 +69,8 @@ export default class Render extends ECS.System {
   }
 
   update (entity) {
-    if (entity.components.goalPath) {
+    let {components: cs} = entity;
+    if (cs.goalPath) {
       this.drawDebugPath(entity);
     }
   }

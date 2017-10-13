@@ -27,7 +27,13 @@ export default class Range extends ECS.System {
       range.indicator.position.set(pixiSprite.position.x, pixiSprite.position.y);
 
       this.stage.addChild(range.indicator);
+
+      range.isVisible = globals.showRange;
     }
+  }
+
+  exit (entity) {
+    this.stage.removeChild(entity.components.range.indicator);
   }
 
   update (entity) {
