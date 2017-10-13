@@ -16,6 +16,7 @@ export default class Grid extends ECS.System {
     let {gridPosition} = entity.components;
     if (gridPosition && entity.components.obstacle) {
       this.towers[gridPosition.x][gridPosition.y][entity.id] = entity;
+      this.dirty = true;
     }
   }
 
@@ -23,6 +24,7 @@ export default class Grid extends ECS.System {
     let {gridPosition} = entity.components;
     if (gridPosition && entity.components.obstacle) {
       delete this.towers[gridPosition.x][gridPosition.y][entity.id];
+      this.dirty = true;
     }
   }
 
@@ -30,7 +32,13 @@ export default class Grid extends ECS.System {
     this.calculatePaths = [];
     this.costs = initializedArray(globals.slotCount, globals.slotCount, 1.0);
     setCosts(this.costs, this.towers);
-    this.pathFinder = new Pathfinder(this.costs)
+  }
+
+  postUpdate () {
+    if (this.dirty) {
+      this.pathFinder = new Pathfinder(this.costs)
+      this.dirty = false;
+    }
   }
 
   test (entity) {
