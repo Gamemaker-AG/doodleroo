@@ -2,7 +2,6 @@ import * as PIXI from 'pixi.js';
 import globals from 'globals';
 import ECS from 'yagl-ecs';
 import PixiVector from 'PixiVector';
-import PriorityQueue from '@raymond-lam/priority-queue';
 import FastPriorityQueue from 'fastpriorityqueue';
 
 export default class Grid extends ECS.System {
@@ -225,4 +224,3 @@ function initializedArray (xSize, ySize, value, edgeValue = Infinity) {
   }
   return result;
 }
-
