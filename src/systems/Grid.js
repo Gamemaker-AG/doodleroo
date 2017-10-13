@@ -70,7 +70,7 @@ export default class Grid extends ECS.System {
 // Single sink shortest path finder
 class Pathfinder {
   constructor (input_costs) {
-    let {cost, prev} = Pathfinder._buildFinders(input_costs, globals.goalPositions).reduce(mergePathCaches)
+    let {cost, prev} = Pathfinder._buildFinders(input_costs, globals.goalPositions)
     this.costs = cost;
     this.prev = prev;
   }
@@ -93,45 +93,32 @@ class Pathfinder {
   }
 }
 
-function mergePathCaches(a, b) {
-  for (let x = 0; a < a.length; x++) {
-    for (let x = 0; a < a.length; x++) {
-      if (a.costs[x][y] >= b.costs[x][y]) {
-        a.prev[x][y] = b.prev[x][y]
-      }
-    }
-  }
-  return a
-}
-
 Pathfinder._buildFinders = function (costs, goalPositions) {
   let path_finder = [];
+  let frontier = buildFrontier();
+  let costs_acc = initializedArray(globals.slotCount, globals.slotCount, Infinity, Infinity);
+  let previous = initializedArray(globals.slotCount, globals.slotCount, null, null);
   for (let start of goalPositions) {
-    let frontier = buildFrontier();
     frontier.enqueue([[start.x, start.y], 1]);
-    let costs_acc = initializedArray(globals.slotCount, globals.slotCount, Infinity, Infinity);
-    let previous = initializedArray(globals.slotCount, globals.slotCount, null, null);
-
     costs_acc[start.x][start.y] = 1;
     previous[start.x][start.y] = "goal"
+  }
 
-    let current;
-    let i = 0;
-    let prev;
-    while (prev = frontier.dequeue()) {
-      let [[prevX, prevY], _] = prev;
-      for (let current of neighbors(prevX, prevY)) {
-        let potential_new_costs = costs_acc[prevX][prevY] + costs[current[0]][current[1]]
-        if (costs_acc[current[0]][current[1]] > potential_new_costs) {
-          previous[current[0]][current[1]] = [prevX, prevY];
-          costs_acc[current[0]][current[1]] = potential_new_costs;
-          frontier.enqueue([[current[0], current[1]], costs_acc[current[0], current[1]]])
-        }
+  let current;
+  let i = 0;
+  let prev;
+  while (prev = frontier.dequeue()) {
+    let [[prevX, prevY], _] = prev;
+    for (let current of neighbors(prevX, prevY)) {
+      let potential_new_costs = costs_acc[prevX][prevY] + costs[current[0]][current[1]]
+      if (costs_acc[current[0]][current[1]] > potential_new_costs) {
+        previous[current[0]][current[1]] = [prevX, prevY];
+        costs_acc[current[0]][current[1]] = potential_new_costs;
+        frontier.enqueue([[current[0], current[1]], costs_acc[current[0], current[1]]])
       }
     }
-    path_finder.push({prev: previous, cost: costs_acc});
   }
-  return path_finder;
+  return {prev: previous, cost: costs_acc};
 }
 
 function alreadyVisited (pos, visited) {
