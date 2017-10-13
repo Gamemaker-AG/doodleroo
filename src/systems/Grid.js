@@ -3,6 +3,7 @@ import globals from 'globals';
 import ECS from 'yagl-ecs';
 import PixiVector from 'PixiVector';
 import PriorityQueue from '@raymond-lam/priority-queue';
+import FastPriorityQueue from 'fastpriorityqueue';
 
 export default class Grid extends ECS.System {
   constructor (freq) {
@@ -99,7 +100,7 @@ Pathfinder._buildFinders = function (costs, goalPositions) {
   let costs_acc = initializedArray(globals.slotCount, globals.slotCount, Infinity, Infinity);
   let previous = initializedArray(globals.slotCount, globals.slotCount, null, null);
   for (let start of goalPositions) {
-    frontier.enqueue([[start.x, start.y], 1]);
+    frontier.add([[start.x, start.y], 1]);
     costs_acc[start.x][start.y] = 1;
     previous[start.x][start.y] = "goal"
   }
@@ -107,14 +108,14 @@ Pathfinder._buildFinders = function (costs, goalPositions) {
   let current;
   let i = 0;
   let prev;
-  while (prev = frontier.dequeue()) {
+  while (prev = frontier.poll()) {
     let [[prevX, prevY], _] = prev;
     for (let current of neighbors(prevX, prevY)) {
       let potential_new_costs = costs_acc[prevX][prevY] + costs[current[0]][current[1]]
       if (costs_acc[current[0]][current[1]] > potential_new_costs) {
         previous[current[0]][current[1]] = [prevX, prevY];
         costs_acc[current[0]][current[1]] = potential_new_costs;
-        frontier.enqueue([[current[0], current[1]], costs_acc[current[0], current[1]]])
+        frontier.add([[current[0], current[1]], costs_acc[current[0], current[1]]])
       }
     }
   }
@@ -185,15 +186,8 @@ function updateAttackablePositions (costs, entity) {
 }
 
 function buildFrontier() {
-  let frontier = new PriorityQueue([], (self, other) => {
-    if (self[1] > other[1]) {
-      return 1;
-    }
-    if (self[1] < other[1]) {
-      return -1;
-    } else {
-      return 0;
-    }
+  let frontier = new FastPriorityQueue((self, other) => {
+    self[1] > other[1];
   });
   return frontier;
 }

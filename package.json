@@ -27,7 +27,7 @@
     "webpack-dev-server": "^2.4.4"
   },
   "dependencies": {
-    "@raymond-lam/priority-queue": "^2.0.0",
+    "fastpriorityqueue": "^0.3.1",
     "pixi-particles": "^2.1.5",
     "pixi-sound": "^2.0.0-alpha.6",
     "pixi.js": "^4.5.1",
