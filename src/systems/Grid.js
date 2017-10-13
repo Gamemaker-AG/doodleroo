@@ -9,6 +9,7 @@ export default class Grid extends ECS.System {
     super(freq);
     let newObj = () => { return {};};
     this.towers = initializedArray(globals.slotCount, globals.slotCount, newObj, newObj);
+    this.dirty = true;
   }
 
   enter (entity) {
