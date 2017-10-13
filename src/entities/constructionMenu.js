@@ -33,7 +33,7 @@ export default function constructionMenuEntity (addEntity, towers) {
     if (specs.cost > globals.player.gold)
       sprite.alpha = 0.5;
 
-    sprite.click = () => {
+    let clickaction = () => {
       let worldCoords = entity.components.sprite.pixiSprite.position;
       let updatedSpecs = [
         worldCoords.x,
@@ -57,6 +57,9 @@ export default function constructionMenuEntity (addEntity, towers) {
 
       entity.components.sprite.pixiSprite.visible = false;
     };
+    sprite.click = clickaction;
+    sprite.on('tap', clickaction)
+
     entity.components.sprite.pixiSprite.addChild(sprite);
   });
 
