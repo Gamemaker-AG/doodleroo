@@ -32,9 +32,6 @@ export default class Grid extends ECS.System {
     this.pathFinder = new Pathfinder(this.costs)
   }
 
-  buildPathCache () {
-  }
-
   test (entity) {
     return Boolean(entity.components.gridPosition);
   }
