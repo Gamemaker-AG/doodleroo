@@ -1,6 +1,7 @@
 export default {
   name: 'health',
   defaults: {
-    health: 100
+    health: 100,
+    initialHealth: 100
   }
 };
