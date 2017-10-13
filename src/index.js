@@ -76,6 +76,7 @@ function startMenu () {
 
 function startGame () {
   globals.player = new Player(startMenu);
+  window.speed = 1;
   game = newState();
 
   // Game
@@ -105,7 +106,6 @@ function startGame () {
 }
 
 function startLoop () {
-  window.speed = 1;
   ticker = new PIXI.ticker.Ticker();
   ticker.add(gameLoop);
   ticker.start();
