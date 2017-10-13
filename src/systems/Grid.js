@@ -27,10 +27,24 @@ export default class Grid extends ECS.System {
     }
   }
 
-  preUpdate () {
-    this.calculatePaths = [];
+  updateCosts () {
     this.costs = initializedArray(globals.slotCount, globals.slotCount, 1.0);
-    setCosts(this.costs, this.towers);
+    let costs = this.costs;
+    let towers = this.towers;
+    for (let x = 0; x < towers.length; x++) {
+      for (let y = 0; y < towers[x].length; y++) {
+        for (let id of Object.keys(towers[x][y])) {
+          let entity = towers[x][y][id];
+          let { gridPosition } = entity.components
+          updateAttackablePositions(costs, entity);
+          costs[gridPosition.x][gridPosition.y] += entity.components.obstacle.cost;
+        }
+      }
+    }
+  }
+
+  preUpdate () {
+    this.updateCosts();
   }
 
   postUpdate () {
@@ -45,11 +59,7 @@ export default class Grid extends ECS.System {
   }
 
   update (entity) {
-    let avoidAttacks = true;
-    if (entity.components.obstacle) {
-      return;
-    }
-    if (!entity.components.enemy) {
+    if (entity.components.obstacle || !entity.components.enemy) {
       return;
     }
     if (entity.components.goal) {
@@ -129,19 +139,6 @@ Pathfinder._buildFinders = function (costs, goalPositions) {
   return {prev: previous, cost: costs_acc};
 }
 
-function alreadyVisited (pos, visited) {
-  return typeof visited.find((visitedPosition) => {
-      return pos[0] == visitedPosition[0] &&
-        pos[1] == visitedPosition[1];
-    }) !== 'undefined';
-}
-
-function heuristic (current, goal) {
-  let [x, y] = current;
-  let [goalX, goalY] = goal;
-  return Math.abs(x - goalX) + Math.abs(y - goalY);
-}
-
 function neighbors (x, y) {
   let xs = [x - 1, x + 1].filter((x) => {
     return x >= 0 && x < globals.slotCount;});
@@ -158,16 +155,6 @@ function neighbors (x, y) {
 }
 
 function setCosts(costs, towers) {
-  for (let x = 0; x < towers.length; x++) {
-    for (let y = 0; y < towers[x].length; y++) {
-      for (let id of Object.keys(towers[x][y])) {
-        let entity = towers[x][y][id];
-        let { gridPosition } = entity.components
-        updateAttackablePositions(costs, entity);
-        costs[gridPosition.x][gridPosition.y] += entity.components.obstacle.cost;
-      }
-    }
-  }
 }
 
 function updateAttackablePositions (costs, entity) {
