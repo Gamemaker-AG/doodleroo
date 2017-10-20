@@ -133,7 +133,8 @@ Pathfinder._buildFinders = function (costs, goalPositions) {
       if (costs_acc[current[0]][current[1]] > potential_new_costs) {
         previous[current[0]][current[1]] = [prevX, prevY];
         costs_acc[current[0]][current[1]] = potential_new_costs;
-        frontier.add([[current[0], current[1]], costs_acc[current[0], current[1]]])
+        let current_costs = costs_acc[current[0]][current[1]];
+        frontier.add([[current[0], current[1]], current_costs]);
       }
     }
   }
@@ -182,7 +183,7 @@ function updateAttackablePositions (costs, entity) {
 
 function buildFrontier() {
   let frontier = new FastPriorityQueue((self, other) => {
-    self[1] > other[1];
+    self[0] > other[0];
   });
   return frontier;
 }
