@@ -7,6 +7,8 @@ import spriteEntity from 'entities/spriteEntity';
 export function buttonMuteEntity (x, y, music) {
   let entity = spriteEntity(x, y, 'button_soundEnabled');
   entity.components.sprite.pixiSprite.anchor.set(0.5, 0.5);
+  console.log(window.localStorage.getItem("Muted"));
+  music.volume = window.localStorage.getItem("Muted") == 1 ? 0 : 1;
   entity.addComponent('muteButton', {
     music: music
   });
