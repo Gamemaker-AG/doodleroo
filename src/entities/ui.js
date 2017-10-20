@@ -75,13 +75,13 @@ export function infoPanelEntity (x, y) {
   entity.components.sprite.pixiSprite = new PIXI.Container();
   entity.components.sprite.pixiSprite.position.set(globals.width - 800, 100);
 
-  let style = {fontFamily: 'Arial', fontSize: 50, fill: 0xFF0000, align: 'center'};
+  let style = {font: '72px fak'};
 
   let coin = new PIXI.Sprite(PIXI.loader.resources['coin'].texture);
   coin.anchor.set(0.5, 0.5);
   coin.position.set(0, 0);
 
-  let gold = new PIXI.Text(globals.player.gold, style);
+  let gold = new PIXI.extras.BitmapText(globals.player.gold.toString(), style);
   gold.anchor.set(0, 0.5);
   gold.position.set(50, 0);
 
@@ -89,7 +89,7 @@ export function infoPanelEntity (x, y) {
   heart.anchor.set(0.5, 0.5);
   heart.position.set(0, 75);
 
-  let lifes = new PIXI.Text(globals.player.lifes, style);
+  let lifes = new PIXI.extras.BitmapText(globals.player.lifes.toString(), style);
   lifes.anchor.set(0, 0.5);
   lifes.position.set(50, 75);
 

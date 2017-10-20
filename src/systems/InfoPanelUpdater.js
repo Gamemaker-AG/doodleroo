@@ -16,12 +16,13 @@ export default class InfoPanel extends ECS.System {
     let text_gold = childAt(entity, 0).text;
     let text_lifes = childAt(entity, 1).text;
 
+
     if (text_gold != globals.player.gold) {
-      childAt(entity, 0).text = globals.player.gold;
+      childAt(entity, 0).text = globals.player.gold.toString();
     }
 
     if (text_lifes != globals.player.lifes) {
-      childAt(entity, 1).text = globals.player.lifes;
+      childAt(entity, 1).text = globals.player.lifes.toString();
     }
   }
 };

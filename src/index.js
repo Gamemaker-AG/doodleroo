@@ -140,4 +140,5 @@ PIXI.loader
   .add('button_soundDisabled', 'img/button_soundDisabled.png')
   .add('button_fast', 'img/button_fast.png')
   .add('button_slow', 'img/button_slow.png')
+  .add('fak_font', 'font/fak.fnt')
   .load(startLoop);
