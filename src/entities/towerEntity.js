@@ -20,6 +20,10 @@ export default function towerEntity (x, y, specs) {
     entity.addComponent('slow', {speedFactor: 0.5, duration: 0.8});
   }
 
+  if (specs[2] === 'tower_strong') {
+    entity.addComponent('splash', {splashRadius: 3});
+  }
+
   entity.addComponent('range', {range: specs[4], color: 0xFF0000, isVisible: globals.showRange});
   entity.addComponent('obstacle', {cost: 3});
   entity.addComponent('health', {health: 100, initialHealth: 100});

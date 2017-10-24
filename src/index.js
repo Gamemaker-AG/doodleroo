@@ -88,12 +88,13 @@ function startGame () {
   game.ecs.addSystem(grid);
   game.ecs.addSystem(new Movement());
   game.ecs.addSystem(rangeSystem);
-  game.ecs.addSystem(new Attack(game.ecs));
+  let targetInRange = new TargetInRange(grid.towers);
+  game.ecs.addSystem(new Attack(game.ecs, targetInRange.enemies));  // TODO
   game.ecs.addSystem(new Construction());
   game.ecs.addSystem(new InfoPanelUpdater());
   game.ecs.addSystem(new UpdateGridPosition());
   game.ecs.addSystem(new FollowPath(grid.towers));
-  game.ecs.addSystem(new TargetInRange(grid.towers));
+  game.ecs.addSystem(targetInRange);
   game.ecs.addSystem(new Destination(game.ecs));
   game.ecs.addSystem(new Spawner(game.ecs));
   game.ecs.addSystem(new FadeOut(game.ecs));
@@ -136,8 +137,8 @@ PIXI.loader
   .add('wall', 'img/wall.png')
   .add('button_newGame', 'img/button_newGame.png')
   .add('button_credits', 'img/button_credits.png')
-  .add('button_soundEnabled', 'img/button_soundEnabled.png')
-  .add('button_soundDisabled', 'img/button_soundDisabled.png')
+  .add('button_soundSpeaker', 'img/button_soundSpeaker.png')
+  .add('button_soundWaves', 'img/button_soundWaves.png')
   .add('button_fast', 'img/button_fast.png')
   .add('button_slow', 'img/button_slow.png')
   .add('fak_font', 'font/fak.fnt')

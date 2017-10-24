@@ -5,7 +5,7 @@ import * as actions from 'button-actions';
 import spriteEntity from 'entities/spriteEntity';
 
 export function buttonMuteEntity (x, y, music) {
-  let entity = spriteEntity(x, y, 'button_soundEnabled');
+  let entity = spriteEntity(x, y, 'button_soundSpeaker');
   entity.components.sprite.pixiSprite.anchor.set(0.5, 0.5);
   console.log(window.localStorage.getItem("Muted"));
   music.volume = window.localStorage.getItem("Muted") == 1 ? 1 : 0;
@@ -13,9 +13,9 @@ export function buttonMuteEntity (x, y, music) {
     music: music
   });
 
-  let sprite = new PIXI.Sprite(PIXI.loader.resources['button_soundDisabled'].texture);
+  let sprite = new PIXI.Sprite(PIXI.loader.resources['button_soundWaves'].texture);
   sprite.anchor.set(0.5, 0.5);
-  sprite.position.set(0, 0);
+  sprite.position.set(50, 0);
   sprite.visible = false;
 
   entity.components.sprite.pixiSprite.addChild(sprite);
