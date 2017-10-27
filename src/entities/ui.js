@@ -7,8 +7,8 @@ import spriteEntity from 'entities/spriteEntity';
 export function buttonMuteEntity (x, y, music) {
   let entity = spriteEntity(x, y, 'button_soundSpeaker');
   entity.components.sprite.pixiSprite.anchor.set(0.5, 0.5);
-  console.log(window.localStorage.getItem("Muted"));
-  music.volume = window.localStorage.getItem("Muted") == 1 ? 1 : 0;
+  console.log(window.localStorage.getItem('Muted'));
+  music.volume = window.localStorage.getItem('Muted') == 1 ? 1 : 0;
   entity.addComponent('muteButton', {
     music: music
   });
@@ -32,10 +32,10 @@ export function buttonMuteEntity (x, y, music) {
 };
 
 export function showRangesEntity (x, y) {
-  let entity = spriteEntity(x, y, 'red_square');
+  let entity = spriteEntity(x, y, 'button_hideRanges');
   entity.components.sprite.pixiSprite.anchor.set(0.5, 0.5);
 
-  let sprite = new PIXI.Sprite(PIXI.loader.resources['green_square'].texture);
+  let sprite = new PIXI.Sprite(PIXI.loader.resources['button_showRanges'].texture);
   sprite.anchor.set(0.5, 0.5);
   sprite.position.set(0, 0);
   sprite.visible = false;

@@ -89,7 +89,7 @@ function startGame () {
   game.ecs.addSystem(new Movement());
   game.ecs.addSystem(rangeSystem);
   let targetInRange = new TargetInRange(grid.towers);
-  game.ecs.addSystem(new Attack(game.ecs, targetInRange.enemies));  // TODO
+  game.ecs.addSystem(new Attack(game.ecs, targetInRange.enemies)); // TODO
   game.ecs.addSystem(new Construction());
   game.ecs.addSystem(new InfoPanelUpdater());
   game.ecs.addSystem(new UpdateGridPosition());
@@ -143,5 +143,7 @@ PIXI.loader
   .add('button_soundWaves', 'img/button_soundWaves.png')
   .add('button_fast', 'img/button_fast.png')
   .add('button_slow', 'img/button_slow.png')
+  .add('button_showRanges', 'img/button_showRanges.png')
+  .add('button_hideRanges', 'img/button_hideRanges.png')
   .add('fak_font', 'font/fak.fnt')
   .load(startLoop);
