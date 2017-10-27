@@ -26,9 +26,9 @@ export default function randomCreeps (x, y, difficulty) {
   return creeps;
 }
 
-export function baseCreep (x, y) {
+export function baseCreep (x, y, image='tower_weak') {
   let vec = new PixiVector(x, y).toWorld();
-  let entity = spriteEntity(vec.x, vec.y, ['creep_fast_1', 'creep_fast_2']);
+  let entity = spriteEntity(vec.x, vec.y, image);
   entity.components.sprite.pixiSprite.anchor.set(0.5, 0.5);
   entity.addComponent('movement',{
       velocity: new PixiVector(0, 0),
@@ -55,7 +55,8 @@ export function baseCreep (x, y) {
 
 
 export function tankCreep (x, y) {
-  let entity = baseCreep(x, y);
+  let images = ['creep_tall_1', 'creep_tall_2']
+  let entity = baseCreep(x, y, images);
   entity.components.health.health *= 5;
   entity.components.health.initialHealth *= 5;
   entity.components.movement.maxSpeed *= 0.75;
@@ -63,7 +64,8 @@ export function tankCreep (x, y) {
 }
 
 export function speedCreep (x, y) {
-  let entity = baseCreep(x, y);
+  let images = ['creep_fast_1', 'creep_fast_2']
+  let entity = baseCreep(x, y, images);
   entity.components.movement.maxSpeed *= 1.5;
   return entity;
 }
