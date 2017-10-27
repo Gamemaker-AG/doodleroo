@@ -28,7 +28,7 @@ export default function randomCreeps (x, y, difficulty) {
 
 export function baseCreep (x, y) {
   let vec = new PixiVector(x, y).toWorld();
-  let entity = spriteEntity(vec.x, vec.y, 'tower_weak');
+  let entity = spriteEntity(vec.x, vec.y, ['creep_fast_1', 'creep_fast_2']);
   entity.components.sprite.pixiSprite.anchor.set(0.5, 0.5);
   entity.addComponent('movement',{
       velocity: new PixiVector(0, 0),

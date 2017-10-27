@@ -128,6 +128,8 @@ PIXI.loader
   .add('heart', 'img/heart.png')
   .add('coin', 'img/coin.png')
   .add('circular_background', 'img/circular_background.png')
+  .add('creep_fast_1', 'img/creep_fast_1.png')
+  .add('creep_fast_2', 'img/creep_fast_2.png')
   .add('tower_weak', 'img/tower_weak.png')
   .add('tower_weak_top', 'img/tower_weak_top.png')
   .add('tower_strong', 'img/tower_strong.png')
