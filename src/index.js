@@ -40,6 +40,7 @@ let ticker, renderer;
 
 const backgroundMusic = PIXI.sound.Sound.from('sounds/backgroundMusic.mp3');
 backgroundMusic.loop = true;
+backgroundMusic.volume = window.localStorage.getItem('volume') || 1;
 backgroundMusic.play();
 
 renderer = PIXI.autoDetectRenderer(globals.width, globals.height, {

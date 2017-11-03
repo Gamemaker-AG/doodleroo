@@ -4,11 +4,13 @@ import GridPosition from 'components/GridPosition';
 import PixiVector from 'PixiVector';
 import globals from 'globals';
 import towerEntity from 'entities/towerEntity';
+import ZIndex from 'components/ZIndex';
 
 const {slotCount, slotSize} = globals;
 
 export default function constructionMenuEntity (addEntity, towers) {
-  let entity = new ECS.Entity(null, [Sprite, GridPosition]);
+  let entity = new ECS.Entity(null, [Sprite, GridPosition, ZIndex]);
+  entity.components.zIndex.index = 1;
   entity.components.sprite.pixiSprite = new PIXI.Container();
   entity.components.sprite.pixiSprite.visible = false;
 

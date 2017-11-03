@@ -42,13 +42,6 @@ export default class Button extends ECS.System {
     }
   }
 
-  update (entity) {
-    if (entity.components.muteButton) {
-      entity.components.sprite.pixiSprite.getChildAt(0).visible = entity.components.muteButton.music.volume;
-      window.localStorage.setItem('Muted', entity.components.muteButton.music.volume)
-    }
-  }
-
   exit (entity) {
     entity.components.button.click = undefined;
   }
