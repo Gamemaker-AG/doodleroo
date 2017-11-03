@@ -3,7 +3,8 @@ import Player from 'Player';
 const globals = {
   width: 1920,
   height: 1080,
-  slotCount: 16
+  slotCount: 16,
+  zIndexes: 3
 };
 
 globals.gridOffset = 100;

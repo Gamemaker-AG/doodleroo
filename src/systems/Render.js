@@ -18,6 +18,9 @@ export default class Render extends ECS.System {
     this.height = height;
     this.stage = stage;
     this.pathIndicators = {}
+    for (let i = 0; i < globals.zIndexes; i++) {
+      this.stage.addChildAt(new PIXI.Container());
+    }
 
     window.addEventListener('resize', this.resizeHandler.bind(this), false);
     this.resizeHandler();
@@ -29,11 +32,19 @@ export default class Render extends ECS.System {
   }
 
   enter (entity) {
-    this.stage.addChild(entity.components.sprite.pixiSprite);
+    let index = 0;
+    if (entity.components.zIndex) {
+      index = entity.components.zIndex.index;
+    }
+    this.stage.getChildAt(index).addChild(entity.components.sprite.pixiSprite);
   }
 
   exit (entity) {
-    this.stage.removeChild(entity.components.sprite.pixiSprite);
+    let index = 0;
+    if (entity.components.zIndex) {
+      index = entity.components.zIndex.index;
+    }
+    this.stage.getChildAt(index).removeChild(entity.components.sprite.pixiSprite);
   }
 
   drawDebugPath (entity) {
