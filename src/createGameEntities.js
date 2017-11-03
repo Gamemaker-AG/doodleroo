@@ -45,6 +45,7 @@ export default function createGameEntities (addEntity, backgroundMusic) {
     for (let y = 0; y < slotCount; y++) {
       if ((x === 0 || x === slotCount - 1) || (y === 0 || y === slotCount - 1)) {
         clickable = false;
+        entities.push(slotEntity(x, y, clickable, 'slot'));
         style = 'wall';
       } else {
         clickable = true;
@@ -73,6 +74,11 @@ export default function createGameEntities (addEntity, backgroundMusic) {
   return entities;
 };
 
+function randomElement(arr) {
+    let randomIndex = Math.floor(Math.random() * arr.length);
+    return arr[randomIndex];
+}
+
 function slotEntity (x, y, clickable = true , style = 'slot') {
   let worldPos = new PixiVector(x, y)
     .multiply(slotSize)
@@ -80,6 +86,8 @@ function slotEntity (x, y, clickable = true , style = 'slot') {
     .add(globals.gridOffset);
   let entity = spriteEntity(worldPos.x, worldPos.y, style);
   let {pixiSprite} = entity.components.sprite;
+
+  pixiSprite.rotation = randomElement([Math.PI/2, -Math.PI/2, 0, Math.PI]);
   pixiSprite.anchor.set(0.5, 0.5);
   pixiSprite.scale.set(slotSize / pixiSprite.texture.height);
 

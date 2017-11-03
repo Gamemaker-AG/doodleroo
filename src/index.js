@@ -107,6 +107,7 @@ function startGame () {
 }
 
 function startLoop () {
+  window.speed = 1;
   ticker = new PIXI.ticker.Ticker();
   ticker.add(gameLoop);
   ticker.start();

@@ -7,7 +7,6 @@ import spriteEntity from 'entities/spriteEntity';
 export function buttonMuteEntity (x, y, music) {
   let entity = spriteEntity(x, y, 'button_soundSpeaker');
   entity.components.sprite.pixiSprite.anchor.set(0.5, 0.5);
-  console.log(window.localStorage.getItem('Muted'));
   music.volume = window.localStorage.getItem('Muted') == 1 ? 1 : 0;
   entity.addComponent('muteButton', {
     music: music
@@ -22,7 +21,6 @@ export function buttonMuteEntity (x, y, music) {
   entity.addComponent('button', {
     actions: {
       'click': () => {
-        console.log('toggle mute here');
         entity.components.muteButton.music.volume = entity.components.muteButton.music.volume == 1 ? 0 : 1;
       }
     }
