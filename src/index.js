@@ -136,7 +136,7 @@ PIXI.loader
   .add('tower_weak', 'img/tower_weak.png')
   .add('tower_weak_top', 'img/tower_weak_top.png')
   .add('tower_strong', 'img/middle_finger_tower.png')
-  .add('tower_long', 'img/tower_long.png')
+  .add('tower_long', 'img/tower_simple.png')
   .add('slot', 'img/slot.png')
   .add('goal', 'img/goal.png')
   .add('wall', 'img/wall.png')
