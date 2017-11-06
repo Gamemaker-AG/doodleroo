@@ -10,7 +10,7 @@ export default class Attack extends ECS.System {
   }
 
   test (entity) {
-    return !!entity.components.attack;
+    return entity.components.attack && !entity.components.fadeOut && !entity.components.bullet;
   }
 
   update (entity) {
