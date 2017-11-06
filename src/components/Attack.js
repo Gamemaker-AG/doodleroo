@@ -4,6 +4,7 @@ export default {
     rate: 1,
     timeSinceLastAttack: 0,
     damage: 50,
-    unitToAttack: null
+    unitToAttack: null,
+    bulletType: 'bullet' // 'laser', 'bullet', 'batarang'
   }
 };

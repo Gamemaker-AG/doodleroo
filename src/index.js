@@ -2,6 +2,7 @@ import ECS from 'yagl-ecs';
 import * as PIXI from 'pixi.js';
 
 import Attack from 'systems/Attack';
+import Bullet from 'systems/Bullet';
 import ButtonSystem from 'systems/Button';
 import Construction from 'systems/Construction';
 import Destination from 'systems/Destination';
@@ -89,7 +90,8 @@ function startGame () {
   game.ecs.addSystem(new Movement());
   game.ecs.addSystem(rangeSystem);
   let targetInRange = new TargetInRange(grid.towers);
-  game.ecs.addSystem(new Attack(game.ecs, targetInRange.enemies)); // TODO
+  game.ecs.addSystem(new Attack(game.ecs, targetInRange.enemies));
+  game.ecs.addSystem(new Bullet(game.ecs, targetInRange.enemies));
   game.ecs.addSystem(new Construction());
   game.ecs.addSystem(new InfoPanelUpdater());
   game.ecs.addSystem(new UpdateGridPosition());
@@ -136,6 +138,7 @@ PIXI.loader
   .add('tower_weak_top', 'img/tower_weak_top.png')
   .add('tower_strong', 'img/tower_strong.png')
   .add('tower_long', 'img/tower_long.png')
+  .add('bullet', 'img/bullet.png')
   .add('slot', 'img/slot.png')
   .add('goal', 'img/goal.png')
   .add('wall', 'img/wall.png')
