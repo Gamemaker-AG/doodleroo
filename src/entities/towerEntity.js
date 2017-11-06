@@ -3,6 +3,7 @@ import spriteEntity from 'entities/spriteEntity';
 import * as actions from 'button-actions';
 
 export default function towerEntity (x, y, specs) {
+  let bulletType = 'bullet'; // default
   globals.player.gold -= specs[3];
   let entity = spriteEntity(...specs);
   let {pixiSprite} = entity.components.sprite;
@@ -18,6 +19,7 @@ export default function towerEntity (x, y, specs) {
 
   if (specs[2] === 'tower_long') {
     entity.addComponent('slow', {speedFactor: 0.5, duration: 0.8});
+    bulletType = 'laser';
   }
 
   if (specs[2] === 'tower_strong') {
@@ -29,7 +31,7 @@ export default function towerEntity (x, y, specs) {
   entity.addComponent('health', {health: 100, initialHealth: 100});
   entity.addComponent('gridPosition', {x: x, y: y});
   entity.addComponent('purchased', {cost: specs[3]});
-  entity.addComponent('attack', {rate: 0.5, timeSinceLastAttack: 0, damage: specs[5]});
+  entity.addComponent('attack', {rate: 0.5, timeSinceLastAttack: 0, damage: specs[5], bulletType: bulletType});
   entity.addComponent('button', {
     actions: {
       'mouseover': [actions.TOGGLE_SHOW_RANGES_SINGLE, entity, globals.showRange],

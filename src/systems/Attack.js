@@ -1,17 +1,16 @@
 import ECS from 'yagl-ecs';
-import lineShot from 'entities/lineShot';
+import shot from 'entities/shot';
 import PixiVector from 'PixiVector';
-import globals from 'globals';
 
 export default class Attack extends ECS.System {
   constructor (ecs, enemies, freq) {
     super(freq);
     this.ecs = ecs;
-	this.enemies = enemies;
+    this.enemies = enemies;
   }
 
   test (entity) {
-    return !!entity.components.attack;
+    return entity.components.attack && !entity.components.fadeOut && !entity.components.bullet;
   }
 
   update (entity) {
@@ -29,7 +28,8 @@ export default class Attack extends ECS.System {
   attack (source, enemy) {
     let {position: origin} = source.components.sprite.pixiSprite;
     let {position: target} = enemy.components.sprite.pixiSprite;
-    this.ecs.addEntity(lineShot(origin, target));
+
+    this.ecs.addEntity(shot(origin, enemy, source));
 
     if (source.components.slow) {
       // slow
@@ -38,27 +38,10 @@ export default class Attack extends ECS.System {
       }
 
       enemy.components.movement.speedFactor = source.components.slow.speedFactor;
-    } else {
-      if (source.components.splash) {
-        // deal splash damage
-		let enemyPos = new PixiVector(target.x, target.y);
-		
-        for (let i in this.enemies) {
-		  if (this.enemies.hasOwnProperty(i)) {
-			let otherPos = new PixiVector(
-              this.enemies[i].components.sprite.pixiSprite.x,
-			  this.enemies[i].components.sprite.pixiSprite.y
-			);
-			
-			if (enemyPos.clone().distance(otherPos) <= source.components.splash.splashRadius * globals.slotSize) {
-				this.enemies[i].components.health.health -= source.components.attack.damage;
-			}
-          }
-        }
-      } else {
-        // deal single damage
-		enemy.components.health.health -= source.components.attack.damage;
-      }
+    }
+
+    if (source.components.enemy) {
+      enemy.components.health.health -= source.components.attack.damage;
     }
   }
 };
