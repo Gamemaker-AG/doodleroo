@@ -41,6 +41,7 @@ let ticker, renderer;
 
 const backgroundMusic = PIXI.sound.Sound.from('sounds/backgroundMusic.mp3');
 backgroundMusic.loop = true;
+backgroundMusic.volume = window.localStorage.getItem('volume') || 1;
 backgroundMusic.play();
 
 renderer = PIXI.autoDetectRenderer(globals.width, globals.height, {
@@ -109,6 +110,7 @@ function startGame () {
 }
 
 function startLoop () {
+  window.speed = 1;
   ticker = new PIXI.ticker.Ticker();
   ticker.add(gameLoop);
   ticker.start();
@@ -136,7 +138,7 @@ PIXI.loader
   .add('creep_tall_2', 'img/creep_tall_2.png')
   .add('tower_weak', 'img/tower_weak.png')
   .add('tower_weak_top', 'img/tower_weak_top.png')
-  .add('tower_strong', 'img/tower_strong.png')
+  .add('tower_strong', 'img/middle_finger_tower.png')
   .add('tower_long', 'img/tower_long.png')
   .add('bullet', 'img/bullet.png')
   .add('slot', 'img/slot.png')
