@@ -69,9 +69,7 @@ export default class Grid extends ECS.System {
       let {x, y} = entity.components.goal;
       let path = this.findPath(entity, x, y);
       if (typeof(entity.components.goalPath) === 'undefined') {
-        entity.addComponent('goalPath', {
-          path: path
-        });
+        entity.addComponent('goalPath', { path });
       } else {
         entity.components.goalPath.pathUpdated = true;
         entity.components.goalPath.path = path;
