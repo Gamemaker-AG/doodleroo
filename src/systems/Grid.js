@@ -29,15 +29,17 @@ export default class Grid extends ECS.System {
   }
 
   updateCosts () {
-    this.costs = initializedArray(globals.slotCount, globals.slotCount, 1.0);
+    this.costs = initializedArray(globals.slotCount, globals.slotCount, 1.0, 1.0);
     let costs = this.costs;
     let towers = this.towers;
     for (let x = 0; x < towers.length; x++) {
       for (let y = 0; y < towers[x].length; y++) {
         for (let id of Object.keys(towers[x][y])) {
           let entity = towers[x][y][id];
-          let { gridPosition } = entity.components
-          updateAttackablePositions(costs, entity);
+          let { gridPosition, range } = entity.components;
+          if (range) {
+            updateAttackablePositions(costs, entity);
+          }
           costs[gridPosition.x][gridPosition.y] += entity.components.obstacle.cost;
         }
       }
@@ -152,9 +154,6 @@ function neighbors (x, y) {
     positions.push([x, newY]);
   }
   return positions;
-}
-
-function setCosts(costs, towers) {
 }
 
 function updateAttackablePositions (costs, entity) {

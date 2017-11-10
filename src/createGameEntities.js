@@ -43,23 +43,28 @@ export default function createGameEntities (addEntity, backgroundMusic) {
   let style;
   for (let x = 0; x < slotCount; x++) {
     for (let y = 0; y < slotCount; y++) {
-      if ((x === 0 || x === slotCount - 1) || (y === 0 || y === slotCount - 1)) {
-        clickable = false;
-        entities.push(slotEntity(x, y, clickable, 'slot'));
-        style = 'wall';
-      } else {
-        clickable = true;
-        style = 'slot';
+      entities.push(slotEntity(x, y, false, 'slot'));
+
+      if (y === 0 && (x === Math.floor(slotCount / 2) || x === Math.ceil(slotCount / 2) - 1)) {
+        entities.push(slotEntity(x, y, false, 'start'));
       }
-      if (y === slotCount - 1 && (x === Math.floor(slotCount / 2) || x === Math.ceil(slotCount / 2) - 1)) {
-        style = 'goal';
+      else if (y === slotCount - 1 && (x === Math.floor(slotCount / 2) || x === Math.ceil(slotCount / 2) - 1)) {
+        entities.push(slotEntity(x, y, false, 'goal'));
       }
-      entities.push(slotEntity(x, y, clickable, style));
+      else if ((x === 0 || x === slotCount - 1) || (y === 0 || y === slotCount - 1)) {
+        let entity = slotEntity(x, y, false, 'wall')
+        entity.addComponent('obstacle', {cost: Infinity})
+        entity.addComponent('gridPosition', {x: x, y: y})
+        entities.push(entity);
+      }
+      else {
+        entities.push(slotEntity(x, y, true, 'slot'));
+      }
     }
   }
 
   let entity = new ECS.Entity(null, [spawner, gridPosition]);
-  entity.components.gridPosition = {x: 3, y: 3};
+  entity.components.gridPosition = {x: slotCount / 2, y: 0};
   entities.push(entity);
 
   entities.push(constructionMenu);
