@@ -7,20 +7,27 @@ import spriteEntity from 'entities/spriteEntity';
 export function buttonMuteEntity (x, y, music) {
   let entity = spriteEntity(x, y, 'button_soundSpeaker');
   entity.components.sprite.pixiSprite.anchor.set(0.5, 0.5);
-  entity.addComponent('muteButton', { music });
+  entity.addComponent('muteButton', { music});
 
-  let sprite = new PIXI.Sprite(PIXI.loader.resources['button_soundWaves'].texture);
-  sprite.anchor.set(0.5, 0.5);
-  sprite.position.set(50, 0);
-  sprite.visible = entity.components.muteButton.music.volume > 0;
+  let spriteWaves = new PIXI.Sprite(PIXI.loader.resources['button_soundWaves'].texture);
+  spriteWaves.anchor.set(0.5, 0.5);
+  spriteWaves.position.set(50, 0);
+  spriteWaves.visible = entity.components.muteButton.music.volume > 0;
 
-  entity.components.sprite.pixiSprite.addChild(sprite);
+  let spriteMuted = new PIXI.Sprite(PIXI.loader.resources['button_soundMuted'].texture);
+  spriteMuted.anchor.set(0.5, 0.5);
+  spriteMuted.position.set(50, 0);
+  spriteMuted.visible = entity.components.muteButton.music.volume == 0;
+
+  entity.components.sprite.pixiSprite.addChild(spriteWaves);
+  entity.components.sprite.pixiSprite.addChild(spriteMuted);
   entity.addComponent('button', {
     actions: {
       'click': () => {
         entity.components.muteButton.music.volume = entity.components.muteButton.music.volume == 1 ? 0 : 1;
-        window.localStorage.setItem('volume', entity.components.muteButton.music.volume)
+        window.localStorage.setItem('volume', entity.components.muteButton.music.volume);
         entity.components.sprite.pixiSprite.getChildAt(0).visible = entity.components.muteButton.music.volume > 0;
+        entity.components.sprite.pixiSprite.getChildAt(1).visible = entity.components.muteButton.music.volume == 0;
       }
     }
   });

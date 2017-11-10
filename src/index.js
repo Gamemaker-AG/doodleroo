@@ -148,6 +148,7 @@ PIXI.loader
   .add('button_credits', 'img/button_credits.png')
   .add('button_soundSpeaker', 'img/button_soundSpeaker.png')
   .add('button_soundWaves', 'img/button_soundWaves.png')
+  .add('button_soundMuted', 'img/button_soundMuted.png')
   .add('button_fast', 'img/button_fast.png')
   .add('button_slow', 'img/button_slow.png')
   .add('button_showRanges', 'img/button_showRanges.png')
