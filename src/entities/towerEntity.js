@@ -9,6 +9,7 @@ export default function towerEntity (x, y, specs) {
   let {pixiSprite} = entity.components.sprite;
   pixiSprite.anchor.set(0.5, 0.5);
   pixiSprite.scale.set(globals.slotSize / pixiSprite.texture.height);
+  pixiSprite.hitArea = new PIXI.Rectangle(-globals.slotSize / 2 - 5, -globals.slotSize / 2 - 5, globals.slotSize + 10, globals.slotSize + 10);
 
   if (specs[2] === 'tower_weak') {
     let rotatable = new PIXI.Sprite(PIXI.loader.resources['tower_weak_top'].texture);
