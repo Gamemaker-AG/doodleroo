@@ -143,6 +143,7 @@ PIXI.loader
   .add('bullet', 'img/bullet.png')
   .add('slot', 'img/slot.png')
   .add('goal', 'img/goal.png')
+  .add('start', 'img/goal.png')
   .add('wall', 'img/wall.png')
   .add('button_newGame', 'img/button_newGame.png')
   .add('button_credits', 'img/button_credits.png')
