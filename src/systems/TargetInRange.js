@@ -4,10 +4,10 @@ import PixiVector from 'PixiVector';
 import { radianLerp } from 'math-utils';
 
 export default class TargetInRange extends ECS.System {
-  constructor(towers, freq) {
+  constructor(obstacles, freq) {
     super(freq);
     this.enemies = {};
-    this.towers = towers;
+    this.obstacles = obstacles;
   }
 
   test (entity) {
@@ -25,7 +25,7 @@ export default class TargetInRange extends ECS.System {
     if (entity.components.enemy) {
       delete this.enemies[entity.id];
 
-      forEachTower(this.towers, tower => {
+      forEachTower(this.obstacles, tower => {
         if (tower.components) {
           let {attack} = tower.components;
           if (attack && attack.unitToAttack === entity) {

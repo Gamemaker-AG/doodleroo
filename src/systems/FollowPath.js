@@ -2,10 +2,10 @@ import ECS from 'yagl-ecs';
 import PixiVector from 'PixiVector';
 
 export default class FollowPath extends ECS.System {
-  constructor(towers, freq) {
+  constructor(obstacles, freq) {
     super(freq);
 
-    this.towers = towers;
+    this.obstacles = obstacles;
   }
 
   test (entity) {
@@ -50,7 +50,7 @@ export default class FollowPath extends ECS.System {
     }
 
     // If there's a tower in the way, stop and attack it
-    let entitiesOnGoal = this.towers[goal[0]][goal[1]];
+    let entitiesOnGoal = this.obstacles[goal[0]][goal[1]];
     let obstacleIds = Object.keys(entitiesOnGoal).filter(key => {
       let {components} = entitiesOnGoal[key];
       return components.obstacle && components.health;

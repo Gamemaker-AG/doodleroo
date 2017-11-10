@@ -8,14 +8,14 @@ export default class Grid extends ECS.System {
   constructor (freq) {
     super(freq);
     let newObj = () => { return {};};
-    this.towers = initializedArray(globals.slotCount, globals.slotCount, newObj, newObj);
+    this.obstacles = initializedArray(globals.slotCount, globals.slotCount, newObj, newObj);
     this.dirty = true;
   }
 
   enter (entity) {
     let {gridPosition} = entity.components;
     if (gridPosition && entity.components.obstacle) {
-      this.towers[gridPosition.x][gridPosition.y][entity.id] = entity;
+      this.obstacles[gridPosition.x][gridPosition.y][entity.id] = entity;
       this.dirty = true;
     }
   }
@@ -23,7 +23,7 @@ export default class Grid extends ECS.System {
   exit (entity) {
     let {gridPosition} = entity.components;
     if (gridPosition && entity.components.obstacle) {
-      delete this.towers[gridPosition.x][gridPosition.y][entity.id];
+      delete this.obstacles[gridPosition.x][gridPosition.y][entity.id];
       this.dirty = true;
     }
   }
@@ -31,11 +31,11 @@ export default class Grid extends ECS.System {
   updateCosts () {
     this.costs = initializedArray(globals.slotCount, globals.slotCount, 1.0, 1.0);
     let costs = this.costs;
-    let towers = this.towers;
-    for (let x = 0; x < towers.length; x++) {
-      for (let y = 0; y < towers[x].length; y++) {
-        for (let id of Object.keys(towers[x][y])) {
-          let entity = towers[x][y][id];
+    let obstacles = this.obstacles;
+    for (let x = 0; x < obstacles.length; x++) {
+      for (let y = 0; y < obstacles[x].length; y++) {
+        for (let id of Object.keys(obstacles[x][y])) {
+          let entity = obstacles[x][y][id];
           let { gridPosition, range } = entity.components;
           if (range) {
             updateAttackablePositions(costs, entity);

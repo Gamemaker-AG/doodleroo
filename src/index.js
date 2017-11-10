@@ -90,13 +90,13 @@ function startGame () {
   game.ecs.addSystem(grid);
   game.ecs.addSystem(new Movement());
   game.ecs.addSystem(rangeSystem);
-  let targetInRange = new TargetInRange(grid.towers);
+  let targetInRange = new TargetInRange(grid.obstacles);
   game.ecs.addSystem(new Attack(game.ecs, targetInRange.enemies));
   game.ecs.addSystem(new Bullet(game.ecs, targetInRange.enemies));
   game.ecs.addSystem(new Construction());
   game.ecs.addSystem(new InfoPanelUpdater());
   game.ecs.addSystem(new UpdateGridPosition());
-  game.ecs.addSystem(new FollowPath(grid.towers));
+  game.ecs.addSystem(new FollowPath(grid.obstacles));
   game.ecs.addSystem(targetInRange);
   game.ecs.addSystem(new Destination(game.ecs));
   game.ecs.addSystem(new Spawner(game.ecs));
