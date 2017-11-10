@@ -32,7 +32,6 @@ export default class Attack extends ECS.System {
     this.ecs.addEntity(shot(origin, enemy, source));
 
     if (source.components.slow) {
-      // slow
       if (source.components.slow.duration > enemy.components.movement.slowDuration) {
         enemy.components.movement.slowDuration = source.components.slow.duration;
       }

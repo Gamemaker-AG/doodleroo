@@ -1,6 +1,7 @@
 import globals from 'globals';
 import { buttonMuteEntity } from 'entities/ui';
 import spriteEntity from 'entities/spriteEntity';
+import Button from 'components/Button';
 
 export default function createMenuEntities (newGame, backgroundMusic) {
   let entities = [];
@@ -15,7 +16,7 @@ export default function createMenuEntities (newGame, backgroundMusic) {
 function buttonNewGameEntity (x, y, newGame) {
   let entity = spriteEntity(x, y, 'button_newGame');
   entity.components.sprite.pixiSprite.anchor.set(0.5, 0.5);
-  entity.addComponent('button', {
+  entity.addComponent(Button, {
     actions: {
       'click': () => {
         newGame();
@@ -28,7 +29,7 @@ function buttonNewGameEntity (x, y, newGame) {
 function buttonCreditsEntity (x, y) {
   let entity = spriteEntity(x, y, 'button_credits');
   entity.components.sprite.pixiSprite.anchor.set(0.5, 0.5);
-  entity.addComponent('button', {
+  entity.addComponent(Button, {
     actions: {
       'click': () => {
         console.log('This should open the credits.');

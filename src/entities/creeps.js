@@ -1,6 +1,7 @@
 import PixiVector from 'PixiVector';
 import globals from 'globals';
 import spriteEntity from 'entities/spriteEntity';
+import Movement from 'components/Movement';
 
 import Attack from '../components/Attack';
 
@@ -30,13 +31,7 @@ export function baseCreep (x, y, image = 'tower_weak') {
   let vec = new PixiVector(x, y).toWorld();
   let entity = spriteEntity(vec.x, vec.y, image);
   entity.components.sprite.pixiSprite.anchor.set(0.5, 0.5);
-  entity.addComponent('movement', {
-    velocity: new PixiVector(0, 0),
-    angularVelocity: 0,
-    maxSpeed: 100,
-    speedFactor: 1, // 0.5: half speed, 2: double speed
-    slowDuration: 0
-  });
+  entity.addComponent(Movement);
   entity.addComponent('enemy', {});
   entity.addComponent('gridPosition', {x, y});
   entity.addComponent('health', {health: 100, initialHealth: 100});
