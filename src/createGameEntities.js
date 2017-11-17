@@ -15,18 +15,21 @@ const {slotCount, slotSize} = globals;
 const towers = [
   {
     img: 'tower_weak',
+    rotatableAnchor: {x: 0.21, y: 0.46},
     cost: 100,
     range: 1.8,
     damage: 30
   },
   {
     img: 'tower_strong',
+    rotatableAnchor: null,
     cost: 200,
     range: 2,
     damage: 100
   },
   {
     img: 'tower_long',
+    rotatableAnchor: null,
     cost: 300,
     range: 3,
     damage: 50
@@ -52,12 +55,11 @@ export default function createGameEntities (addEntity, backgroundMusic) {
         entities.push(slotEntity(x, y, false, 'goal'));
       }
       else if ((x === 0 || x === slotCount - 1) || (y === 0 || y === slotCount - 1)) {
-        let entity = slotEntity(x, y, false, 'wall')
-        entity.addComponent('obstacle', {cost: Infinity})
-        entity.addComponent('gridPosition', {x: x, y: y})
+        let entity = slotEntity(x, y, false, 'wall');
+        entity.addComponent('obstacle', {cost: Infinity});
+        entity.addComponent('gridPosition', {x: x, y: y});
         entities.push(entity);
-      }
-      else {
+      }else {
         entities.push(slotEntity(x, y, true, 'slot'));
       }
     }
@@ -79,9 +81,9 @@ export default function createGameEntities (addEntity, backgroundMusic) {
   return entities;
 };
 
-function randomElement(arr) {
-    let randomIndex = Math.floor(Math.random() * arr.length);
-    return arr[randomIndex];
+function randomElement (arr) {
+  let randomIndex = Math.floor(Math.random() * arr.length);
+  return arr[randomIndex];
 }
 
 function slotEntity (x, y, clickable = true , style = 'slot') {
@@ -92,7 +94,7 @@ function slotEntity (x, y, clickable = true , style = 'slot') {
   let entity = spriteEntity(worldPos.x, worldPos.y, style);
   let {pixiSprite} = entity.components.sprite;
 
-  pixiSprite.rotation = randomElement([Math.PI/2, -Math.PI/2, 0, Math.PI]);
+  pixiSprite.rotation = randomElement([Math.PI / 2, -Math.PI / 2, 0, Math.PI]);
   pixiSprite.anchor.set(0.5, 0.5);
   pixiSprite.scale.set(slotSize / pixiSprite.texture.height);
 

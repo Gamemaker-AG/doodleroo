@@ -13,7 +13,7 @@ export default function towerEntity (x, y, specs) {
 
   if (specs[2] === 'tower_weak') {
     let rotatable = new PIXI.Sprite(PIXI.loader.resources['tower_weak_top'].texture);
-    rotatable.anchor.set(0.21, 0.46);
+    rotatable.anchor.set(specs[6].x, specs[6].y);
     rotatable.scale.set(pixiSprite.scale.x);
     pixiSprite.addChild(rotatable);
   }

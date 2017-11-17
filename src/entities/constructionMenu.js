@@ -43,7 +43,8 @@ export default function constructionMenuEntity (addEntity, towers) {
         specs.img,
         specs.cost,
         specs.range,
-        specs.damage
+        specs.damage,
+        specs.rotatableAnchor
       ];
 
       if (updatedSpecs[3] <= globals.player.gold) {
@@ -60,7 +61,16 @@ export default function constructionMenuEntity (addEntity, towers) {
       entity.components.sprite.pixiSprite.visible = false;
     };
     sprite.click = clickaction;
-    sprite.on('tap', clickaction)
+    sprite.on('tap', clickaction);
+
+    if (specs.rotatableAnchor) {
+      let spriteRotatable = new PIXI.Sprite(PIXI.loader.resources[specs.img + '_top'].texture);
+      spriteRotatable.anchor.set(specs.rotatableAnchor.x, specs.rotatableAnchor.y);
+      spriteRotatable.position.set(0, 0);
+      sprite.addChild(spriteRotatable);
+    }
+
+    sprite.hitArea = new PIXI.Rectangle(-globals.slotSize / 2 - 5, -globals.slotSize / 2 - 5, globals.slotSize + 10, globals.slotSize + 10);
 
     entity.components.sprite.pixiSprite.addChild(sprite);
   });
