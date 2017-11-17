@@ -37,17 +37,17 @@ export default function constructionMenuEntity (addEntity, towers) {
 
     let clickaction = () => {
       let worldCoords = entity.components.sprite.pixiSprite.position;
-      let updatedSpecs = [
-        worldCoords.x,
-        worldCoords.y,
-        specs.img,
-        specs.cost,
-        specs.range,
-        specs.damage,
-        specs.rotatableAnchor
-      ];
+      let updatedSpecs = {
+        x: worldCoords.x,
+        y: worldCoords.y,
+        img: specs.img,
+        rotatableAnchor: specs.rotatableAnchor,
+        cost: specs.cost,
+        range: specs.range,
+        damage: specs.damage
+      };
 
-      if (updatedSpecs[3] <= globals.player.gold) {
+      if (updatedSpecs.cost <= globals.player.gold) {
         console.log('Constructing at:',
           entity.components.gridPosition.x,
           entity.components.gridPosition.y
