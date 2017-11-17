@@ -59,6 +59,8 @@ export default class FollowPath extends ECS.System {
       movement.velocity = new PixiVector(0, 0);
       entity.components.attack.unitToAttack = entitiesOnGoal[obstacleIds[0]];
       return;
+    } else {
+      entity.components.attack.unitToAttack = undefined;
     }
 
     // Calculate velocity to get to next cell
