@@ -27,7 +27,7 @@ export default function randomCreeps (x, y, difficulty) {
   return creeps;
 };
 
-export function baseCreep (x, y, image = 'tower_weak') {
+export function baseCreep (x, y, image = 'tower_splash') {
   let vec = new PixiVector(x, y).toWorld();
   let entity = spriteEntity(vec.x, vec.y, image);
   entity.components.sprite.pixiSprite.anchor.set(0.5, 0.5);

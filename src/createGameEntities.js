@@ -12,36 +12,12 @@ import { buttonMuteEntity, infoPanelEntity, speedUpEntity, showRangesEntity } fr
 
 const {slotCount, slotSize} = globals;
 
-const towers = [
-  {
-    img: 'tower_weak',
-    rotatableAnchor: {x: 0.21, y: 0.46},
-    cost: 100,
-    range: 1.8,
-    damage: 30
-  },
-  {
-    img: 'tower_strong',
-    rotatableAnchor: null,
-    cost: 200,
-    range: 2,
-    damage: 100
-  },
-  {
-    img: 'tower_long',
-    rotatableAnchor: null,
-    cost: 300,
-    range: 3,
-    damage: 50
-  }
-];
-
 let constructionMenu, buttonShowRanges;
 
 export default function createGameEntities (addEntity, backgroundMusic) {
   let entities = [];
 
-  constructionMenu = constructionMenuEntity(addEntity, towers);
+  constructionMenu = constructionMenuEntity(addEntity);
   let clickable;
   let style;
   for (let x = 0; x < slotCount; x++) {
@@ -59,7 +35,7 @@ export default function createGameEntities (addEntity, backgroundMusic) {
         entity.addComponent('obstacle', {cost: Infinity});
         entity.addComponent('gridPosition', {x: x, y: y});
         entities.push(entity);
-      }else {
+      } else {
         entities.push(slotEntity(x, y, true, 'slot'));
       }
     }
