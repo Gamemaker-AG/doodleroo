@@ -10,7 +10,7 @@ const {slotCount, slotSize} = globals;
 
 export default function constructionMenuEntity (addEntity) {
   let entity = new ECS.Entity(null, [Sprite, GridPosition, ZIndex]);
-  entity.components.zIndex.index = 1;
+  entity.components.zIndex.index = globals.zIndexes - 1;
   entity.components.sprite.pixiSprite = new PIXI.Container();
   entity.components.sprite.pixiSprite.visible = false;
 
@@ -19,6 +19,15 @@ export default function constructionMenuEntity (addEntity) {
   background.position.set(0, 0);
   background.scale.set(0.7);
   background.alpha = 0.5;
+  background.interactive = true;
+
+  let backgroundClick = () => {
+    entity.components.sprite.pixiSprite.visible = false;
+  };
+
+  background.click = backgroundClick;
+  background.on('tap', backgroundClick);
+
   entity.components.sprite.pixiSprite.addChild(background);
 
   let angle = (Math.PI * 2) / tower_types.length;

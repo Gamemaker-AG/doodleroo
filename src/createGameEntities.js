@@ -82,5 +82,7 @@ function slotEntity (x, y, clickable = true , style = 'slot') {
     });
   }
 
+  entity.addComponent('zIndex', {index: 0});
+
   return entity;
 }
