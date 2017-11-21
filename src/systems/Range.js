@@ -21,6 +21,7 @@ export default class Range extends ECS.System {
       range.indicator = new PIXI.Graphics();
       let {pixiSprite} = entity.components.sprite;
 
+      range.indicator.beginFill(1, 0.1);
       range.indicator.lineStyle(3, range.color, 1);
       range.indicator.drawCircle(0, 0, range.range * globals.slotSize);
       range.indicator.endFill();
