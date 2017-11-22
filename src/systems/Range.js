@@ -1,14 +1,16 @@
 import * as PIXI from 'pixi.js';
 import ECS from 'yagl-ecs';
 import globals from 'globals';
+import Sprite from 'components/Sprite.js';
 import { hasSprite } from 'components/Sprite';
 import * as actions from 'button-actions';
+import ZIndex from 'components/ZIndex';
 
 export default class Range extends ECS.System {
-  constructor (stage) {
+  constructor (ecs) {
     super();
 
-    this.stage = stage;
+    this.ecs = ecs;
   }
 
   test (entity) {
@@ -16,29 +18,31 @@ export default class Range extends ECS.System {
   }
 
   enter (entity) {
-    if (entity.components.range) {
-      let {range} = entity.components;
-      range.indicator = new PIXI.Graphics();
-      let {pixiSprite} = entity.components.sprite;
+    let { range } = entity.components;
+    let { pixiSprite } = entity.components.sprite;
+    let rangeEntity = new ECS.Entity(null, [Sprite, ZIndex]);
 
-      range.indicator.beginFill(1, 0.1);
-      range.indicator.lineStyle(3, range.color, 1);
-      range.indicator.drawCircle(0, 0, range.range * globals.slotSize);
-      range.indicator.endFill();
-      range.indicator.position.set(pixiSprite.position.x, pixiSprite.position.y);
+    let rangeIndicator = new PIXI.Graphics();
+    rangeIndicator.beginFill(1, 0.1);
+    // rangeIndicator.lineStyle(3, range.color, 1)
+    rangeIndicator.drawCircle(pixiSprite.x, pixiSprite.y, range.range * globals.slotSize);
+    rangeIndicator.endFill();
 
-      this.stage.addChild(range.indicator);
+    rangeEntity.components.sprite.pixiSprite = rangeIndicator;
+    rangeEntity.components.zIndex.index = 1;
 
-      range.isVisible = globals.showRange;
-    }
+    this.ecs.addEntity(rangeEntity);
+    range.entity = rangeEntity;
+
+    range.isVisible = globals.showRange;
   }
 
   exit (entity) {
-    this.stage.removeChild(entity.components.range.indicator);
+    this.ecs.removeEntity(entity.components.range.entity);
   }
 
   update (entity) {
-    entity.components.range.indicator.alpha = (entity.components.range.isVisible ? 1 : 0);
+    entity.components.range.entity.components.sprite.pixiSprite.alpha = (entity.components.range.isVisible ? 1 : 0);
   }
 
   [ actions.TOGGLE_SHOW_RANGES_SINGLE ] (entity, button) {

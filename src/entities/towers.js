@@ -31,7 +31,7 @@ function baseTower (x, y, image) {
       'mouseout': [actions.TOGGLE_SHOW_RANGES_SINGLE, entity, globals.showRange]
     }
   });
-  entity.addComponent('zIndex', {index: 1});
+  entity.addComponent('zIndex', {index: 2});
 
   return entity;
 }

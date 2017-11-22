@@ -82,7 +82,7 @@ function startGame () {
   game = newState();
 
   // Game
-  let rangeSystem = new Range(game.stage);
+  let rangeSystem = new Range(game.ecs);
 
   game.ecs.addSystem(new Render(renderer, game.stage, globals.width, globals.height));
   game.ecs.addSystem(new ButtonSystem(rangeSystem));

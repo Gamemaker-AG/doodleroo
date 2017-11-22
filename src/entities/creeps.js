@@ -46,7 +46,7 @@ export function baseCreep (x, y, image = 'tower_splash') {
     damage: 10,
     bulletType: 'laser'
   });
-  entity.addComponent('zIndex', {index: 1});
+  entity.addComponent('zIndex', {index: 2});
   return entity;
 };
 
