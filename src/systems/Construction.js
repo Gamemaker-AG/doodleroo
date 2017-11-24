@@ -4,19 +4,13 @@ import ECS from 'yagl-ecs';
 import * as actions from 'button-actions';
 
 export default class Construction extends ECS.System {
-  test() {
-    return true;
+  test(entity) {
+    return !!entity.components.menuTower;
   }
 
-  [actions.TOGGLE_TOWER_MENU](constructionMenu, worldPos, gridPos) {
-    let {pixiSprite} = constructionMenu.components.sprite;
-    let hasMoved = !worldPos.equals(pixiSprite.position);
-    if (!hasMoved && pixiSprite.visible) {
-      pixiSprite.visible = false;
-    } else {
-      pixiSprite.visible = true;
-      pixiSprite.position = worldPos.clone();
-      constructionMenu.components.gridPosition = gridPos;
+  update(entity) {
+    if (entity.components.purchased.cost > globals.player.gold) {
+      entity.components.systemlessSprite.pixiSprite.alpha = 0.5;
     }
   }
 }
