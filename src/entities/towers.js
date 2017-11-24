@@ -75,11 +75,10 @@ function tankTower (x, y) {
 function healTower (x, y) {
   let entity = baseTower(x, y, 'tower_heal');
 
-  entity.addComponent('range', {range: 5, color: 0xFF0000, isVisible: globals.showRange});
   entity.components.obstacle.cost = 3;
   entity.components.purchased.cost = 300;
-
-  // implement heal behaviour
+  entity.addComponent('range', {range: 5, color: 0xFF0000, isVisible: globals.showRange});
+  entity.addComponent('heal', {rate: 0.5, timeSinceLastHeal: 0, amount: 10});
 
   return entity;
 }

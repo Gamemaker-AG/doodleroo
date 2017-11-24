@@ -13,6 +13,10 @@ export default class Attack extends ECS.System {
     return entity.components.attack && !entity.components.fadeOut && !entity.components.bullet;
   }
 
+  enter (entity) {
+    entity.components.attack.timeSinceLastAttack = 1 / entity.components.attack.rate;
+  }
+
   update (entity) {
     let {attack} = entity.components;
 
