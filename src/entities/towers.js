@@ -39,7 +39,7 @@ function baseTower (x, y, image) {
 function machineGunTower (x, y) {
   let entity = baseTower(x, y, 'tower_machineGun');
 
-  entity.addComponent('range', {range: 2, color: 0xFF0000, isVisible: globals.showRange});
+  entity.addComponent('range', {range: 2, color: 0x000000, isVisible: globals.showRange});
   entity.addComponent('attack', {rate: 5, timeSinceLastAttack: 0, damage: 20, bulletType: 'bullet'});
   entity.components.obstacle.cost = 3;
   entity.components.purchased.cost = 200;
@@ -55,7 +55,7 @@ function splashTower (x, y) {
   top.scale.set(entity.components.sprite.pixiSprite.scale.x);
   entity.components.sprite.pixiSprite.addChild(top);
 
-  entity.addComponent('range', {range: 3, color: 0xFF0000, isVisible: globals.showRange});
+  entity.addComponent('range', {range: 3, color: 0x000000, isVisible: globals.showRange});
   entity.addComponent('attack', {rate: 0.5, timeSinceLastAttack: 0, damage: 10, bulletType: 'bullet'});
   entity.components.obstacle.cost = 3;
   entity.components.purchased.cost = 300;
@@ -77,7 +77,7 @@ function healTower (x, y) {
 
   entity.components.obstacle.cost = 3;
   entity.components.purchased.cost = 300;
-  entity.addComponent('range', {range: 5, color: 0xFF0000, isVisible: globals.showRange});
+  entity.addComponent('range', {range: 5, color: 0x000000, isVisible: globals.showRange});
   entity.addComponent('heal', {rate: 0.5, timeSinceLastHeal: 0, amount: 10});
 
   return entity;

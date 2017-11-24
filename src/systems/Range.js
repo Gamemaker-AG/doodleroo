@@ -23,8 +23,7 @@ export default class Range extends ECS.System {
     let rangeEntity = new ECS.Entity(null, [Sprite, ZIndex]);
 
     let rangeIndicator = new PIXI.Graphics();
-    rangeIndicator.beginFill(1, 0.1);
-    // rangeIndicator.lineStyle(3, range.color, 1)
+    rangeIndicator.beginFill(range.color, 0.1);
     rangeIndicator.drawCircle(pixiSprite.x, pixiSprite.y, range.range * globals.slotSize);
     rangeIndicator.endFill();
 
