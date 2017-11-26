@@ -17,6 +17,7 @@ import InfoPanelUpdater from 'systems/InfoPanelUpdater';
 import Range from 'systems/Range';
 import Spawner from 'systems/Spawner';
 import UpdateGridPosition from 'systems/UpdateGridPosition';
+import Heal from 'systems/Heal';
 
 import ObservablePixiVector from 'ObservablePixiVector';
 import PixiVector from 'PixiVector';
@@ -102,6 +103,7 @@ function startGame () {
   game.ecs.addSystem(new Spawner(game.ecs));
   game.ecs.addSystem(new FadeOut(game.ecs));
   game.ecs.addSystem(new Health(game.ecs));
+  game.ecs.addSystem(new Heal(grid.obstacles));
 
   createGameEntities((entity) => game.ecs.addEntity(entity), backgroundMusic)
     .forEach(e => game.ecs.addEntity(e));
