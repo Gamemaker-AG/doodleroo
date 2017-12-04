@@ -112,6 +112,7 @@ function startGame () {
 }
 
 function startLoop () {
+  bgDiv.parentNode.removeChild(bgDiv);
   window.speed = 1;
   ticker = new PIXI.ticker.Ticker();
   ticker.add(gameLoop);
@@ -128,34 +129,43 @@ function startLoop () {
   startMenu();
 }
 
-PIXI.loader
-  .add('red_square', 'img/red_square.png')
-  .add('green_square', 'img/green_square.png')
-  .add('heart', 'img/heart.png')
-  .add('coin', 'img/coin.png')
-  .add('circular_background', 'img/circular_background.png')
-  .add('creep_fast_1', 'img/creep_fast_1.png')
-  .add('creep_fast_2', 'img/creep_fast_2.png')
-  .add('creep_tall_1', 'img/creep_tall_1.png')
-  .add('creep_tall_2', 'img/creep_tall_2.png')
-  .add('tower_heal', 'img/tower_heal.png')
-  .add('tower_machineGun', 'img/tower_machineGun.png')
-  .add('tower_splash', 'img/tower_splash.png')
-  .add('tower_splash_top', 'img/tower_splash_top.png')
-  .add('tower_tank', 'img/tower_tank.png')
-  .add('bullet', 'img/bullet.png')
-  .add('slot', 'img/slot.png')
-  .add('goal', 'img/goal.png')
-  .add('start', 'img/goal.png')
-  .add('wall', 'img/wall.png')
-  .add('button_newGame', 'img/button_newGame.png')
-  .add('button_credits', 'img/button_credits.png')
-  .add('button_soundSpeaker', 'img/button_soundSpeaker.png')
-  .add('button_soundWaves', 'img/button_soundWaves.png')
-  .add('button_soundMuted', 'img/button_soundMuted.png')
-  .add('button_fast', 'img/button_fast.png')
-  .add('button_slow', 'img/button_slow.png')
-  .add('button_showRanges', 'img/button_showRanges.png')
-  .add('button_hideRanges', 'img/button_hideRanges.png')
-  .add('fak_font', 'font/fak.fnt')
-  .load(startLoop);
+let bgDiv, progressBar;
+window.onload = () => {
+  bgDiv = document.getElementById('bgDiv');
+  progressBar = document.getElementById('progressBarBackground');
+
+  PIXI.loader
+    .add('red_square', 'img/red_square.png')
+    .add('green_square', 'img/green_square.png')
+    .add('heart', 'img/heart.png')
+    .add('coin', 'img/coin.png')
+    .add('circular_background', 'img/circular_background.png')
+    .add('creep_fast_1', 'img/creep_fast_1.png')
+    .add('creep_fast_2', 'img/creep_fast_2.png')
+    .add('creep_tall_1', 'img/creep_tall_1.png')
+    .add('creep_tall_2', 'img/creep_tall_2.png')
+    .add('tower_heal', 'img/tower_heal.png')
+    .add('tower_machineGun', 'img/tower_machineGun.png')
+    .add('tower_splash', 'img/tower_splash.png')
+    .add('tower_splash_top', 'img/tower_splash_top.png')
+    .add('tower_tank', 'img/tower_tank.png')
+    .add('bullet', 'img/bullet.png')
+    .add('slot', 'img/slot.png')
+    .add('goal', 'img/goal.png')
+    .add('start', 'img/goal.png')
+    .add('wall', 'img/wall.png')
+    .add('button_newGame', 'img/button_newGame.png')
+    .add('button_credits', 'img/button_credits.png')
+    .add('button_soundSpeaker', 'img/button_soundSpeaker.png')
+    .add('button_soundWaves', 'img/button_soundWaves.png')
+    .add('button_soundMuted', 'img/button_soundMuted.png')
+    .add('button_fast', 'img/button_fast.png')
+    .add('button_slow', 'img/button_slow.png')
+    .add('button_showRanges', 'img/button_showRanges.png')
+    .add('button_hideRanges', 'img/button_hideRanges.png')
+    .add('fak_font', 'font/fak.fnt')
+    .on('progress', (loader, resource) => {
+      progressBar.children[0].style.width = loader.progress + '%';
+    })
+    .load(startLoop);
+};
