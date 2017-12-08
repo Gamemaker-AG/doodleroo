@@ -1,6 +1,6 @@
 export default class Player {
   constructor (restart) {
-    this.gold = 10000;
+    this.gold = 1000;
     this.lifes = 10;
     this.restart = restart;
   }

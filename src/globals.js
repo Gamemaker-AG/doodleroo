@@ -4,7 +4,7 @@ const globals = {
   width: 1920,
   height: 1080,
   slotCount: 16,
-  zIndexes: 4
+  zIndexes: 5
 };
 
 globals.gridOffset = 100;

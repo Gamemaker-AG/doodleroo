@@ -81,6 +81,7 @@ function startGame () {
   globals.player = new Player(startMenu);
   window.speed = 1;
   game = newState();
+  window.stage = game.stage;
 
   // Game
   let rangeSystem = new Range(game.ecs);
@@ -139,6 +140,8 @@ window.onload = () => {
     .add('green_square', 'img/green_square.png')
     .add('heart', 'img/heart.png')
     .add('coin', 'img/coin.png')
+    .add('paper', 'img/paper.png')
+    .add('mask', 'img/mask.png')
     .add('circular_background', 'img/circular_background.png')
     .add('creep_fast_1', 'img/creep_fast_1.png')
     .add('creep_fast_2', 'img/creep_fast_2.png')
