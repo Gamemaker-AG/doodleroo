@@ -1,9 +1,9 @@
 @font-face {
-  font-family: fakFont; 
+  font-family: fakFont;
   src: url('font/Fak-Regular.ttf');
 }
 
-div {
+body div {
   background-color: white;
   position: absolute;
   width: 100%;
