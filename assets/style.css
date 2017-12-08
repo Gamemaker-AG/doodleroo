@@ -1,6 +1,11 @@
+* {
+  box-sizing: border-box;
+}
+
 @font-face {
-  font-family: fakFont;
-  src: url('font/Fak-Regular.ttf');
+  font-family: 'fakFont';
+  src: url('font/Fak-Regular.woff') format('woff'),
+    url('font/Fak-Regular.ttf') format('truetype');
 }
 
 body div {
@@ -13,16 +18,14 @@ body div {
   z-index: 1;
 }
 
-span {
+#bgDiv span {
   position: absolute;
   top: 30%;
   width: 100%;
   text-align: center;
-  font-family: fakFont;
-  font-style: bold;
+  font-family: 'fakFont';
   font-size: 40px;
-  text-transform: uppercase;
-}
+  }
 
 #progressBarBackground {
   width: 60%;
@@ -30,9 +33,15 @@ span {
   left: 20%;
   top: 40%;
   border: 1px black solid;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 #progressBarForeground {
   background-color: black;
   width: 0%;
+  margin: 4px;
+  max-height: calc(100% - 8px);
+  max-width: calc(100% - 8px);
+  border-radius: 5px;
 }
