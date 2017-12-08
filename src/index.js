@@ -112,7 +112,7 @@ function startGame () {
 }
 
 function startLoop () {
-  // bgDiv.parentNode.removeChild(bgDiv);
+  bgDiv.parentNode.removeChild(bgDiv);
   window.speed = 1;
   ticker = new PIXI.ticker.Ticker();
   ticker.add(gameLoop);
