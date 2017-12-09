@@ -5,10 +5,8 @@ import PixiVector from 'PixiVector';
 import globals from 'globals';
 import { tower_types } from 'entities/towers';
 import ZIndex from 'components/ZIndex';
-import * as actions from 'button-actions';
-import upgradeMenuEntity from 'entities/upgradeMenu';
 
-export default function constructionMenuEntity (addEntity, removeEntity) {
+export default function upgradeMenuEntity (addEntity, removeEntity, baseTower, baseTowerEntity) {
   let entity = new ECS.Entity(null, [Sprite, GridPosition, ZIndex]);
   entity.components.zIndex.index = globals.zIndexes - 1;
   entity.components.sprite.pixiSprite = new PIXI.Container();
@@ -31,7 +29,7 @@ export default function constructionMenuEntity (addEntity, removeEntity) {
   entity.components.sprite.pixiSprite.addChild(background);
 
   let towers = tower_types.filter(tower => {
-    return tower.type === 'standard';
+    return tower.type === baseTower;
   });
   let angle = (Math.PI * 2) / towers.length;
 
@@ -49,13 +47,8 @@ export default function constructionMenuEntity (addEntity, removeEntity) {
           entity.components.gridPosition.y
         );
 
-        let towerToAdd = tower.factory(worldCoords.x, worldCoords.y);
-        let worldPos = new PixiVector(entity.components.sprite.pixiSprite.x, entity.components.sprite.pixiSprite.y);
-        let upgradeMenu = upgradeMenuEntity(addEntity, removeEntity, tower.factory.name, towerToAdd);
-        towerToAdd.components.button.actions.click = [actions.TOGGLE_TOWER_MENU, upgradeMenu, worldPos, entity.components.gridPosition];
-
-        addEntity(upgradeMenu);
-        addEntity(towerToAdd);
+        removeEntity(baseTowerEntity);
+        addEntity(tower.factory(worldCoords.x, worldCoords.y));
       }
 
       entity.components.sprite.pixiSprite.visible = false;

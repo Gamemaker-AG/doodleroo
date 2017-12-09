@@ -105,7 +105,7 @@ function startGame () {
   game.ecs.addSystem(new Health(game.ecs));
   game.ecs.addSystem(new Heal(grid.obstacles));
 
-  createGameEntities((entity) => game.ecs.addEntity(entity), backgroundMusic)
+  createGameEntities((entity) => game.ecs.addEntity(entity), (entity) => game.ecs.removeEntity(entity), backgroundMusic)
     .forEach(e => game.ecs.addEntity(e));
 
   currentState = game;
