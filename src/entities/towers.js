@@ -4,18 +4,18 @@ import PixiVector from 'PixiVector';
 import * as actions from 'button-actions';
 
 export const tower_types = [
-  {type: 'standard', factory: machineGunTower},
-  {type: 'standard', factory: splashTower},
-  {type: 'standard', factory: tankTower},
-  {type: 'standard', factory: healTower},
-  {type: 'splashTower', factory: venomTower},
-  {type: 'splashTower', factory: frostTower},
-  {type: 'healTower', factory: sniperTower},
-  {type: 'healTower', factory: missileSwarmTower},
-  {type: 'machineGunTower', factory: doubleMachineGunTower},
-  {type: 'machineGunTower', factory: laserTower},
-  {type: 'tankTower', factory: moreTankTower},
-  {type: 'tankTower', factory: cactusTower}
+  {base: 'standard', factory: machineGunTower},
+  {base: 'standard', factory: splashTower},
+  {base: 'standard', factory: tankTower},
+  {base: 'standard', factory: healTower},
+  {base: 'splashTower', factory: venomTower},
+  {base: 'splashTower', factory: frostTower},
+  {base: 'healTower', factory: sniperTower},
+  {base: 'healTower', factory: missileSwarmTower},
+  {base: 'machineGunTower', factory: doubleMachineGunTower},
+  {base: 'machineGunTower', factory: laserTower},
+  {base: 'tankTower', factory: moreTankTower},
+  {base: 'tankTower', factory: cactusTower}
 ];
 
 // Declaring the base tower
