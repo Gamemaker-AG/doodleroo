@@ -3,6 +3,7 @@ import globals from 'globals';
 import spriteEntity from 'entities/spriteEntity';
 import Movement from 'components/Movement';
 import * as PIXI from 'pixi.js';
+import { animateImages } from 'utils';
 
 import Attack from '../components/Attack';
 
@@ -52,17 +53,7 @@ export function baseCreep (x, y, image = 'tower_splash') {
   addFilter.blendMode = PIXI.BLEND_MODES.MULTIPLY;
   paper.filters = [addFilter];
   
-  let mask;
-  if (Array.isArray(image)) {
-    let textures = image.map((name) => {
-      return PIXI.loader.resources[name].texture;
-    })
-    mask = new PIXI.extras.AnimatedSprite(textures);
-    mask.animationSpeed = 0.1
-    mask.play();
-  } else {
-    mask = new PIXI.Sprite(PIXI.loader.resources[image].texture);
-  }
+  let mask = animateImages(image)
   paper.addChild(mask);
   mask.anchor.set(0.5, 0.5);
   mask.alpha = 1
