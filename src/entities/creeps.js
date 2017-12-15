@@ -35,7 +35,6 @@ export function baseCreep (x, y, image = 'tower_splash') {
   entity.addComponent(Movement);
   entity.addComponent('enemy', {});
   entity.addComponent('gridPosition', {x, y});
-  entity.addComponent('health', {health: 100, initialHealth: 100});
   entity.addComponent('followPath', {});
   entity.addComponent('goal', {x: Math.floor(globals.slotCount / 2), y: globals.slotCount - 1});
   entity.addComponent('autoUpdateGridPosition', {});
@@ -52,12 +51,23 @@ export function baseCreep (x, y, image = 'tower_splash') {
   let addFilter = new PIXI.filters.AlphaFilter();
   addFilter.blendMode = PIXI.BLEND_MODES.MULTIPLY;
   paper.filters = [addFilter];
-
-  let mask = new PIXI.Sprite(PIXI.loader.resources['mask'].texture);
+  
+  let mask;
+  if (Array.isArray(image)) {
+    let textures = image.map((name) => {
+      return PIXI.loader.resources[name].texture;
+    })
+    mask = new PIXI.extras.AnimatedSprite(textures);
+    mask.animationSpeed = 0.1
+    mask.play();
+  } else {
+    mask = new PIXI.Sprite(PIXI.loader.resources[image].texture);
+  }
   paper.addChild(mask);
   mask.anchor.set(0.5, 0.5);
-  mask.alpha = 0.5
+  mask.alpha = 1
   paper.mask = mask;
+  entity.addComponent('health', {health: 100, initialHealth: 100, mask: mask});
 
   entity.components.sprite.pixiSprite.addChild(paper)
   entity.addComponent('zIndex', {index: 2});
