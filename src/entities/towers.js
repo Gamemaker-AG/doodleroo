@@ -160,7 +160,7 @@ function laserTower (x, y) {
 }
 
 function moreTankTower (x, y) {
-  let entity = baseTower(x, y, 'red_square');
+  let entity = baseTower(x, y, 'tower_cactus');
 
   entity.components.obstacle.cost = 3;
   entity.components.purchased.cost = 200;
