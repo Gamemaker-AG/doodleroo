@@ -10,18 +10,17 @@ export default class Destination extends ECS.System {
   test (entity) {
     return entity.components.followPath &&
       entity.components.goal &&
-      entity.components.gridPosition;
+      entity.components.gridPosition &&
+      entity.components.goalPath;
   }
 
   update (entity) {
-    if (entity.components.goalPath) {
-      let { path } = entity.components.goalPath;
-      for (let goal of globals.goalPositions) {
-        if (entity.components.gridPosition.x === goal.x &&
-          entity.components.gridPosition.y === goal.y) {
-          globals.player.deduct_life();
-          this.ecs.removeEntity(entity);
-        }
+    let { path } = entity.components.goalPath;
+    for (let goal of globals.goalPositions) {
+      if (entity.components.gridPosition.x === goal.x &&
+        entity.components.gridPosition.y === goal.y) {
+        globals.player.deduct_life();
+        this.ecs.removeEntity(entity);
       }
     }
   }

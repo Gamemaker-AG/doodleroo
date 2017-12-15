@@ -14,10 +14,10 @@ const {slotCount, slotSize} = globals;
 
 let constructionMenu, buttonShowRanges;
 
-export default function createGameEntities (addEntity, backgroundMusic) {
+export default function createGameEntities (addEntity, removeEntity, backgroundMusic) {
   let entities = [];
 
-  constructionMenu = constructionMenuEntity(addEntity);
+  constructionMenu = constructionMenuEntity(addEntity, removeEntity);
   let clickable;
   let style;
   for (let x = 0; x < slotCount; x++) {

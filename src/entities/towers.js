@@ -4,11 +4,21 @@ import PixiVector from 'PixiVector';
 import * as actions from 'button-actions';
 
 export const tower_types = [
-  {factory: machineGunTower},
-  {factory: splashTower},
-  {factory: tankTower},
-  {factory: healTower}
+  {base: 'standard', factory: machineGunTower},
+  {base: 'standard', factory: splashTower},
+  {base: 'standard', factory: tankTower},
+  {base: 'standard', factory: healTower},
+  {base: 'splashTower', factory: venomTower},
+  {base: 'splashTower', factory: frostTower},
+  {base: 'healTower', factory: sniperTower},
+  {base: 'healTower', factory: missileSwarmTower},
+  {base: 'machineGunTower', factory: doubleMachineGunTower},
+  {base: 'machineGunTower', factory: laserTower},
+  {base: 'tankTower', factory: moreTankTower},
+  {base: 'tankTower', factory: cactusTower}
 ];
+
+// Declaring the base tower
 
 function baseTower (x, y, image) {
   let gridPos = new PixiVector(x, y).toGrid();
@@ -35,6 +45,8 @@ function baseTower (x, y, image) {
 
   return entity;
 }
+
+// Declaring the standard towers
 
 function machineGunTower (x, y) {
   let entity = baseTower(x, y, 'tower_machineGun');
@@ -79,6 +91,91 @@ function healTower (x, y) {
   entity.components.purchased.cost = 300;
   entity.addComponent('range', {range: 5, color: 0x000000, isVisible: globals.showRange});
   entity.addComponent('heal', {rate: 0.5, timeSinceLastHeal: 0, amount: 10});
+
+  return entity;
+}
+
+// Declaring the upgraded towers
+
+function venomTower (x, y) {
+  let entity = baseTower(x, y, 'red_square');
+
+  entity.components.obstacle.cost = 3;
+  entity.components.purchased.cost = 200;
+  // entity.addComponent('venom', {})
+
+  return entity;
+}
+
+function frostTower (x, y) {
+  let entity = baseTower(x, y, 'red_square');
+
+  entity.components.obstacle.cost = 3;
+  entity.components.purchased.cost = 200;
+  entity.addComponent('range', {range: 3, color: 0x000000, isVisible: globals.showRange});
+  entity.addComponent('slow', {speedFactor: 0.5, duration: 0.8});
+
+  return entity;
+}
+
+function sniperTower (x, y) {
+  let entity = baseTower(x, y, 'red_square');
+
+  entity.components.obstacle.cost = 3;
+  entity.components.purchased.cost = 200;
+  entity.addComponent('range', {range: 5, color: 0x000000, isVisible: globals.showRange});
+  entity.addComponent('attack', {rate: 0.5, timeSinceLastAttack: 0, damage: 50, bulletType: 'bullet'});
+
+  return entity;
+}
+
+function missileSwarmTower (x, y) {
+  let entity = baseTower(x, y, 'red_square');
+
+  entity.components.obstacle.cost = 3;
+  entity.components.purchased.cost = 200;
+
+  return entity;
+}
+
+function doubleMachineGunTower (x, y) {
+  let entity = baseTower(x, y, 'red_square');
+
+  entity.components.obstacle.cost = 3;
+  entity.components.purchased.cost = 200;
+  entity.addComponent('range', {range: 2, color: 0x000000, isVisible: globals.showRange});
+  entity.addComponent('attack', {rate: 7, timeSinceLastAttack: 0, damage: 20, bulletType: 'bullet'});
+
+  return entity;
+}
+
+function laserTower (x, y) {
+  let entity = baseTower(x, y, 'red_square');
+
+  entity.components.obstacle.cost = 3;
+  entity.components.purchased.cost = 200;
+  // entity.addComponent('incremental', {})
+
+  return entity;
+}
+
+function moreTankTower (x, y) {
+  let entity = baseTower(x, y, 'red_square');
+
+  entity.components.obstacle.cost = 3;
+  entity.components.purchased.cost = 200;
+  // entity.components.health.initialHealth = Infinity
+  // entity.components.health.health = Infinity
+
+  return entity;
+}
+
+function cactusTower (x, y) {
+  let entity = baseTower(x, y, 'red_square');
+
+  entity.components.obstacle.cost = 3;
+  entity.components.purchased.cost = 200;
+  // entity.addComponent('cactus', {})
 
   return entity;
 }
