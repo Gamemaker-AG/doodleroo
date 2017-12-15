@@ -167,6 +167,7 @@ window.onload = () => {
     .add('button_showRanges', 'img/button_showRanges.png')
     .add('button_hideRanges', 'img/button_hideRanges.png')
     .add('fak_font', 'font/fak.fnt')
+    .add('logo', 'img/logo.png')
     .on('progress', (loader, resource) => {
       progressBar.children[0].style.width = loader.progress + '%';
     })

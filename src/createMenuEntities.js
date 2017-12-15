@@ -6,9 +6,11 @@ import Button from 'components/Button';
 export default function createMenuEntities (newGame, backgroundMusic) {
   let entities = [];
 
+  entities.push(spriteEntity(0, 0, 'logo'));
   entities.push(buttonNewGameEntity(globals.width / 2, globals.height / 2 - 100, newGame));
   entities.push(buttonCreditsEntity(globals.width / 2, globals.height / 2 + 100));
   entities.push(buttonMuteEntity(globals.width - 150, 100, backgroundMusic));
+
 
   return entities;
 };
