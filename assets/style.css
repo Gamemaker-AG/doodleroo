@@ -39,6 +39,7 @@ body div {
 
 #progressBarForeground {
   background-image: url(img/loadingBarImage.png);
+  background-size: auto 100%;
   filter: grayscale(100%);
   width: 0%;
   margin: 4px;
