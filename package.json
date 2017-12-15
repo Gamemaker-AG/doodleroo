@@ -24,13 +24,13 @@
   "homepage": "https://github.com/Gamemaker-AG/basement-attack#readme",
   "devDependencies": {
     "webpack": "^2.4.1",
-    "webpack-dev-server": "^2.9.4"
+    "webpack-dev-server": "^2.9.7"
   },
   "dependencies": {
     "fastpriorityqueue": "^0.3.1",
-    "pixi-particles": "^2.1.8",
-    "pixi-sound": "^2.0.0-alpha.6",
-    "pixi.js": "^4.6.0",
+    "pixi-particles": "^2.1.9",
+    "pixi-sound": "^2.0.0",
+    "pixi.js": "^4.6.2",
     "vigur": "^0.1.1",
     "yagl-ecs": "github:raffomania/ecs#feat/better-collections"
   }

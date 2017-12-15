@@ -3,10 +3,9 @@ import shot from 'entities/shot';
 import PixiVector from 'PixiVector';
 
 export default class Attack extends ECS.System {
-  constructor (ecs, enemies, freq) {
+  constructor (ecs, freq) {
     super(freq);
     this.ecs = ecs;
-    this.enemies = enemies;
   }
 
   test (entity) {
