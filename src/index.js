@@ -70,7 +70,7 @@ function startMenu () {
 
   // Menu
   menu.ecs.addSystem(new Render(renderer, menu.stage, globals.width, globals.height));
-  menu.ecs.addSystem(new ButtonSystem());
+  menu.ecs.addSystem(new ButtonSystem(undefined, menu.stage));
 
   createMenuEntities(startGame, backgroundMusic).forEach(e => menu.ecs.addEntity(e));
 
@@ -87,7 +87,7 @@ function startGame () {
   let rangeSystem = new Range(game.ecs);
 
   game.ecs.addSystem(new Render(renderer, game.stage, globals.width, globals.height));
-  game.ecs.addSystem(new ButtonSystem(rangeSystem));
+  game.ecs.addSystem(new ButtonSystem(rangeSystem, game.stage));
   let grid = new GridSystem(10);
   game.ecs.addSystem(grid);
   game.ecs.addSystem(new Movement());
@@ -157,6 +157,9 @@ window.onload = () => {
     .add('goal', 'img/goal.png')
     .add('start', 'img/goal.png')
     .add('wall', 'img/wall.png')
+    .add('button_default', 'img/button_default.png')
+    .add('button_pressed', 'img/button_pressed.png')
+    .add('button_mouseover', 'img/button_mouseover.png')
     .add('button_newGame', 'img/button_newGame.png')
     .add('button_credits', 'img/button_credits.png')
     .add('button_soundSpeaker', 'img/button_soundSpeaker.png')
