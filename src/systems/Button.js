@@ -7,8 +7,9 @@ import * as actions from 'button-actions';
 import globals from '../globals';
 
 export default class Button extends ECS.System {
-  constructor (rangeSystem) {
+  constructor (rangeSystem, stage) {
     super();
+    this.stage = stage;
     this.rangeSystem = rangeSystem;
   }
 
@@ -44,6 +45,18 @@ export default class Button extends ECS.System {
 
   exit (entity) {
     entity.components.button.click = undefined;
+  }
+
+  [ actions.MOUSE_OVER_IMAGE ] (entity, image) {
+    entity.components.sprite.pixiSprite.texture = PIXI.loader.resources[image].texture;
+  }
+
+  [ actions.MOUSE_EXIT_IMAGE ] (entity, image) {
+    entity.components.sprite.pixiSprite.texture = PIXI.loader.resources[image].texture;
+  }
+
+  [ actions.MOUSE_DOWN_IMAGE ] (entity, image) {
+    entity.components.sprite.pixiSprite.texture = PIXI.loader.resources[image].texture;
   }
 
   [ actions.TOGGLE_SHOW_RANGES_ALL ] (sprite) {
