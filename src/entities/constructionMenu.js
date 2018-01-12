@@ -80,7 +80,7 @@ export default function constructionMenuEntity (addEntity, removeEntity, baseTow
     // WARNING: DANGER ZONE
     // Don't touch this code it's horrible.
     // We need an entity to hold the sprite so we can do updates on it.
-    // But the render system destroys the children realtionship of the menu and the towers on `enter`
+    // But the render system destroys the children relationship of the menu and the towers on `enter`
     // So we need a component that is not touched by the Render system.
     // We call it the `systemlessSprite`.
     let dumb_entity = new ECS.Entity(null, []);
