@@ -93,8 +93,8 @@ function startGame () {
   game.ecs.addSystem(new Movement());
   game.ecs.addSystem(rangeSystem);
   let targetInRange = new TargetInRange(grid.obstacles);
-  game.ecs.addSystem(new Attack(game.ecs, targetInRange.enemies));
-  game.ecs.addSystem(new Bullet(game.ecs, targetInRange.enemies));
+  game.ecs.addSystem(new Attack(game.ecs));
+  game.ecs.addSystem(new Bullet(game.ecs));
   game.ecs.addSystem(new Construction());
   game.ecs.addSystem(new InfoPanelUpdater());
   game.ecs.addSystem(new UpdateGridPosition());
@@ -152,6 +152,7 @@ window.onload = () => {
     .add('tower_splash', 'img/tower_splash.png')
     .add('tower_splash_top', 'img/tower_splash_top.png')
     .add('tower_tank', 'img/tower_tank.png')
+    .add('tower_cactus', 'img/tower_cactus.png')
     .add('bullet', 'img/bullet.png')
     .add('slot', 'img/slot.png')
     .add('goal', 'img/goal.png')
