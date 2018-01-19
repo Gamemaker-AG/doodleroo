@@ -19,6 +19,12 @@ export default function createMenuEntities (newGame, backgroundMusic) {
 function buttonNewGameEntity (x, y, newGame) {
   let entity = spriteEntity(x, y, 'button_default');
   entity.components.sprite.pixiSprite.anchor.set(0.5, 0.5);
+  let style = {font: '72px fak', stroke: '#4286f4'};
+  let startText = new PIXI.extras.BitmapText('start game', style);
+  startText.anchor.set(0.5, 0.5);
+  startText.position.set(0, -20)
+  entity.components.sprite.pixiSprite.addChild(startText);
+
   entity.addComponent(Button, {
     actions: {
       'click': () => {
@@ -35,6 +41,12 @@ function buttonNewGameEntity (x, y, newGame) {
 function buttonCreditsEntity (x, y) {
   let entity = spriteEntity(x, y, 'button_default');
   entity.components.sprite.pixiSprite.anchor.set(0.5, 0.5);
+  let style = {font: '72px fak', stroke: '#4286f4'};
+  let startText = new PIXI.extras.BitmapText('credits', style);
+  startText.anchor.set(0.5, 0.5);
+  startText.position.set(0, -20)
+  entity.components.sprite.pixiSprite.addChild(startText);
+
   entity.addComponent(Button, {
     actions: {
       'click': () => {
