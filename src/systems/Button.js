@@ -7,10 +7,15 @@ import * as actions from 'button-actions';
 import globals from '../globals';
 
 export default class Button extends ECS.System {
-  constructor (rangeSystem, stage) {
+  constructor (stage) {
     super();
     this.stage = stage;
-    this.rangeSystem = rangeSystem;
+  }
+
+  collect(entity) {
+    return {
+      hasRange: !!entity.components.range
+    };
   }
 
   test (entity) {
@@ -61,7 +66,7 @@ export default class Button extends ECS.System {
 
   [ actions.TOGGLE_SHOW_RANGES_ALL ] (sprite) {
     globals.showRange = !globals.showRange;
-    for (let entity of this.rangeSystem.entities) {
+    for (let entity of this.collections.hasRange) {
       entity.components.range.isVisible = globals.showRange;
     }
 
