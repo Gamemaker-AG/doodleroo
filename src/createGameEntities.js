@@ -12,12 +12,14 @@ import { buttonMuteEntity, infoPanelEntity, speedUpEntity, showRangesEntity } fr
 
 const {slotCount, slotSize} = globals;
 
-let constructionMenu, buttonShowRanges;
+let constructionMenu, buttonShowRanges, addEntity, removeEntity;
 
-export default function createGameEntities (addEntity, removeEntity, backgroundMusic) {
+export default function createGameEntities (_addEntity, _removeEntity, backgroundMusic) {
+  addEntity = _addEntity;
+  removeEntity = _removeEntity;
   let entities = [];
 
-  constructionMenu = constructionMenuEntity(addEntity, removeEntity);
+  constructionMenu = constructionMenuEntity(addEntity);
   let clickable;
   let style;
   for (let x = 0; x < slotCount; x++) {
@@ -77,7 +79,7 @@ function slotEntity (x, y, clickable = true , style = 'slot') {
   if (clickable) {
     entity.addComponent('button', {
       actions: {
-        'click': [actions.TOGGLE_TOWER_MENU, constructionMenu, worldPos, new PixiVector(x, y)]
+        'click': [actions.TOGGLE_TOWER_MENU, constructionMenu, worldPos, new PixiVector(x, y), addEntity, removeEntity]
       }
     });
   }

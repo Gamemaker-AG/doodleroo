@@ -154,6 +154,7 @@ window.onload = () => {
     .add('tower_tank', 'img/tower_tank.png')
     .add('tower_cactus', 'img/tower_cactus.png')
     .add('bullet', 'img/bullet.png')
+    .add('poisonDart', 'img/poisonDart.png')
     .add('slot', 'img/slot.png')
     .add('goal', 'img/goal.png')
     .add('start', 'img/goal.png')
