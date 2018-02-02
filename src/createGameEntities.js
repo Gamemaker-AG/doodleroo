@@ -1,6 +1,4 @@
-import * as PIXI from 'pixi.js';
 import ECS from 'yagl-ecs';
-import Sprite from 'components/Sprite.js';
 import globals from 'globals';
 import spawner from 'components/Spawner';
 import gridPosition from 'components/GridPosition';
@@ -18,19 +16,15 @@ export default function createGameEntities (addEntity, removeEntity, backgroundM
   let entities = [];
 
   constructionMenu = constructionMenuEntity(addEntity, removeEntity);
-  let clickable;
-  let style;
   for (let x = 0; x < slotCount; x++) {
     for (let y = 0; y < slotCount; y++) {
       entities.push(slotEntity(x, y, false, 'slot'));
 
       if (y === 0 && (x === Math.floor(slotCount / 2) || x === Math.ceil(slotCount / 2) - 1)) {
         entities.push(slotEntity(x, y, false, 'start'));
-      }
-      else if (y === slotCount - 1 && (x === Math.floor(slotCount / 2) || x === Math.ceil(slotCount / 2) - 1)) {
+      } else if (y === slotCount - 1 && (x === Math.floor(slotCount / 2) || x === Math.ceil(slotCount / 2) - 1)) {
         entities.push(slotEntity(x, y, false, 'goal'));
-      }
-      else if ((x === 0 || x === slotCount - 1) || (y === 0 || y === slotCount - 1)) {
+      } else if ((x === 0 || x === slotCount - 1) || (y === 0 || y === slotCount - 1)) {
         let entity = slotEntity(x, y, false, 'wall');
         entity.addComponent('obstacle', {cost: Infinity});
         entity.addComponent('gridPosition', {x: x, y: y});
@@ -55,14 +49,14 @@ export default function createGameEntities (addEntity, removeEntity, backgroundM
   entities.push(buttonShowRanges);
 
   return entities;
-};
+}
 
 function randomElement (arr) {
   let randomIndex = Math.floor(Math.random() * arr.length);
   return arr[randomIndex];
 }
 
-function slotEntity (x, y, clickable = true , style = 'slot') {
+function slotEntity (x, y, clickable = true, style = 'slot') {
   let worldPos = new PixiVector(x, y)
     .multiply(slotSize)
     .add(slotSize / 2)

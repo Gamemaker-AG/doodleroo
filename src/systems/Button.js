@@ -73,7 +73,7 @@ export default class Button extends ECS.System {
     sprite.visible = !sprite.visible;
   }
 
-  [actions.TOGGLE_TOWER_MENU](constructionMenu, worldPos, gridPos) {
+  [actions.TOGGLE_TOWER_MENU] (constructionMenu, worldPos, gridPos) {
     let {pixiSprite} = constructionMenu.components.sprite;
     let hasMoved = !worldPos.equals(pixiSprite.position);
     if (!hasMoved && pixiSprite.visible) {

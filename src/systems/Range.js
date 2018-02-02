@@ -49,4 +49,4 @@ export default class Range extends ECS.System {
       entity.components.range.isVisible = !entity.components.range.isVisible;
     }
   }
-};
+}
