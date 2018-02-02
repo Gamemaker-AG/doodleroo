@@ -18,6 +18,7 @@ import Range from 'systems/Range';
 import Spawner from 'systems/Spawner';
 import UpdateGridPosition from 'systems/UpdateGridPosition';
 import Heal from 'systems/Heal';
+import CreepInfoPanel from 'systems/CreepInfoPanel';
 
 import ObservablePixiVector from 'ObservablePixiVector';
 import PixiVector from 'PixiVector';
@@ -105,6 +106,7 @@ function startGame () {
   game.ecs.addSystem(new FadeOut(game.ecs));
   game.ecs.addSystem(new Health(game.ecs));
   game.ecs.addSystem(new Heal(grid.obstacles));
+  game.ecs.addSystem(new CreepInfoPanel());
 
   createGameEntities((entity) => game.ecs.addEntity(entity), (entity) => game.ecs.removeEntity(entity), backgroundMusic)
     .forEach(e => game.ecs.addEntity(e));

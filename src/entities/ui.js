@@ -103,9 +103,14 @@ export function infoPanelEntity (x, y) {
   score.anchor.set(0, 0.5);
   score.position.set(50, 150);
 
+  let waveTimer = new PIXI.extras.BitmapText('0', style);
+  waveTimer.anchor.set(0, 0.5);
+  waveTimer.position.set(0, 225)
+
   entity.components.sprite.pixiSprite.addChild(gold);
   entity.components.sprite.pixiSprite.addChild(lifes);
   entity.components.sprite.pixiSprite.addChild(score);
+  entity.components.sprite.pixiSprite.addChild(waveTimer);
   entity.components.sprite.pixiSprite.addChild(coin);
   entity.components.sprite.pixiSprite.addChild(heart);
 

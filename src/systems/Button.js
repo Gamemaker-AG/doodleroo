@@ -69,8 +69,10 @@ export default class Button extends ECS.System {
 
   [ actions.TOGGLE_SHOW_RANGES_ALL ] (sprite) {
     globals.showRange = !globals.showRange;
-    for (let entity of this.collections.hasRange) {
-      entity.components.range.isVisible = globals.showRange;
+    if (this.collections.hasRange) {
+      for (let entity of this.collections.hasRange) {
+        entity.components.range.isVisible = globals.showRange;
+      }
     }
 
     sprite.visible = !sprite.visible;

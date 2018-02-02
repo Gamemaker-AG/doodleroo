@@ -43,10 +43,10 @@ export default function createGameEntities (_addEntity, _removeEntity, backgroun
 
   entities.push(constructionMenu);
   entities.push(infoPanelEntity(globals.width - 200, 100));
-  entities.push(buttonMuteEntity(globals.width - 150, 100, backgroundMusic));
-  entities.push(speedUpEntity(globals.width - 150, 200));
+  entities.push(buttonMuteEntity(globals.width - 100, 100, backgroundMusic));
+  entities.push(speedUpEntity(globals.width - 100, 200));
 
-  buttonShowRanges = showRangesEntity(globals.width - 150, 300);
+  buttonShowRanges = showRangesEntity(globals.width - 100, 300);
   globals.showRange = buttonShowRanges.components.sprite.pixiSprite.children[0].visible;
   entities.push(buttonShowRanges);
 
