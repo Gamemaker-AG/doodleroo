@@ -1,4 +1,3 @@
-import * as PIXI from 'pixi.js';
 import globals from 'globals';
 import ECS from 'yagl-ecs';
 import PixiVector from 'PixiVector';
@@ -7,7 +6,7 @@ import FastPriorityQueue from 'fastpriorityqueue';
 export default class Grid extends ECS.System {
   constructor (freq) {
     super(freq);
-    let newObj = () => { return {};};
+    let newObj = () => { return {}; };
     this.obstacles = initializedArray(globals.slotCount, globals.slotCount, newObj, newObj);
     this.dirty = true;
   }
@@ -52,7 +51,7 @@ export default class Grid extends ECS.System {
 
   postUpdate () {
     if (this.dirty) {
-      this.pathFinder = new Pathfinder(this.costs)
+      this.pathFinder = new Pathfinder(this.costs);
       this.dirty = false;
     }
   }
@@ -68,7 +67,7 @@ export default class Grid extends ECS.System {
     if (entity.components.goal) {
       let {x, y} = entity.components.goal;
       let path = this.findPath(entity, x, y);
-      if (typeof(entity.components.goalPath) === 'undefined') {
+      if (typeof entity.components.goalPath === 'undefined') {
         entity.addComponent('goalPath', { path });
       } else {
         entity.components.goalPath.pathUpdated = true;
@@ -81,71 +80,69 @@ export default class Grid extends ECS.System {
   findPath (entity, goalX, goalY) {
     let startX = entity.components.gridPosition.x;
     let startY = entity.components.gridPosition.y;
-    return this.pathFinder.findPath(startX, startY)
+    return this.pathFinder.findPath(startX, startY);
   }
-};
-
+}
 
 // Single sink shortest path finder
 class Pathfinder {
-  constructor (input_costs) {
-    let {cost, prev} = Pathfinder._buildFinders(input_costs, globals.goalPositions)
+  constructor (inputCosts) {
+    let {cost, prev} = Pathfinder._buildFinders(inputCosts, globals.goalPositions);
     this.costs = cost;
     this.prev = prev;
   }
 
-  findPath(x, y) {
+  findPath (x, y) {
     let path = [];
-    while (this.prev[x][y] !== "goal") {
+    while (this.prev[x][y] !== 'goal') {
       if (this.prev[x][y] === null) {
-        return undefined
+        return undefined;
       }
-      path.push([x, y])
+      path.push([x, y]);
       if (this.prev[x][y] !== null) {
         [x, y] = this.prev[x][y];
       } else {
         return undefined;
       }
     }
-    path.push([x, y])
+    path.push([x, y]);
     return path;
   }
 }
 
 Pathfinder._buildFinders = function (costs, goalPositions) {
-  let path_finder = [];
   let frontier = buildFrontier();
-  let costs_acc = initializedArray(globals.slotCount, globals.slotCount, Infinity, Infinity);
+  let costsAcc = initializedArray(globals.slotCount, globals.slotCount, Infinity, Infinity);
   let previous = initializedArray(globals.slotCount, globals.slotCount, null, null);
   for (let start of goalPositions) {
     frontier.add([[start.x, start.y], 1]);
-    costs_acc[start.x][start.y] = 1;
-    previous[start.x][start.y] = "goal"
+    costsAcc[start.x][start.y] = 1;
+    previous[start.x][start.y] = 'goal';
   }
 
-  let current;
-  let i = 0;
   let prev;
   while (prev = frontier.poll()) {
-    let [[prevX, prevY], _] = prev;
+    let [[prevX, prevY]] = prev;
     for (let current of neighbors(prevX, prevY)) {
-      let potential_new_costs = costs_acc[prevX][prevY] + costs[current[0]][current[1]]
-      if (costs_acc[current[0]][current[1]] > potential_new_costs) {
+      let potentialNewCosts = costsAcc[prevX][prevY] + costs[current[0]][current[1]];
+      if (costsAcc[current[0]][current[1]] > potentialNewCosts) {
         previous[current[0]][current[1]] = [prevX, prevY];
-        costs_acc[current[0]][current[1]] = potential_new_costs;
-        let current_costs = costs_acc[current[0]][current[1]];
-        frontier.add([[current[0], current[1]], current_costs]);
+        costsAcc[current[0]][current[1]] = potentialNewCosts;
+        let currentCosts = costsAcc[current[0]][current[1]];
+        frontier.add([[current[0], current[1]], currentCosts]);
       }
     }
   }
-  return {prev: previous, cost: costs_acc};
-}
+  return {prev: previous, cost: costsAcc};
+};
 
 function neighbors (x, y) {
   let xs = [x - 1, x + 1].filter((x) => {
-    return x >= 0 && x < globals.slotCount;});
+    return x >= 0 && x < globals.slotCount;
+  });
   let ys = [y - 1, y + 1].filter((y) => {
-    return y >= 0 && y < globals.slotCount;});
+    return y >= 0 && y < globals.slotCount;
+  });
   let positions = [];
   for (let newX of xs) {
     positions.push([newX, y]);
@@ -178,9 +175,9 @@ function updateAttackablePositions (costs, entity) {
   return costs;
 }
 
-function buildFrontier() {
+function buildFrontier () {
   let frontier = new FastPriorityQueue((self, other) => {
-    self[0] > other[0];
+    return self[0] > other[0];
   });
   return frontier;
 }
@@ -188,19 +185,18 @@ function buildFrontier() {
 function initializedArray (xSize, ySize, value, edgeValue = Infinity) {
   let generateValue = value;
   let generateEdgeValue = edgeValue;
-  if (typeof(value) !== 'function') {
+  if (typeof value !== 'function') {
     generateValue = () => value;
   }
-  if (typeof(edgeValue) !== 'function') {
+  if (typeof edgeValue !== 'function') {
     generateEdgeValue = () => edgeValue;
   }
 
-  let len = 0;
   let result = [];
   for (let y = 0; y < ySize; y++) {
     let row = [];
     for (let x = 0; x < xSize; x++) {
-      if (x === xSize - 1 || x === 0 || y === ySize -1 || y === 0) {
+      if (x === xSize - 1 || x === 0 || y === ySize - 1 || y === 0) {
         row.push(generateEdgeValue());
       } else {
         row.push(generateValue());

@@ -99,8 +99,13 @@ export function infoPanelEntity (x, y) {
   lifes.anchor.set(0, 0.5);
   lifes.position.set(50, 75);
 
+  let score = new PIXI.extras.BitmapText(globals.player.score.toString(), style);
+  score.anchor.set(0, 0.5);
+  score.position.set(50, 150);
+
   entity.components.sprite.pixiSprite.addChild(gold);
   entity.components.sprite.pixiSprite.addChild(lifes);
+  entity.components.sprite.pixiSprite.addChild(score);
   entity.components.sprite.pixiSprite.addChild(coin);
   entity.components.sprite.pixiSprite.addChild(heart);
 

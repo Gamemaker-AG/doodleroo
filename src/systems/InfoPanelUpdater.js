@@ -15,6 +15,7 @@ export default class InfoPanel extends ECS.System {
   update (entity) {
     let text_gold = childAt(entity, 0).text;
     let text_lifes = childAt(entity, 1).text;
+    let text_score = childAt(entity, 2).text;
 
 
     if (text_gold != globals.player.gold) {
@@ -23,6 +24,10 @@ export default class InfoPanel extends ECS.System {
 
     if (text_lifes != globals.player.lifes) {
       childAt(entity, 1).text = globals.player.lifes.toString();
+    }
+
+    if (text_score != globals.player.score) {
+      childAt(entity, 2).text = globals.player.score.toString();
     }
   }
 };
