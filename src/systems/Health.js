@@ -1,4 +1,5 @@
 import ECS from 'yagl-ecs';
+import globals from 'globals';
 
 export default class Health extends ECS.System {
   constructor(ecs, freq) {
@@ -22,6 +23,9 @@ export default class Health extends ECS.System {
 
     if (cs.health.health <= 0) {
       this.ecs.removeEntity(entity);
+      if (cs.movement) {
+        globals.player.score += 1;
+      }
     }
   }
 }
