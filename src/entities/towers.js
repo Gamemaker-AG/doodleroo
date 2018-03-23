@@ -10,7 +10,7 @@ export const tower_types = [
   {base: 'standard', factory: healTower},
   {base: 'splashTower', factory: venomTower},
   {base: 'splashTower', factory: frostTower},
-  {base: 'healTower', factory: sniperTower},
+  {base: 'healTower', factory: healDamageBoostTower},
   {base: 'healTower', factory: missileSwarmTower},
   {base: 'machineGunTower', factory: doubleMachineGunTower},
   {base: 'machineGunTower', factory: laserTower},
@@ -105,11 +105,18 @@ function healTower (x, y) {
 // Declaring the upgraded towers
 
 function venomTower (x, y) {
-  let entity = baseTower(x, y, 'red_square');
+  let entity = baseTower(x, y, 'tower_splash');
 
+  let top = new PIXI.Sprite(PIXI.loader.resources['tower_splash_top'].texture);
+  top.anchor.set(0.21, 0.46);
+  top.scale.set(entity.components.sprite.pixiSprite.scale.x);
+  entity.components.sprite.pixiSprite.addChild(top);
+
+  entity.addComponent('range', {range: 3, color: 0x000000, isVisible: globals.showRange});
+  entity.addComponent('attack', {rate: 0.5, timeSinceLastAttack: 0, damage: 10, bulletType: 'bullet'});
+  entity.addComponent('poison', {poisonAmount: 0.05, duration: 2});
   entity.components.obstacle.cost = 3;
-  entity.components.purchased.cost = 200;
-  // entity.addComponent('venom', {})
+  entity.components.purchased.cost = 300;
 
   return entity;
 }
@@ -125,7 +132,7 @@ function frostTower (x, y) {
   return entity;
 }
 
-function sniperTower (x, y) {
+function healDamageBoostTower (x, y) {
   let entity = baseTower(x, y, 'red_square');
 
   entity.components.obstacle.cost = 3;
@@ -137,7 +144,7 @@ function sniperTower (x, y) {
 }
 
 function missileSwarmTower (x, y) {
-  let entity = baseTower(x, y, 'red_square');
+  let entity = baseTower(x, y, 'tower/missile_launcher');
 
   entity.components.obstacle.cost = 3;
   entity.components.purchased.cost = 200;

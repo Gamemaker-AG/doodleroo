@@ -170,6 +170,7 @@ window.onload = () => {
     .add('tower_cactus', 'img/tower/cactus.png')
     .add('tower/tank', 'img/tower/tank.png')
     .add('tower/bomb_tank', 'img/tower/bomb_tank.png')
+    .add('tower/missile_launcher', 'img/tower/missile_launcher.png')
     .add('bullet', 'img/bullet/bullet.png')
     .add('poisonDart', 'img/poisonDart.png')
     .add('slot', 'img/slot.png')
