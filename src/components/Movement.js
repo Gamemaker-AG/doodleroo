@@ -7,6 +7,8 @@ export default {
     angularVelocity: 0,
     maxSpeed: 100,
     speedFactor: 1, // 0.5: half speed, 2: double speed
-    slowDuration: 0
+    slowDuration: 0,
+    poisonAmount: 0, // depending on current health points
+    poisonDuration: 0
   }
 };

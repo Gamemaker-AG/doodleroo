@@ -76,6 +76,7 @@ function splashTower (x, y) {
 
   entity.addComponent('range', {range: 3, color: 0x000000, isVisible: globals.showRange});
   entity.addComponent('attack', {rate: 0.5, timeSinceLastAttack: 0, damage: 10, bulletType: 'bullet'});
+  entity.addComponent('splash', {splashRadius: 2});
   entity.components.obstacle.cost = 3;
   entity.components.purchased.cost = 300;
 
@@ -113,7 +114,8 @@ function venomTower (x, y) {
   entity.components.sprite.pixiSprite.addChild(top);
 
   entity.addComponent('range', {range: 3, color: 0x000000, isVisible: globals.showRange});
-  entity.addComponent('attack', {rate: 0.5, timeSinceLastAttack: 0, damage: 10, bulletType: 'bullet'});
+  entity.addComponent('attack', {rate: 0.5, timeSinceLastAttack: 0, damage: 10, bulletType: 'poisonDart'});
+  entity.addComponent('splash', {splashRadius: 2});
   entity.addComponent('poison', {poisonAmount: 0.05, duration: 2});
   entity.components.obstacle.cost = 3;
   entity.components.purchased.cost = 300;

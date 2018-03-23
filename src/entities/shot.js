@@ -6,7 +6,7 @@ import FadeOut from 'components/FadeOut';
 
 export default function shot (origin, enemy, source) {
   let bullet;
-  let {attack} = source.components;
+  let { attack } = source.components;
 
   switch (attack.bulletType) {
     case 'bullet':
@@ -18,6 +18,18 @@ export default function shot (origin, enemy, source) {
       bullet = new ECS.Entity(null, [Sprite, Bullet]);
       bullet.components.bullet.target = enemy;
       bullet.components.sprite.pixiSprite = bulletSprite;
+
+      break;
+
+    case 'poisonDart':
+      let poisonDartSprite = new PIXI.Sprite(PIXI.loader.resources['poisonDart'].texture);
+      poisonDartSprite.anchor.set(0.5, 0.5);
+      poisonDartSprite.position.set(origin.x, origin.y);
+      poisonDartSprite.scale.set(0.6);
+
+      bullet = new ECS.Entity(null, [Sprite, Bullet]);
+      bullet.components.bullet.target = enemy;
+      bullet.components.sprite.pixiSprite = poisonDartSprite;
 
       break;
 
@@ -48,6 +60,10 @@ export default function shot (origin, enemy, source) {
 
     if (source.components.splash) {
       bullet.components.splash = source.components.splash;
+    }
+
+    if (source.components.poison) {
+      bullet.components.poison = source.components.poison;
     }
   }
 

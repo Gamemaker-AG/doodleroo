@@ -13,7 +13,7 @@ export default class Bullet extends ECS.System {
     return entity.components.bullet && hasSprite(entity);
   }
 
-  collect(entity) {
+  collect (entity) {
     return {
       enemies: !!entity.components.enemy
     };
@@ -42,6 +42,11 @@ export default class Bullet extends ECS.System {
 
             if (targetVec.clone().distance(otherPos) <= entity.components.splash.splashRadius * globals.slotSize) {
               enemy.components.health.health -= entity.components.attack.damage;
+
+              if (entity.components.poison) {
+                enemy.components.movement.poisonDuration = entity.components.poison.duration;
+                enemy.components.movement.poisonAmount = entity.components.poison.poisonAmount;
+              }
             }
           }
         } else {

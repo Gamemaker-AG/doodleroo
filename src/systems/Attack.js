@@ -34,13 +34,21 @@ export default class Attack extends ECS.System {
 
     this.ecs.addEntity(shot(origin, enemy, source));
 
-    if (source.components.slow) {
-      if (source.components.slow.duration > enemy.components.movement.slowDuration) {
-        enemy.components.movement.slowDuration = source.components.slow.duration;
-      }
+    // if (source.components.slow) {
+    //   if (source.components.slow.duration > enemy.components.movement.slowDuration) {
+    //     enemy.components.movement.slowDuration = source.components.slow.duration
+    //   }
 
-      enemy.components.movement.speedFactor = source.components.slow.speedFactor;
-    }
+    //   enemy.components.movement.speedFactor = source.components.slow.speedFactor
+    // }
+
+    // if (source.components.poison) {
+    //   if (source.components.poison.duration > enemy.components.movement.poisonDuration) {
+    //     enemy.components.movement.poisonDuration = source.components.poison.duration
+    //   }
+
+    //   enemy.components.movement.poisonAmount = source.components.poison.poisonAmount
+    // }
 
     if (source.components.enemy) {
       enemy.components.health.health -= source.components.attack.damage;
