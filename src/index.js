@@ -27,6 +27,7 @@ import Player from 'Player';
 import * as actions from 'button-actions';
 import createGameEntities from 'createGameEntities';
 import createMenuEntities from 'createMenuEntities';
+import createGameOverEntities from 'createGameOverEntities';
 import { buttonMuteEntity } from 'entities/ui';
 import spriteEntity from 'entities/spriteEntity';
 import globals from 'globals';
@@ -38,6 +39,7 @@ window.PIXI.ObservablePoint.prototype = ObservablePixiVector.prototype;
 
 let game;
 let menu;
+let gameOver;
 let currentState = menu;
 let ticker, renderer;
 
@@ -78,8 +80,20 @@ function startMenu () {
   currentState = menu;
 }
 
+function startGameOver () {
+  gameOver = newState();
+
+  // Game Over
+  gameOver.ecs.addSystem(new Render(renderer, gameOver.stage, globals.width, globals.height));
+  gameOver.ecs.addSystem(new ButtonSystem(undefined, gameOver.stage));
+
+  createGameOverEntities(startGame, globals.score).forEach(e => gameOver.ecs.addEntity(e));
+
+  currentState = gameOver;
+}
+
 function startGame () {
-  globals.player = new Player(startMenu);
+  globals.player = new Player(startGameOver);
   window.speed = 1;
   game = newState();
   window.stage = game.stage;
