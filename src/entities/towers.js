@@ -76,7 +76,7 @@ function splashTower (x, y) {
 }
 
 function tankTower (x, y) {
-  let entity = baseTower(x, y, 'tower_tank');
+  let entity = baseTower(x, y, 'tower/tank');
 
   entity.components.obstacle.cost = 3;
   entity.components.purchased.cost = 200;

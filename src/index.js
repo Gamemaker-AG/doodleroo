@@ -153,7 +153,7 @@ window.onload = () => {
     .add('tower_machineGun', 'img/tower_machineGun.png')
     .add('tower_splash', 'img/tower_splash.png')
     .add('tower_splash_top', 'img/tower_splash_top.png')
-    .add('tower_tank', 'img/tower_tank.png')
+    .add('middle_finger', 'img/middle_finger.png')
     .add('tower_cactus', 'img/tower_cactus.png')
     .add('bullet', 'img/bullet.png')
     .add('poisonDart', 'img/poisonDart.png')
@@ -174,6 +174,7 @@ window.onload = () => {
     .add('button_showRanges', 'img/button_showRanges.png')
     .add('button_hideRanges', 'img/button_hideRanges.png')
     .add('fak_font', 'font/fak.fnt')
+    .add('tower/tank', 'img/tower/tank.png')
     .add('logo', 'img/logo.png')
     .on('progress', (loader, resource) => {
       progressBar.children[0].style.width = loader.progress + '%';
