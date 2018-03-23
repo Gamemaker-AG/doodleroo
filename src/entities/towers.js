@@ -2,6 +2,7 @@ import globals from 'globals';
 import spriteEntity from 'entities/spriteEntity';
 import PixiVector from 'PixiVector';
 import * as actions from 'button-actions';
+import { paperEffect, animateImages } from 'utils';
 
 export const tower_types = [
   {base: 'standard', factory: machineGunTower},
@@ -38,8 +39,11 @@ function baseTower (x, y, image) {
   );
   pixiSprite.interactive = true;
 
+  let mask = animateImages(image);
+  let paper = paperEffect(mask)
+
   entity.addComponent('obstacle');
-  entity.addComponent('health', {health: 100, initialHealth: 100});
+  entity.addComponent('health', {health: 100, initialHealth: 100, mask: mask});
   entity.addComponent('gridPosition', {x: gridPos.x, y: gridPos.y});
   entity.addComponent('purchased');
   entity.addComponent('button', {
@@ -49,6 +53,8 @@ function baseTower (x, y, image) {
     }
   });
   entity.addComponent('zIndex', {index: 2});
+
+  pixiSprite.addChild(paper);
 
   return entity;
 }
@@ -70,6 +76,7 @@ function splashTower (x, y) {
   let entity = baseTower(x, y, 'tower_splash');
 
   let top = new PIXI.Sprite(PIXI.loader.resources['tower_splash_top'].texture);
+
   top.anchor.set(0.21, 0.46);
   top.scale.set(entity.components.sprite.pixiSprite.scale.x);
   entity.components.sprite.pixiSprite.addChild(top);

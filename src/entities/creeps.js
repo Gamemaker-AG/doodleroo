@@ -3,7 +3,7 @@ import globals from 'globals';
 import spriteEntity from 'entities/spriteEntity';
 import Movement from 'components/Movement';
 import * as PIXI from 'pixi.js';
-import { animateImages } from 'utils';
+import { animateImages, paperEffect } from 'utils';
 
 import Attack from '../components/Attack';
 
@@ -47,17 +47,10 @@ export function baseCreep (x, y, image = 'tower_splash') {
     damage: 10,
     bulletType: 'laser'
   });
-  let paper = new PIXI.Sprite(PIXI.loader.resources['paper'].texture);
-  paper.anchor.set(0.5, 0.5);
-  let addFilter = new PIXI.filters.AlphaFilter();
-  addFilter.blendMode = PIXI.BLEND_MODES.MULTIPLY;
-  paper.filters = [addFilter];
-  
+
   let mask = animateImages(image)
-  paper.addChild(mask);
-  mask.anchor.set(0.5, 0.5);
-  mask.alpha = 1
-  paper.mask = mask;
+  let paper = paperEffect(mask)
+
   entity.addComponent('health', {health: 100, initialHealth: 100, mask: mask});
 
   entity.components.sprite.pixiSprite.addChild(paper)
