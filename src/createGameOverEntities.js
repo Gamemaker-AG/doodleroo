@@ -10,10 +10,10 @@ import textEntity from 'entities/textEntity';
 import Sprite from 'components/Sprite.js';
 import Button from 'components/Button';
 
-export default function createGameOverEntities (newGame, score) {
+export default function createGameOverEntities (newGame, player) {
   let style = {font: '72px fak', stroke: '#4286f4'};
 
-  let scoreText = `You scored a total of ${score} points.`
+  let scoreText = `you scored a total of ${player.score} points.`
   let scoreTextEntity = textEntity(globals.width / 2, globals.height / 3, scoreText, style);
   
   let buttonEntity = spriteEntity(globals.width / 2, globals.height / 4 * 3, 'button_default');

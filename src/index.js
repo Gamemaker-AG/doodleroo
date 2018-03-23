@@ -80,14 +80,14 @@ function startMenu () {
   currentState = menu;
 }
 
-function startGameOver () {
+function startGameOver (player) {
   gameOver = newState();
 
   // Game Over
   gameOver.ecs.addSystem(new Render(renderer, gameOver.stage, globals.width, globals.height));
   gameOver.ecs.addSystem(new ButtonSystem(undefined, gameOver.stage));
 
-  createGameOverEntities(startGame, globals.score).forEach(e => gameOver.ecs.addEntity(e));
+  createGameOverEntities(startGame, player).forEach(e => gameOver.ecs.addEntity(e));
 
   currentState = gameOver;
 }
