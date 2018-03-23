@@ -27,6 +27,7 @@ import Player from 'Player';
 import * as actions from 'button-actions';
 import createGameEntities from 'createGameEntities';
 import createMenuEntities from 'createMenuEntities';
+import createGameOverEntities from 'createGameOverEntities';
 import { buttonMuteEntity } from 'entities/ui';
 import spriteEntity from 'entities/spriteEntity';
 import globals from 'globals';
@@ -38,6 +39,7 @@ window.PIXI.ObservablePoint.prototype = ObservablePixiVector.prototype;
 
 let game;
 let menu;
+let gameOver;
 let currentState = menu;
 let ticker, renderer;
 
@@ -78,8 +80,20 @@ function startMenu () {
   currentState = menu;
 }
 
+function startGameOver () {
+  gameOver = newState();
+
+  // Game Over
+  gameOver.ecs.addSystem(new Render(renderer, gameOver.stage, globals.width, globals.height));
+  gameOver.ecs.addSystem(new ButtonSystem(undefined, gameOver.stage));
+
+  createGameOverEntities(startGame, globals.score).forEach(e => gameOver.ecs.addEntity(e));
+
+  currentState = gameOver;
+}
+
 function startGame () {
-  globals.player = new Player(startMenu);
+  globals.player = new Player(startGameOver);
   window.speed = 1;
   game = newState();
   window.stage = game.stage;
@@ -145,21 +159,22 @@ window.onload = () => {
     .add('paper', 'img/paper.png')
     .add('mask', 'img/mask.png')
     .add('circular_background', 'img/circular_background.png')
-    .add('creep_fast_1', 'img/creep_fast_1.png')
-    .add('creep_fast_2', 'img/creep_fast_2.png')
-    .add('creep_tall_1', 'img/creep_tall_1.png')
-    .add('creep_tall_2', 'img/creep_tall_2.png')
-    .add('tower_heal', 'img/tower_heal.png')
-    .add('tower_machineGun', 'img/tower_machineGun.png')
-    .add('tower_splash', 'img/tower_splash.png')
-    .add('tower_splash_top', 'img/tower_splash_top.png')
-    .add('middle_finger', 'img/middle_finger.png')
-    .add('tower_cactus', 'img/tower_cactus.png')
-    .add('bullet', 'img/bullet.png')
+    .add('creep_fast_1', 'img/creep/fast_1.png')
+    .add('creep_fast_2', 'img/creep/fast_2.png')
+    .add('creep_tall_1', 'img/creep/tall_1.png')
+    .add('creep_tall_2', 'img/creep/tall_2.png')
+    .add('tower_machineGun', 'img/tower/machine_gun.png')
+    .add('tower_splash', 'img/tower/splash_base.png')
+    .add('tower_splash_top', 'img/tower/splash_top.png')
+    .add('middle_finger', 'img/creep/middle_finger.png')
+    .add('tower_cactus', 'img/tower/cactus.png')
+    .add('tower/tank', 'img/tower/tank.png')
+    .add('tower/bomb_tank', 'img/tower/bomb_tank.png')
+    .add('bullet', 'img/bullet/bullet.png')
     .add('poisonDart', 'img/poisonDart.png')
     .add('slot', 'img/slot.png')
     .add('goal', 'img/goal.png')
-    .add('start', 'img/goal.png')
+    .add('start', 'img/start.png')
     .add('wall', 'img/wall.png')
     .add('button_default', 'img/button_default.png')
     .add('button_pressed', 'img/button_pressed.png')
@@ -174,7 +189,6 @@ window.onload = () => {
     .add('button_showRanges', 'img/button_showRanges.png')
     .add('button_hideRanges', 'img/button_hideRanges.png')
     .add('fak_font', 'font/fak.fnt')
-    .add('tower/tank', 'img/tower/tank.png')
     .add('logo', 'img/logo.png')
     .on('progress', (loader, resource) => {
       progressBar.children[0].style.width = loader.progress + '%';

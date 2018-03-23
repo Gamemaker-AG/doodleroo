@@ -27,8 +27,15 @@ function baseTower (x, y, image) {
   let { pixiSprite } = entity.components.sprite;
 
   pixiSprite.anchor.set(0.5, 0.5);
-  pixiSprite.scale.set(globals.slotSize / pixiSprite.texture.height);
-  pixiSprite.hitArea = new PIXI.Rectangle(-globals.slotSize / 2 - 5, -globals.slotSize / 2 - 5, globals.slotSize + 10, globals.slotSize + 10);
+  const scale = globals.slotSize / pixiSprite.texture.height;
+  pixiSprite.scale.set(scale);
+  const hitAreaSize = globals.slotSize / scale;
+  pixiSprite.hitArea = new PIXI.Rectangle(
+    -hitAreaSize / 2 - 5,
+    -hitAreaSize / 2 - 5,
+    hitAreaSize + 10,
+    hitAreaSize + 10
+  );
   pixiSprite.interactive = true;
 
   entity.addComponent('obstacle');
@@ -85,7 +92,7 @@ function tankTower (x, y) {
 }
 
 function healTower (x, y) {
-  let entity = baseTower(x, y, 'tower_heal');
+  let entity = baseTower(x, y, 'red_square');
 
   entity.components.obstacle.cost = 3;
   entity.components.purchased.cost = 300;
@@ -167,7 +174,7 @@ function laserTower (x, y) {
 }
 
 function moreTankTower (x, y) {
-  let entity = baseTower(x, y, 'tower_cactus');
+  let entity = baseTower(x, y, 'tower/bomb_tank');
 
   entity.components.obstacle.cost = 3;
   entity.components.purchased.cost = 200;
@@ -178,7 +185,7 @@ function moreTankTower (x, y) {
 }
 
 function cactusTower (x, y) {
-  let entity = baseTower(x, y, 'red_square');
+  let entity = baseTower(x, y, 'tower_cactus');
 
   entity.components.obstacle.cost = 3;
   entity.components.purchased.cost = 200;
