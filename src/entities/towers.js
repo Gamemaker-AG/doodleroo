@@ -144,7 +144,7 @@ function healDamageBoostTower (x, y) {
 }
 
 function missileSwarmTower (x, y) {
-  let entity = baseTower(x, y, 'red_square');
+  let entity = baseTower(x, y, 'tower/missile_launcher');
 
   entity.components.obstacle.cost = 3;
   entity.components.purchased.cost = 200;
