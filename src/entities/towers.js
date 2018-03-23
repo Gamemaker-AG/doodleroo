@@ -43,7 +43,7 @@ function baseTower (x, y, image) {
   let paper = paperEffect(mask)
 
   entity.addComponent('obstacle');
-  entity.addComponent('health', {health: 100, initialHealth: 100, mask: mask});
+  entity.addComponent('health', {health: 100, initialHealth: 100});
   entity.addComponent('gridPosition', {x: gridPos.x, y: gridPos.y});
   entity.addComponent('purchased');
   entity.addComponent('button', {
@@ -76,10 +76,15 @@ function splashTower (x, y) {
   let entity = baseTower(x, y, 'tower_splash');
 
   let top = new PIXI.Sprite(PIXI.loader.resources['tower_splash_top'].texture);
+  let mask = animateImages('tower_splash_top');
+  let paper = paperEffect(mask)
+  top.addChild(paper);
+
 
   top.anchor.set(0.21, 0.46);
   top.scale.set(entity.components.sprite.pixiSprite.scale.x);
   entity.components.sprite.pixiSprite.addChild(top);
+  entity.components.sprite.topPixiSprite = top
 
   entity.addComponent('range', {range: 3, color: 0x000000, isVisible: globals.showRange});
   entity.addComponent('attack', {rate: 0.5, timeSinceLastAttack: 0, damage: 10, bulletType: 'bullet'});
@@ -115,9 +120,13 @@ function venomTower (x, y) {
   let entity = baseTower(x, y, 'tower_splash');
 
   let top = new PIXI.Sprite(PIXI.loader.resources['tower_splash_top'].texture);
+  let mask = animateImages('tower_splash_top');
+  let paper = paperEffect(mask)
+  top.addChild(paper);
   top.anchor.set(0.21, 0.46);
   top.scale.set(entity.components.sprite.pixiSprite.scale.x);
   entity.components.sprite.pixiSprite.addChild(top);
+  entity.components.sprite.topPixiSprite = top
 
   entity.addComponent('range', {range: 3, color: 0x000000, isVisible: globals.showRange});
   entity.addComponent('attack', {rate: 0.5, timeSinceLastAttack: 0, damage: 10, bulletType: 'bullet'});

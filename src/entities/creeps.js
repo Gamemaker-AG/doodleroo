@@ -51,7 +51,7 @@ export function baseCreep (x, y, image = 'tower_splash') {
   let mask = animateImages(image)
   let paper = paperEffect(mask)
 
-  entity.addComponent('health', {health: 100, initialHealth: 100, mask: mask});
+  entity.addComponent('health', {health: 100, initialHealth: 100});
 
   entity.components.sprite.pixiSprite.addChild(paper)
   entity.addComponent('zIndex', {index: 2});
