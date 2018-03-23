@@ -6,18 +6,15 @@ import * as actions from 'button-actions';
 import constructionMenuEntity from 'entities/constructionMenu';
 import PixiVector from 'PixiVector';
 import spriteEntity from 'entities/spriteEntity';
+import textEntity from 'entities/textEntity';
 import Sprite from 'components/Sprite.js';
 import Button from 'components/Button';
 
 export default function createGameOverEntities (newGame, score) {
   let style = {font: '72px fak', stroke: '#4286f4'};
 
-  let scoreText = new PIXI.extras.BitmapText(`You scored a total of ${score} points.`, style);
-  let textEntity = new ECS.Entity(null, [Sprite]);
-  scoreText.anchor.set(0.5, 0.5);
-  scoreText.position.set(globals.width / 2, globals.height / 3)
-  textEntity.components.sprite.pixiSprite = new PIXI.Container();
-  textEntity.components.sprite.pixiSprite.addChild(scoreText);
+  let scoreText = `You scored a total of ${score} points.`
+  let scoreTextEntity = textEntity(globals.width / 2, globals.height / 3, scoreText, style);
   
   let buttonEntity = spriteEntity(globals.width / 2, globals.height / 4 * 3, 'button_default');
   buttonEntity.components.sprite.pixiSprite.anchor.set(0.5, 0.5);
@@ -36,5 +33,5 @@ export default function createGameOverEntities (newGame, score) {
       'mousedown': [actions.MOUSE_DOWN_IMAGE, buttonEntity, 'button_pressed']
     }
   });
-  return [buttonEntity, textEntity];
+  return [buttonEntity, scoreTextEntity];
 }
