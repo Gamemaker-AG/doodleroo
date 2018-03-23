@@ -13,12 +13,12 @@ export default class Health extends ECS.System {
 
   update(entity) {
     let {components: cs} = entity;
-    if (cs.sprite && cs.sprite.pixiSprite) {
-      if (typeof(cs.health.mask) !== "undefined") {
-        cs.health.mask.alpha = 1 - cs.health.health / cs.health.initialHealth;
-      } else {
-        cs.sprite.pixiSprite.alpha = cs.health.health / cs.health.initialHealth;
-      }
+    let { topPixiSprite, pixiSprite } = entity.components.sprite;
+    if (cs.sprite && pixiSprite) {
+      this.updateMaskAlpha(pixiSprite, entity)
+    }
+    if (cs.sprite && topPixiSprite) {
+      this.updateMaskAlpha(topPixiSprite, entity)
     }
 
     if (cs.health.health <= 0) {
@@ -27,5 +27,15 @@ export default class Health extends ECS.System {
         globals.player.score += 1;
       }
     }
+  }
+
+  updateMaskAlpha (pixiSprite, entity) {
+    let {components: cs} = entity;
+    pixiSprite.children.forEach((sprite) => {
+      if (sprite.mask) {
+        sprite.mask.alpha = 1 - cs.health.health / cs.health.initialHealth;
+        this.updateMaskAlpha(sprite, entity)
+      }
+    });
   }
 }

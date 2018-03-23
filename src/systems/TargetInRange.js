@@ -54,7 +54,7 @@ export default class TargetInRange extends ECS.System {
         let posVec = new PixiVector(pos.x, pos.y);
         let enemyPosVec = new PixiVector(unitToAttackPos.x, unitToAttackPos.y);
 
-        let currentRotation = (sprite.pixiSprite.children.length === 0) ? sprite.pixiSprite.rotation : sprite.pixiSprite.getChildAt(0).rotation;
+        let currentRotation = (typeof(sprite.topPixiSprite) === 'undefined') ? sprite.pixiSprite.rotation : sprite.topPixiSprite.rotation;
         let targetRotation = (enemyPosVec.clone().subtract(posVec)).horizontalAngle;
         let rotationSpeed = 3;
         let rotationDiff = Math.abs(currentRotation - targetRotation);
@@ -65,10 +65,10 @@ export default class TargetInRange extends ECS.System {
 
 
         let lerpRotation = radianLerp(currentRotation, targetRotation, rotationSpeed * window.dt);
-        if (sprite.pixiSprite.children.length === 0) {
-          sprite.pixiSprite.rotation = lerpRotation;
+        if (typeof(sprite.topPixiSprite) !== 'undefined') {
+          sprite.topPixiSprite.rotation = lerpRotation;
         } else {
-          sprite.pixiSprite.getChildAt(0).rotation = lerpRotation;
+          sprite.pixiSprite.rotation = lerpRotation;
         }
       } else {
         attack.unitToAttack = null;

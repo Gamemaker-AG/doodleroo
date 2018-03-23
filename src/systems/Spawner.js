@@ -14,8 +14,7 @@ export default class Spawner extends ECS.System {
   }
 
   difficulty (wave) {
-    // TODO: scale difficulty in some reasonable way here
-    return wave ** wave * 100
+    return wave * 100
   }
 
   setUpWave (spawnerEntity) {

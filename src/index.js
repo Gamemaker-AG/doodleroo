@@ -80,14 +80,14 @@ function startMenu () {
   currentState = menu;
 }
 
-function startGameOver () {
+function startGameOver (player) {
   gameOver = newState();
 
   // Game Over
   gameOver.ecs.addSystem(new Render(renderer, gameOver.stage, globals.width, globals.height));
   gameOver.ecs.addSystem(new ButtonSystem(undefined, gameOver.stage));
 
-  createGameOverEntities(startGame, globals.score).forEach(e => gameOver.ecs.addEntity(e));
+  createGameOverEntities(startGame, player).forEach(e => gameOver.ecs.addEntity(e));
 
   currentState = gameOver;
 }
@@ -170,6 +170,7 @@ window.onload = () => {
     .add('tower_cactus', 'img/tower/cactus.png')
     .add('tower/tank', 'img/tower/tank.png')
     .add('tower/bomb_tank', 'img/tower/bomb_tank.png')
+    .add('tower/missile_launcher', 'img/tower/missile_launcher.png')
     .add('bullet', 'img/bullet/bullet.png')
     .add('poisonDart', 'img/poisonDart.png')
     .add('slot', 'img/slot.png')
