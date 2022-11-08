@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/Gamemaker-AG/basement-attack#readme",
   "devDependencies": {
-    "webpack": "^2.4.1",
+    "webpack": "^5.74.0",
     "webpack-dev-server": "^2.11.1"
   },
   "dependencies": {
